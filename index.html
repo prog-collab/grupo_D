@@ -85,6 +85,22 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
 .quien button{background:none;color:var(--soft);padding:2px 6px;font-size:.82rem;text-decoration:underline;font-weight:600}
 .sync{font-size:.78rem;font-weight:700}
 .sync.off{color:#c0392b}
+/* ---- Portada: selector de misión ---- */
+.misiones{display:grid;gap:16px;margin-top:6px}
+.mision{background:var(--paper);border-radius:20px;padding:20px;box-shadow:0 10px 26px #26304b1c;border:2px solid #fff;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;text-align:left;width:100%;color:var(--ink);font-weight:400;transition:transform .15s,box-shadow .15s}
+.mision:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 14px 32px #26304b28;filter:none}
+.mision:disabled{opacity:1;background:#f1f0f6;border-color:#e6e3ef;box-shadow:none}
+.mision .orden{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--mint);font-weight:900;font-size:1.15rem}
+.mision.lista .orden{background:#bcefd2}
+.mision.trabada .orden{background:#e2e0ea}
+.mision h3{margin:0 0 4px;font-size:1.15rem;font-weight:800;line-height:1.25}
+.mision .tema{margin:0 0 12px;color:var(--soft);font-size:.92rem;line-height:1.45}
+.mision .barra{height:9px;background:#e4e6ef;border-radius:30px;overflow:hidden;margin-bottom:7px}
+.mision .barra div{height:100%;background:linear-gradient(90deg,#f7bd2d,#ff785a);border-radius:30px}
+.mision .pie{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.86rem;font-weight:700;color:var(--soft);flex-wrap:wrap}
+.mision .accion{color:var(--violet);font-weight:800}
+.mision.lista .accion{color:#1d7a4c}
+.volver{display:inline-block;margin:0 0 4px;background:#ffffffcc;color:var(--violet);font-size:.88rem;padding:8px 14px}
 .confetti{position:fixed;pointer-events:none;z-index:100;animation:fall 2.5s forwards;font-size:1.4rem}
 @keyframes fall{to{transform:translateY(100vh) rotate(540deg);opacity:0}}
 .oculto{display:none!important}
@@ -121,7 +137,7 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
     <p id="subtitulo"></p>
   </header>
 
-  <div class="progress-wrap">
+  <div class="progress-wrap" id="progressWrap">
     <div class="progress-text">
       <span>⭐ <span id="pEstrellas">0</span> de <span id="pTotal">0</span> estrellas</span>
       <span id="pSync" class="sync"></span>
@@ -142,7 +158,8 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
    ================================================================== */
 const SUPA_URL = "https://grswqigekcopfrozcxqj.supabase.co";
 const SUPA_KEY = "sb_publishable_AGlBHQBCR12TzPnCjuLeKQ_jEwi42TF";
-const LECCION  = new URLSearchParams(location.search).get("leccion") || "repaso-1-anuncios";
+/* Sin ?leccion= en la URL, la app muestra la portada con el selector. */
+const LECCION  = new URLSearchParams(location.search).get("leccion");
 const LS = k => "ed:" + LECCION + ":" + k;
 const $  = s => document.querySelector(s);
 
@@ -789,12 +806,82 @@ function diploma(nombre) {
 }
 
 /* ==================================================================
+   Portada: selector de misión
+   ================================================================== */
+async function portada() {
+  $("#progressWrap").classList.add("oculto");
+  $("#titulo").textContent = "Elegí tu misión";
+  $("#subtitulo").textContent = "Cada misión es un relato distinto del primer semestre. Podés hacerlas en cualquier orden, dejarlas por la mitad y volver.";
+  document.title = "Explorador Bíblico · Misiones";
+
+  const main = $("#estaciones");
+  main.innerHTML = "";
+
+  let lecciones = [], resumen = {};
+  try {
+    lecciones = await rpc("ed_lecciones", {});
+    const r = await rpc("ed_mi_resumen", { p_token: sesion.token });
+    if (r.ok) resumen = r.lecciones || {};
+    marcarSync(true);
+  } catch {
+    marcarSync(false);
+    main.innerHTML = '<section class="station"><h2>No pude cargar las misiones</h2>' +
+      '<p class="hint">Revisá tu conexión y volvé a intentar en un rato.</p></section>';
+    return;
+  }
+
+  const cont = el("div", "misiones");
+  lecciones.forEach(l => {
+    const mio  = resumen[l.slug] || { estrellas: 0 };
+    const max  = l.estrellas_max || 18;
+    const pct  = Math.min(100, Math.round(mio.estrellas / max * 100));
+    const listo = mio.estrellas >= max;
+
+    const b = el("button", "mision" + (listo ? " lista" : "") + (l.disponible ? "" : " trabada"));
+    b.disabled = !l.disponible;
+
+    b.append(el("div", "orden", l.disponible ? (listo ? "✓" : String(l.orden)) : "🔒"));
+
+    const cuerpo = el("div");
+    cuerpo.append(el("h3", null, l.titulo));
+    cuerpo.append(el("p", "tema", l.tema || ""));
+
+    if (l.disponible) {
+      const barra = el("div", "barra");
+      const relleno = el("div");
+      relleno.style.width = pct + "%";
+      barra.append(relleno);
+      cuerpo.append(barra);
+    }
+
+    const pie = el("div", "pie");
+    if (!l.disponible) {
+      pie.append(el("span", null, "Todavía no está lista"));
+      pie.append(el("span", "accion", "Próximamente"));
+    } else {
+      pie.append(el("span", null, "⭐ " + mio.estrellas + " de " + max));
+      pie.append(el("span", "accion",
+        listo ? "¡Completada!" : (mio.estrellas > 0 ? "Seguir →" : "Empezar →")));
+    }
+    cuerpo.append(pie);
+    b.append(cuerpo);
+
+    if (l.disponible) b.onclick = () => { location.search = "?leccion=" + l.slug; };
+    cont.append(b);
+  });
+  main.append(cont);
+}
+
+/* ==================================================================
    Arranque
    ================================================================== */
 async function arrancar() {
   $("#gate").classList.add("oculto");
   $("#app").classList.remove("oculto");
   $("#qNombre").textContent = sesion.nombre;
+
+  vaciarCola();
+  if (!LECCION) return portada();
 
   try {
     const r = await fetch("lecciones/" + LECCION + ".json", { cache: "no-cache" });
@@ -828,10 +915,13 @@ async function arrancar() {
     }
   } catch { marcarSync(false); }
 
-  vaciarCola();
-
   const main = $("#estaciones");
   main.innerHTML = "";
+
+  const volver = el("button", "volver", "← Todas las misiones");
+  volver.onclick = () => { location.search = ""; };
+  main.append(volver);
+
   let n = 0;
   leccion.estaciones.forEach(est => {
     const s = el("section", "station");

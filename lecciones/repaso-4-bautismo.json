@@ -1,0 +1,214 @@
+{
+  "slug": "repaso-4-bautismo",
+  "titulo": "El bautismo de Jesús",
+  "subtitulo": "Juan bautizaba a la gente para que se arrepintiera. Entonces apareció el único que no tenía de qué arrepentirse… y se puso en la fila.",
+  "version": "Reina-Valera 1960",
+  "candado": "Cada estación con 🔒 te da un dígito. Juntá los cuatro para abrir el cofre.",
+  "estaciones": [
+    {
+      "id": "lectura",
+      "tipo": "pasaje",
+      "titulo": "El expediente",
+      "instruccion": "Esta escena la cuentan cuatro evangelios, y cada uno agrega algo que los otros no. Por eso el expediente tiene varias fuentes: prestá atención a qué dato aporta cada una.",
+      "bloques": [
+        {
+          "cita": "Mateo 3:13-17",
+          "relato": "Jesús viajó desde Galilea hasta el Jordán con un pedido que dejó a Juan sin saber qué hacer. Juan sabía perfectamente quién era el que tenía adelante, y lo primero que hizo fue negarse.",
+          "versiculos": [
+            { "ref": "Mateo 3:14", "texto": "Mas Juan se le oponía, diciendo: Yo necesito ser bautizado por ti, ¿y tú vienes a mí?" },
+            { "ref": "Mateo 3:15", "texto": "Pero Jesús le respondió: Deja ahora, porque así conviene que cumplamos toda justicia. Entonces le dejó." },
+            { "ref": "Mateo 3:16", "texto": "Y Jesús, después que fue bautizado, subió luego del agua; y he aquí los cielos le fueron abiertos, y vio al Espíritu de Dios que descendía como paloma, y venía sobre él." },
+            { "ref": "Mateo 3:17", "texto": "Y hubo una voz de los cielos, que decía: Este es mi Hijo amado, en quien tengo complacencia." }
+          ]
+        },
+        {
+          "cita": "Lucas 3:21-22 · Mateo 4:1",
+          "relato": "Lucas cuenta lo mismo pero agrega un detalle que ninguno de los otros menciona. Y Mateo cuenta qué pasó inmediatamente después, que tampoco es lo que uno esperaría.",
+          "versiculos": [
+            { "ref": "Lucas 3:21", "texto": "Aconteció que cuando todo el pueblo se bautizaba, también Jesús fue bautizado; y orando, el cielo se abrió." },
+            { "ref": "Mateo 4:1",  "texto": "Entonces Jesús fue llevado por el Espíritu al desierto, para ser tentado por el diablo." }
+          ]
+        },
+        {
+          "cita": "Juan 1:32-34",
+          "relato": "Más adelante, Juan el Bautista explicó cómo hizo para estar seguro. No fue una corazonada: tenía una señal dada de antemano.",
+          "versiculos": [
+            { "ref": "Juan 1:32", "texto": "Vi al Espíritu que descendía del cielo como paloma, y permaneció sobre él." },
+            { "ref": "Juan 1:33", "texto": "El que me envió a bautizar con agua, aquél me dijo: Sobre quien veas descender el Espíritu y que permanece sobre él, ése es el que bautiza con el Espíritu Santo." },
+            { "ref": "Juan 1:34", "texto": "Y yo le vi, y he dado testimonio de que éste es el Hijo de Dios." }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "quiz-bautismo",
+      "tipo": "quiz",
+      "titulo": "Interrogatorio",
+      "instruccion": "Cuatro preguntas, y la segunda es la más difícil de todo el repaso. Tomate tu tiempo con esa.",
+      "digito": "8",
+      "preguntas": [
+        {
+          "enunciado": "Cuando Jesús llegó al Jordán a pedirle que lo bautizara, Juan se opuso. ¿Qué le dijo?",
+          "opciones": [
+            "“Espera a que termine con la gente que está en la fila.”",
+            "“Primero tienes que arrepentirte, como todos los demás.”",
+            "“Yo necesito ser bautizado por ti, ¿y tú vienes a mí?”",
+            "“No puedo bautizarte, porque no eres del desierto.”"
+          ],
+          "correcta": 2,
+          "explicacion": "Juan no dudaba de quién era Jesús: dudaba justamente porque sabía quién era. Le parecía que el orden estaba al revés.",
+          "pista": "Juan no le dice que no puede. Le dice que están invertidos los papeles.",
+          "evidencia": {
+            "enunciado": "¿En qué versículo se opone?",
+            "opciones": ["Mateo 3:13", "Mateo 3:14", "Mateo 3:15"],
+            "correcta": 1
+          }
+        },
+        {
+          "enunciado": "La voz del cielo dice “en quien tengo complacencia”, o sea: estoy contento con él. Pero fijate cuándo lo dice: Jesús todavía no había hecho ningún milagro ni predicado nada. ¿Qué tiene eso de llamativo?",
+          "opciones": [
+            "Que el Padre lo aprueba antes de que hiciera nada, no como premio por lo que logró.",
+            "Que el Padre ya sabía de antemano todos los milagros que Jesús iba a hacer después.",
+            "Que era una manera de presentarlo ante la gente que estaba mirando en el río.",
+            "Que el Padre estaba contento porque Jesús se había dejado bautizar por Juan."
+          ],
+          "correcta": 0,
+          "explicacion": "Es al revés de como funciona casi todo en la vida. Primero llega el “sos mi hijo amado y estoy contento con vos”, y recién después empieza el trabajo. La aprobación no fue el premio: fue el punto de partida.",
+          "pista": "Pensá en qué orden pasaron las cosas: ¿la voz vino antes o después del ministerio de Jesús?",
+          "evidencia": {
+            "enunciado": "¿Qué pasó inmediatamente después del bautismo?",
+            "opciones": ["Empezó a predicar en Galilea", "Fue llevado al desierto para ser tentado", "Eligió a los doce discípulos"],
+            "correcta": 1
+          }
+        },
+        {
+          "enunciado": "Lucas cuenta un detalle de esta escena que Mateo no menciona. ¿Cuál es?",
+          "opciones": [
+            "Que era de noche cuando pasó todo.",
+            "Que Juan lloró al ver descender la paloma.",
+            "Que había una multitud enorme mirando desde la orilla.",
+            "Que Jesús estaba orando cuando el cielo se abrió."
+          ],
+          "correcta": 3,
+          "explicacion": "Por eso conviene leer los cuatro evangelios y no uno solo: cada uno vio y guardó cosas distintas de la misma escena.",
+          "pista": "El dato de Lucas no es sobre el clima ni sobre la gente. Es sobre lo que Jesús estaba haciendo.",
+          "evidencia": {
+            "enunciado": "¿Dónde está ese detalle?",
+            "opciones": ["Lucas 3:21", "Mateo 3:16", "Juan 1:32"],
+            "correcta": 0
+          }
+        },
+        {
+          "enunciado": "¿Cómo hizo Juan para estar seguro de que Jesús era el que estaba esperando?",
+          "opciones": [
+            "Porque eran parientes y lo conocía desde chico.",
+            "Porque Dios le había dado una señal de antemano: aquel sobre quien viera descender el Espíritu y permanecer.",
+            "Porque Jesús se lo dijo al llegar al río.",
+            "Porque la gente que estaba ahí lo reconoció y se lo señaló."
+          ],
+          "correcta": 1,
+          "explicacion": "Juan lo explica él mismo: no fue una corazonada ni un parecido de familia. Tenía una instrucción precisa de antes, y esperó a verla cumplirse.",
+          "pista": "Juan cuenta después cómo lo supo. Buscá dónde dice “aquél me dijo”.",
+          "evidencia": {
+            "enunciado": "¿En qué versículo lo explica?",
+            "opciones": ["Juan 1:32", "Juan 1:33", "Juan 1:34"],
+            "correcta": 1
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "caza-error",
+      "tipo": "caza-error",
+      "titulo": "Caza del error",
+      "instruccion": "Siete afirmaciones. Esta vez hay pocas falsas y están muy bien escondidas: una se cuela por una sola palabra. Leé despacio.",
+      "digito": "0",
+      "afirmaciones": [
+        { "texto": "Juan se opuso al principio a bautizar a Jesús.", "falsa": false,
+          "porque": "Correcto. Y no por desconfianza: por lo contrario. Sabía quién era y le parecía que los papeles estaban invertidos." },
+        { "texto": "Una paloma de verdad bajó y se posó sobre la cabeza de Jesús.", "falsa": true,
+          "porque": "Acá está la trampa de una sola palabra. El texto dice que el Espíritu descendía COMO paloma: es una comparación, no una paloma de carne y hueso." },
+        { "texto": "La voz del cielo dijo: “Este es mi siervo fiel”.", "falsa": true,
+          "porque": "Dijo “Este es mi Hijo amado, en quien tengo complacencia”. La diferencia entre siervo e hijo no es un detalle: cambia toda la escena." },
+        { "texto": "Jesús fue bautizado en el río Jordán.", "falsa": false,
+          "porque": "Correcto. Es donde Juan venía bautizando a todo el que se acercaba." },
+        { "texto": "Apenas terminó el bautismo, Jesús empezó a hacer milagros en Galilea.", "falsa": true,
+          "porque": "No. Lo primero que pasó después fue que el Espíritu lo llevó al desierto para ser tentado. Los milagros vinieron bastante más adelante." },
+        { "texto": "Lucas cuenta que Jesús estaba orando cuando el cielo se abrió.", "falsa": false,
+          "porque": "Correcto, Lucas 3:21. Es el detalle que sólo él aporta." },
+        { "texto": "Juan sabía de antemano cuál iba a ser la señal para reconocerlo.", "falsa": false,
+          "porque": "Correcto. Él mismo lo explica en Juan 1:33: le habían dicho que sería aquel sobre quien el Espíritu descendiera y permaneciera." }
+      ]
+    },
+
+    {
+      "id": "linea-tiempo",
+      "tipo": "linea-tiempo",
+      "titulo": "Línea de tiempo",
+      "instruccion": "Ocho momentos de la escena, desde antes de que Jesús llegara hasta lo que pasó justo después. Si te equivocás, se reinicia.",
+      "digito": "3",
+      "eventos": [
+        { "texto": "Juan predica y bautiza a la gente en el Jordán",                 "orden": 1 },
+        { "texto": "Jesús viene desde Galilea hasta el Jordán",                      "orden": 2 },
+        { "texto": "Juan se opone: “yo necesito ser bautizado por ti”",              "orden": 3 },
+        { "texto": "Jesús le contesta que así conviene cumplir toda justicia",       "orden": 4 },
+        { "texto": "Jesús es bautizado y sube del agua",                             "orden": 5 },
+        { "texto": "Se abre el cielo y el Espíritu desciende como paloma",           "orden": 6 },
+        { "texto": "Se oye la voz: “Este es mi Hijo amado”",                         "orden": 7 },
+        { "texto": "El Espíritu lleva a Jesús al desierto para ser tentado",         "orden": 8 }
+      ]
+    },
+
+    {
+      "id": "versiculo",
+      "tipo": "versiculo",
+      "titulo": "Lo que dijo la voz",
+      "instruccion": "Armá lo que se escuchó desde el cielo (Mateo 3:17). Fijate bien: dice de quién se trata, qué es de él, y qué siente por él.",
+      "piezas": ["Y hubo una voz", "de los cielos,", "que decía:", "Este es", "mi Hijo amado,", "en quien", "tengo complacencia."],
+      "respuesta": "Y hubo una voz de los cielos, que decía: Este es mi Hijo amado, en quien tengo complacencia.",
+      "pista": "Primero de dónde vino la voz, después qué dijo. Y lo que dijo tiene tres partes: quién es, qué es, y qué siente el Padre.",
+      "explicacion": "No dice “este es mi siervo” ni “este es mi profeta”. Dice hijo, amado, y que está contento con él. Tres cosas, antes de que Jesús hiciera un solo milagro."
+    },
+
+    {
+      "id": "quien-hizo-que",
+      "tipo": "emparejar",
+      "titulo": "¿Quién hizo qué?",
+      "instruccion": "En esta escena hay cuatro que actúan al mismo tiempo, y es muy fácil mezclarlos. Uní cada uno con lo que hizo.",
+      "digito": "7",
+      "izquierda": "En la escena del Jordán",
+      "derecha": "¿Qué hizo?",
+      "pares": [
+        { "a": "El Padre",           "b": "Habló desde el cielo: “Este es mi Hijo amado”" },
+        { "a": "El Espíritu Santo",  "b": "Descendió como paloma y permaneció sobre él" },
+        { "a": "Jesús",              "b": "Se puso en la fila y pidió ser bautizado" },
+        { "a": "Juan el Bautista",   "b": "Se opuso primero, y después dio testimonio de lo que vio" }
+      ],
+      "explicacion": "En unos pocos segundos aparecen los tres: el Hijo en el agua, el Espíritu bajando y el Padre hablando. Es una de las pocas escenas de la Biblia donde se ven los tres a la vez."
+    },
+
+    {
+      "id": "detective",
+      "tipo": "texto",
+      "titulo": "Informe del detective",
+      "instruccion": "El bautismo de Juan era para arrepentirse de los pecados, y el propio Juan dijo que Jesús no necesitaba eso: “yo necesito ser bautizado por ti”. Y sin embargo Jesús se puso en la fila igual, con todos los demás. ¿Por qué te parece que lo hizo? Apoyate en la respuesta que Jesús le dio a Juan.",
+      "minimo": 140,
+      "guia": [
+        "¿Citaste lo que Jesús le contestó?",
+        "¿Explicaste por qué llegaste a esa conclusión?",
+        "¿Se entiende sin que yo tenga que adivinar lo que quisiste decir?"
+      ],
+      "nota": "Tu maestro va a leer esta respuesta."
+    },
+
+    {
+      "id": "oracion",
+      "tipo": "oracion",
+      "titulo": "Mi oración",
+      "instruccion": "El Padre dijo “en quien tengo complacencia” antes de que Jesús hiciera nada. Escribí una oración sobre algo en lo que sientas que tenés que ganarte que te quieran.",
+      "privado": "Esto queda sólo en tu teléfono. No se manda a ningún lado y tu maestro no lo ve."
+    }
+  ]
+}
