@@ -1,0 +1,219 @@
+{
+  "slug": "repaso-3-juan",
+  "titulo": "El que preparó el camino",
+  "subtitulo": "Juan el Bautista tuvo multitudes siguiéndolo y podría haberse quedado con todo eso. Esta misión es sobre alguien que sabía perfectamente quién no era.",
+  "version": "Reina-Valera 1960",
+  "candado": "Cada estación con 🔒 te da un dígito. Juntá los cuatro para abrir el cofre.",
+  "estaciones": [
+    {
+      "id": "lectura",
+      "tipo": "pasaje",
+      "titulo": "El expediente",
+      "instruccion": "Tres momentos de la vida de Juan: el día que nació, los años en el desierto, y el día que vio llegar a Jesús. Leelos con atención: varias preguntas se responden con un detalle chiquito.",
+      "bloques": [
+        {
+          "cita": "Lucas 1:57-80",
+          "relato": "Cuando nació el hijo de Zacarías y Elisabet, los parientes daban por hecho que se iba a llamar Zacarías, como el padre. Elisabet dijo que no. Y como Zacarías seguía sin poder hablar desde la visita de Gabriel, tuvo que pedir algo para escribir.",
+          "versiculos": [
+            { "ref": "Lucas 1:60", "texto": "Y respondiendo su madre, dijo: No; se llamará Juan." },
+            { "ref": "Lucas 1:63", "texto": "Y pidiendo una tablilla, escribió, diciendo: Juan es su nombre. Y todos se maravillaron." },
+            { "ref": "Lucas 1:64", "texto": "Al momento fue abierta su boca y suelta su lengua, y habló bendiciendo a Dios." },
+            { "ref": "Lucas 1:76", "texto": "Y tú, niño, profeta del Altísimo serás llamado; porque irás delante de la presencia del Señor, para preparar sus caminos." },
+            { "ref": "Lucas 1:80", "texto": "Y el niño crecía, y se fortalecía en espíritu; y estuvo en lugares desiertos hasta el día de su manifestación a Israel." }
+          ]
+        },
+        {
+          "cita": "Mateo 3:1-12 · Lucas 3:10-14",
+          "relato": "Años después, Juan apareció predicando en el desierto de Judea. No vivía en una ciudad ni tenía cargo en el templo, y aun así la gente salía a buscarlo. Cuando le preguntaban qué tenían que hacer, la respuesta no era lo que esperaban.",
+          "versiculos": [
+            { "ref": "Mateo 3:2",  "texto": "Arrepentíos, porque el reino de los cielos se ha acercado." },
+            { "ref": "Mateo 3:3",  "texto": "Voz del que clama en el desierto: Preparad el camino del Señor, enderezad sus sendas." },
+            { "ref": "Mateo 3:4",  "texto": "Y Juan estaba vestido de pelo de camello, y tenía un cinto de cuero alrededor de sus lomos; y su comida era langostas y miel silvestre." },
+            { "ref": "Mateo 3:11", "texto": "Yo a la verdad os bautizo en agua para arrepentimiento; pero el que viene tras mí, cuyo calzado yo no soy digno de llevar, es más poderoso que yo." },
+            { "ref": "Lucas 3:11", "texto": "El que tiene dos túnicas, dé al que no tiene; y el que tiene qué comer, haga lo mismo." }
+          ]
+        },
+        {
+          "cita": "Juan 1:19-34 · Juan 3:30",
+          "relato": "Cuando Juan estaba en el mejor momento de su fama, le mandaron una delegación desde Jerusalén a preguntarle quién era. Podría haber aprovechado. Contestó lo contrario.",
+          "versiculos": [
+            { "ref": "Juan 1:20", "texto": "Confesó, y no negó, sino confesó: Yo no soy el Cristo." },
+            { "ref": "Juan 1:23", "texto": "Yo soy la voz de uno que clama en el desierto: Enderezad el camino del Señor, como dijo el profeta Isaías." },
+            { "ref": "Juan 1:29", "texto": "He aquí el Cordero de Dios, que quita el pecado del mundo." },
+            { "ref": "Juan 3:30", "texto": "Es necesario que él crezca, pero que yo mengüe." }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "quiz-juan",
+      "tipo": "quiz",
+      "titulo": "Interrogatorio",
+      "instruccion": "Cuatro preguntas. Una de ellas se responde acordándote de la misión 1, así que si no te sale, andá a buscarla.",
+      "digito": "6",
+      "preguntas": [
+        {
+          "enunciado": "Cuando nació el bebé, los parientes discutían el nombre. Zacarías no lo dijo en voz alta: pidió una tablilla y lo escribió. ¿Por qué?",
+          "opciones": [
+            "Porque quería que quedara por escrito delante de los testigos.",
+            "Porque todavía estaba mudo desde que Gabriel se le apareció.",
+            "Porque no se animaba a contradecir a sus parientes en voz alta.",
+            "Porque en esa época los nombres se anotaban siempre por escrito."
+          ],
+          "correcta": 1,
+          "explicacion": "Es la continuación directa de la misión 1: Gabriel le había dicho que quedaría mudo hasta que todo eso se cumpliera. Recién cuando escribió “Juan es su nombre” se le soltó la lengua.",
+          "pista": "Acordate de cómo terminó la visita de Gabriel a Zacarías en el templo.",
+          "evidencia": {
+            "enunciado": "¿En qué versículo se le abre la boca?",
+            "opciones": ["Lucas 1:60", "Lucas 1:63", "Lucas 1:64"],
+            "correcta": 2
+          }
+        },
+        {
+          "enunciado": "Juan tenía multitudes yendo a escucharlo y a bautizarse. En pleno éxito, ¿qué dijo del que venía detrás de él?",
+          "opciones": [
+            "Que iban a trabajar juntos, cada uno enseñando a su manera.",
+            "Que la gente debía seguir viniendo a escucharlo a él primero.",
+            "Que no era digno ni de llevarle el calzado.",
+            "Que él le iba a enseñar todo lo que había aprendido en el desierto."
+          ],
+          "correcta": 2,
+          "explicacion": "Llevarle las sandalias al amo era tarea del esclavo más bajo de la casa. Juan, en el mejor momento de su fama, dice que no llega ni a ese puesto.",
+          "pista": "Buscá en Mateo 3:11 qué dice Juan que no es digno de hacer.",
+          "evidencia": {
+            "enunciado": "¿Dónde lo dice?",
+            "opciones": ["Mateo 3:3", "Mateo 3:11", "Juan 1:20"],
+            "correcta": 1
+          }
+        },
+        {
+          "enunciado": "La gente le preguntaba a Juan qué tenían que hacer para arrepentirse de verdad. ¿Qué les contestó?",
+          "opciones": [
+            "Que ayunaran y dejaran de comer carne.",
+            "Que se fueran a vivir al desierto como él.",
+            "Que fueran al templo a ofrecer más sacrificios.",
+            "Que el que tuviera dos túnicas le diera una al que no tenía."
+          ],
+          "correcta": 3,
+          "explicacion": "Fijate lo raro: Juan vivía en el desierto vestido de pelo de camello, y sin embargo no les pidió nada religioso ni extremo. Les pidió que compartieran la ropa y la comida.",
+          "pista": "La respuesta no tiene nada que ver con el templo ni con el desierto. Es algo mucho más común.",
+          "evidencia": {
+            "enunciado": "¿En qué versículo está?",
+            "opciones": ["Lucas 3:11", "Mateo 3:4", "Juan 1:29"],
+            "correcta": 0
+          }
+        },
+        {
+          "enunciado": "Zacarías quedó mudo el día que Gabriel se le apareció en el templo, y volvió a hablar el día que nació Juan. ¿Cuánto tiempo estuvo sin poder hablar, más o menos?",
+          "opciones": [
+            "Unos pocos días, hasta que se le pasó el susto.",
+            "Unos nueve meses, todo el embarazo de Elisabet.",
+            "Seis meses, hasta que Gabriel visitó a María.",
+            "Casi dos años, hasta que Juan aprendió a caminar."
+          ],
+          "correcta": 1,
+          "explicacion": "El anuncio fue antes de que Elisabet quedara embarazada, y habló recién cuando el bebé nació y le pusieron el nombre. O sea: el embarazo entero callado.",
+          "pista": "¿En qué momento exacto empezó el silencio y en qué momento exacto terminó?",
+          "evidencia": {
+            "enunciado": "¿Dónde dice hasta cuándo iba a durar el silencio?",
+            "opciones": ["Lucas 1:20", "Lucas 1:63", "Lucas 1:80"],
+            "correcta": 0
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "caza-error",
+      "tipo": "caza-error",
+      "titulo": "Caza del error",
+      "instruccion": "Siete afirmaciones sobre Juan. Algunas son falsas. Cuidado: esta vez no son la misma cantidad que la vez pasada, así que no cuentes, pensá.",
+      "digito": "9",
+      "afirmaciones": [
+        { "texto": "La Biblia dice que Juan y Jesús eran primos.", "falsa": true,
+          "porque": "Dice que Elisabet era parienta de María, sin aclarar qué parentesco. Lo de “primos” lo agregamos nosotros: el texto nunca lo dice." },
+        { "texto": "Juan comía langostas y miel silvestre, y se vestía con pelo de camello.", "falsa": false,
+          "porque": "Correcto, está en Mateo 3:4. No era un disfraz: así vivía." },
+        { "texto": "Juan vivía en el templo de Jerusalén y desde ahí predicaba.", "falsa": true,
+          "porque": "Al revés: vivía en lugares desiertos y predicaba en el desierto de Judea. La gente tenía que salir de la ciudad para ir a escucharlo." },
+        { "texto": "Cuando nació Juan, su padre seguía mudo y tuvo que escribir el nombre en una tablilla.", "falsa": false,
+          "porque": "Correcto, Lucas 1:63. Y justo después se le soltó la lengua." },
+        { "texto": "Cuando le preguntaron quién era, Juan dijo que él era el Cristo que esperaban.", "falsa": true,
+          "porque": "Dijo exactamente lo contrario, y el texto lo subraya: “Confesó, y no negó, sino confesó: Yo no soy el Cristo”." },
+        { "texto": "Juan bautizaba a la gente en el río Jordán.", "falsa": false,
+          "porque": "Correcto. Por eso le quedó el sobrenombre de “el Bautista”." },
+        { "texto": "Al ver a Jesús, Juan lo llamó “el Cordero de Dios”.", "falsa": false,
+          "porque": "Correcto, Juan 1:29. Un cordero era lo que se ofrecía en sacrificio: no era un elogio cualquiera." }
+      ]
+    },
+
+    {
+      "id": "linea-tiempo",
+      "tipo": "linea-tiempo",
+      "titulo": "Línea de tiempo",
+      "instruccion": "Toda la vida de Juan en ocho tarjetas, desde antes de nacer hasta el día que señaló a Jesús. Si te equivocás, se reinicia.",
+      "digito": "4",
+      "eventos": [
+        { "texto": "Gabriel le anuncia a Zacarías que va a tener un hijo",        "orden": 1 },
+        { "texto": "Nace el bebé y discuten cómo se va a llamar",                 "orden": 2 },
+        { "texto": "Zacarías escribe “Juan es su nombre” y vuelve a hablar",      "orden": 3 },
+        { "texto": "Juan crece y vive en lugares desiertos",                      "orden": 4 },
+        { "texto": "Empieza a predicar en el desierto de Judea",                  "orden": 5 },
+        { "texto": "La gente sale de las ciudades a bautizarse en el Jordán",     "orden": 6 },
+        { "texto": "Le mandan a preguntar si es el Cristo, y contesta que no",    "orden": 7 },
+        { "texto": "Ve venir a Jesús y dice: “He aquí el Cordero de Dios”",       "orden": 8 }
+      ]
+    },
+
+    {
+      "id": "versiculo",
+      "tipo": "versiculo",
+      "titulo": "Quién dijo que era",
+      "instruccion": "Armá la respuesta que dio Juan cuando le preguntaron quién era (Juan 1:23). Son ocho piezas: fijate que no se define por un cargo, sino por un sonido.",
+      "piezas": ["Yo soy la voz", "de uno que clama", "en el desierto:", "Enderezad", "el camino", "del Señor,", "como dijo", "el profeta Isaías."],
+      "respuesta": "Yo soy la voz de uno que clama en el desierto: Enderezad el camino del Señor, como dijo el profeta Isaías.",
+      "pista": "Empieza diciendo qué es él (no quién), y termina nombrando al profeta que lo había anunciado.",
+      "explicacion": "Podría haber dicho “soy profeta”, “soy el hijo del sacerdote Zacarías”, “soy el que bautiza”. Dijo que era una voz. Una voz sirve para que se escuche un mensaje y después se apaga."
+    },
+
+    {
+      "id": "profecias",
+      "tipo": "emparejar",
+      "titulo": "Lo que ya estaba escrito",
+      "instruccion": "Cuatro textos antiguos y cuatro momentos de esta historia. Uní cada uno con el que le corresponde.",
+      "digito": "2",
+      "izquierda": "Escrito siglos antes",
+      "derecha": "Lo que pasó con Juan",
+      "pares": [
+        { "a": "“Voz que clama en el desierto: Preparad camino a Jehová” (Isaías 40:3)",                       "b": "Lo que Juan contestó cuando le preguntaron quién era" },
+        { "a": "“He aquí, yo envío mi mensajero, el cual preparará el camino delante de mí” (Malaquías 3:1)",  "b": "La misión que Gabriel le anunció a Zacarías en el templo" },
+        { "a": "“He aquí, yo os envío el profeta Elías, antes que venga el día de Jehová” (Malaquías 4:5)",    "b": "Lo que Jesús dijo después: que Juan era ese Elías que había de venir" },
+        { "a": "“Como cordero fue llevado al matadero” (Isaías 53:7)",                                         "b": "“He aquí el Cordero de Dios, que quita el pecado del mundo”" }
+      ],
+      "explicacion": "Juan no inventó su papel: lo leyó. Sabía qué estaba escrito sobre el mensajero que venía antes, se dio cuenta de que ese era él, y se quedó en ese lugar sin agrandarse."
+    },
+
+    {
+      "id": "detective",
+      "tipo": "texto",
+      "titulo": "Informe del detective",
+      "instruccion": "Juan tenía multitudes yendo a buscarlo al desierto. En ese momento dijo: “Es necesario que él crezca, pero que yo mengüe” (Juan 3:30). Menguar es hacerse más chico, ir desapareciendo. ¿Por qué te parece que eso es difícil de hacer, y qué muestra sobre Juan? Apoyate en algo que diga el texto.",
+      "minimo": 140,
+      "guia": [
+        "¿Citaste algo del relato, y no sólo lo que sentís?",
+        "¿Explicaste por qué llegaste a esa conclusión?",
+        "¿Se entiende sin que yo tenga que adivinar lo que quisiste decir?"
+      ],
+      "nota": "Tu maestro va a leer esta respuesta."
+    },
+
+    {
+      "id": "oracion",
+      "tipo": "oracion",
+      "titulo": "Mi oración",
+      "instruccion": "Juan sabía muy bien quién no era, y estaba en paz con eso. Escribí una oración sobre algo en lo que te cueste no ser vos el primero.",
+      "privado": "Esto queda sólo en tu teléfono. No se manda a ningún lado y tu maestro no lo ve."
+    }
+  ]
+}
