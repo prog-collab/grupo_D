@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#26304b">
+<title>Panel del maestro · Grupo D</title>
+<style>
+:root{--violet:#6949c6;--blue:#2479c9;--gold:#ffc83d;--ink:#26304b;--paper:#fff;--soft:#5a6480;--linea:#e6e3f0;--verde:#1d7a4c;--rojo:#c0392b}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:#f4f5fa}
+a{color:var(--violet)}
+.barra{background:linear-gradient(135deg,#3a2a6b,#1c4a7a);color:#fff;padding:16px max(4%,16px)}
+.barra .fila{display:flex;align-items:center;gap:14px;flex-wrap:wrap;max-width:1150px;margin:0 auto}
+.barra h1{margin:0;font-size:1.2rem}
+.barra .meta{font-size:.85rem;opacity:.85}
+.barra .der{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+nav{background:#fff;border-bottom:2px solid var(--linea);position:sticky;top:0;z-index:5;overflow-x:auto}
+nav .fila{display:flex;gap:2px;max-width:1150px;margin:0 auto;padding:0 max(4%,16px)}
+nav button{background:none;border:0;border-bottom:3px solid transparent;color:var(--soft);font:inherit;font-weight:700;padding:13px 15px;cursor:pointer;white-space:nowrap;border-radius:0}
+nav button.on{color:var(--violet);border-bottom-color:var(--violet)}
+nav .pin{background:var(--rojo);color:#fff;border-radius:20px;font-size:.72rem;padding:1px 7px;margin-left:6px;vertical-align:middle}
+main{max-width:1150px;margin:0 auto;padding:22px max(4%,16px) 70px}
+button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:9px 15px;cursor:pointer;background:var(--violet);color:#fff}
+button:hover:not(:disabled){filter:brightness(1.08)}
+button:disabled{opacity:.5;cursor:default}
+.ghost{background:#eceaf7;color:var(--violet)}
+.peligro{background:#fdecea;color:var(--rojo)}
+.chico{font-size:.83rem;padding:6px 11px}
+h2{font-size:1.1rem;margin:26px 0 12px}
+h2:first-child{margin-top:0}
+.tarjetas{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px}
+.kpi{background:var(--paper);border:2px solid var(--linea);border-radius:14px;padding:16px}
+.kpi .n{font-size:1.9rem;font-weight:900;line-height:1.1}
+.kpi .t{font-size:.85rem;color:var(--soft);margin-top:4px;line-height:1.35}
+.kpi.alerta{border-color:#f3b8b1;background:#fff7f6}
+.kpi.alerta .n{color:var(--rojo)}
+.panel{background:var(--paper);border:2px solid var(--linea);border-radius:14px;padding:16px;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--linea);vertical-align:middle}
+th{font-size:.76rem;text-transform:uppercase;letter-spacing:.4px;color:var(--soft)}
+td.num,th.num{text-align:center}
+tr.inactivo td{opacity:.5}
+.tabla-scroll{overflow-x:auto}
+.pill{display:inline-block;border-radius:20px;padding:2px 9px;font-size:.78rem;font-weight:800}
+.pill.ok{background:#d8f3e3;color:var(--verde)}
+.pill.no{background:#fde8e6;color:var(--rojo)}
+.pill.gris{background:#eceaf3;color:var(--soft)}
+.barrita{height:8px;background:#e8e9f1;border-radius:20px;overflow:hidden;min-width:70px}
+.barrita div{height:100%;background:linear-gradient(90deg,#f7bd2d,#ff785a)}
+.consulta{border:2px solid var(--linea);border-radius:14px;padding:15px;margin-bottom:13px;background:var(--paper)}
+.consulta.pendiente{border-color:#f3c98f;background:#fffaf0}
+.consulta .quien{font-weight:800;font-size:.95rem}
+.consulta .donde{font-size:.8rem;color:var(--soft);margin:3px 0 10px}
+.consulta .texto{line-height:1.55;background:#f6f5fb;border-radius:10px;padding:11px 13px}
+.consulta .resp{line-height:1.55;background:#e9f8f0;border-radius:10px;padding:11px 13px;margin-top:10px}
+.respuesta-alumno{border:2px solid var(--linea);border-radius:14px;padding:15px;margin-bottom:12px;background:var(--paper)}
+.respuesta-alumno .quien{font-weight:800;font-size:.95rem}
+.respuesta-alumno .donde{font-size:.8rem;color:var(--soft);margin-top:3px}
+.respuesta-alumno .texto{line-height:1.6;margin-top:9px;white-space:pre-wrap;background:#f6f5fb;border-radius:10px;padding:11px 13px}
+textarea,select,input[type=text],input[type=password]{width:100%;font:inherit;border:2px solid #cdd3e4;border-radius:10px;padding:10px;background:#fff;color:var(--ink)}
+textarea{resize:vertical}
+.filtros{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.filtros select{width:auto;min-width:210px}
+.vacio{color:var(--soft);background:var(--paper);border:2px dashed var(--linea);border-radius:14px;padding:26px;text-align:center;line-height:1.55}
+.gate{max-width:400px;margin:70px auto;background:var(--paper);border:2px solid var(--linea);border-radius:18px;padding:26px}
+.gate h1{margin:0 0 6px;font-size:1.3rem}
+.gate p{color:var(--soft);line-height:1.5;margin-top:0}
+.gate label{display:block;font-weight:700;margin:14px 0 6px;font-size:.9rem}
+.gate button{width:100%;margin-top:18px;padding:12px}
+.error{color:var(--rojo);font-weight:700;margin-top:12px;min-height:20px}
+.oculto{display:none!important}
+.aviso{font-size:.85rem;color:var(--soft);line-height:1.55;margin-top:10px}
+@media(max-width:640px){
+  .barra h1{font-size:1.05rem}
+  th,td{padding:8px 7px;font-size:.85rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= ENTRADA ================= -->
+<div id="gate" class="gate">
+  <h1>Panel del maestro</h1>
+  <p>Grupo D · Escuela Dominical</p>
+  <label for="gCodigo">Código del grupo</label>
+  <input type="text" id="gCodigo" value="GRUPOD" autocomplete="off">
+  <label for="gClave">Clave</label>
+  <input type="password" id="gClave" autocomplete="current-password" inputmode="numeric">
+  <button id="gEntrar">Entrar</button>
+  <p class="error" id="gError"></p>
+  <p class="aviso">Acá vas a ver los nombres de los chicos y lo que escribieron. No lo abras en una computadora compartida.</p>
+</div>
+
+<!-- ================= PANEL ================= -->
+<div id="app" class="oculto">
+  <div class="barra">
+    <div class="fila">
+      <div>
+        <h1>Panel del maestro</h1>
+        <div class="meta" id="metaGrupo"></div>
+      </div>
+      <div class="der">
+        <button class="ghost chico" id="btnRefrescar">Actualizar</button>
+        <button class="ghost chico" id="btnCsv">Exportar CSV</button>
+        <button class="ghost chico" id="btnSalir">Salir</button>
+      </div>
+    </div>
+  </div>
+
+  <nav><div class="fila" id="tabs"></div></nav>
+  <main id="vista"></main>
+</div>
+
+<script>
+"use strict";
+
+const SUPA_URL = "https://grswqigekcopfrozcxqj.supabase.co";
+const SUPA_KEY = "sb_publishable_AGlBHQBCR12TzPnCjuLeKQ_jEwi42TF";
+const $ = s => document.querySelector(s);
+
+let token = sessionStorage.getItem("ed:maestro") || null;
+let datos = null;
+let solapa = "resumen";
+
+async function rpc(fn, params) {
+  const r = await fetch(SUPA_URL + "/rest/v1/rpc/" + fn, {
+    method: "POST",
+    headers: {
+      "apikey": SUPA_KEY, "Authorization": "Bearer " + SUPA_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(params)
+  });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+
+function el(tag, cls, texto) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (texto != null) n.textContent = texto;
+  return n;
+}
+
+/* La sesión del maestro dura 8 horas del lado del servidor. */
+function cerrarSesion() {
+  if (token) rpc("ed_maestro_salir", { p_token: token }).catch(() => {});
+  sessionStorage.removeItem("ed:maestro");
+  token = null;
+  location.reload();
+}
+
+/* ==================================================================
+   Entrada
+   ================================================================== */
+$("#gEntrar").onclick = async () => {
+  const err = $("#gError");
+  err.textContent = "Entrando…";
+  try {
+    const r = await rpc("ed_maestro_entrar", {
+      p_codigo: $("#gCodigo").value.trim(),
+      p_clave:  $("#gClave").value
+    });
+    if (!r.ok) { err.textContent = r.error; return; }
+    token = r.token;
+    sessionStorage.setItem("ed:maestro", token);
+    err.textContent = "";
+    await cargar();
+  } catch {
+    err.textContent = "No pude conectarme. Revisá tu internet.";
+  }
+};
+["gCodigo", "gClave"].forEach(id =>
+  $("#" + id).addEventListener("keydown", e => { if (e.key === "Enter") $("#gEntrar").click(); }));
+
+$("#btnSalir").onclick = cerrarSesion;
+$("#btnRefrescar").onclick = () => cargar();
+
+/* ==================================================================
+   Carga
+   ================================================================== */
+async function cargar() {
+  let r;
+  try { r = await rpc("ed_maestro_panel", { p_token: token }); }
+  catch { alert("No pude conectarme al servidor."); return; }
+
+  if (!r.ok) {
+    sessionStorage.removeItem("ed:maestro");
+    token = null;
+    $("#app").classList.add("oculto");
+    $("#gate").classList.remove("oculto");
+    $("#gError").textContent = r.error;
+    return;
+  }
+  datos = r;
+  $("#gate").classList.add("oculto");
+  $("#app").classList.remove("oculto");
+  $("#metaGrupo").textContent = datos.grupo + " · código " + datos.codigo +
+    " · " + datos.alumnos.length + " chicos";
+  pintarTabs();
+  pintar();
+}
+
+/* ==================================================================
+   Utilidades
+   ================================================================== */
+const NOMBRE = a => a.nombre + (a.apellido ? " " + a.apellido.toUpperCase() + "." : "");
+const tituloLeccion = slug => {
+  const l = datos.lecciones.find(x => x.slug === slug);
+  return l ? l.titulo : (slug || "—");
+};
+
+function fecha(iso) {
+  if (!iso) return "nunca";
+  const d = new Date(iso), hoy = new Date();
+  const dias = Math.floor((hoy - d) / 86400000);
+  if (dias === 0) return "hoy";
+  if (dias === 1) return "ayer";
+  if (dias < 7) return "hace " + dias + " días";
+  return d.toLocaleDateString("es-AR", { day: "numeric", month: "short" });
+}
+
+function diasDesde(iso) {
+  if (!iso) return 9999;
+  return Math.floor((new Date() - new Date(iso)) / 86400000);
+}
+
+const pendientes = () => datos.consultas.filter(c => !c.respondida_en);
+
+/* ==================================================================
+   Solapas
+   ================================================================== */
+const SOLAPAS = [
+  ["resumen",    "Resumen"],
+  ["alumnos",    "Chicos"],
+  ["preguntas",  "Preguntas"],
+  ["respuestas", "Lo que escribieron"],
+  ["misiones",   "Misiones"]
+];
+
+function pintarTabs() {
+  const cont = $("#tabs");
+  cont.innerHTML = "";
+  SOLAPAS.forEach(([id, nombre]) => {
+    const b = el("button", solapa === id ? "on" : null, nombre);
+    if (id === "preguntas" && pendientes().length) {
+      b.append(el("span", "pin", String(pendientes().length)));
+    }
+    b.onclick = () => { solapa = id; pintarTabs(); pintar(); };
+    cont.append(b);
+  });
+}
+
+function pintar() {
+  const v = $("#vista");
+  v.innerHTML = "";
+  ({ resumen, alumnos, preguntas, respuestas, misiones })[solapa](v);
+}
+
+/* ------------------------------------------------------------------
+   RESUMEN
+   ------------------------------------------------------------------ */
+function resumen(v) {
+  const activos = datos.alumnos.filter(a => a.activo);
+  const estaSemana = activos.filter(a => diasDesde(a.ultimo_acceso) <= 7);
+  const perdidos = activos.filter(a => diasDesde(a.ultimo_acceso) > 14);
+  const totalEstrellas = activos.reduce((s, a) => s + Number(a.estrellas || 0), 0);
+  const sinResponder = pendientes().length;
+
+  const k = el("div", "tarjetas");
+  const kpi = (n, t, alerta) => {
+    const d = el("div", "kpi" + (alerta ? " alerta" : ""));
+    d.append(el("div", "n", String(n)));
+    d.append(el("div", "t", t));
+    return d;
+  };
+  const plural = (n, uno, varios) => n === 1 ? uno : varios;
+  k.append(kpi(activos.length, plural(activos.length, "chico anotado", "chicos anotados")));
+  k.append(kpi(estaSemana.length, plural(estaSemana.length, "entró esta semana", "entraron esta semana")));
+  k.append(kpi(totalEstrellas, "estrellas del grupo"));
+  k.append(kpi(sinResponder, plural(sinResponder, "pregunta sin responder", "preguntas sin responder"), sinResponder > 0));
+  v.append(k);
+
+  /* Lo más útil para preparar la clase: qué les costó. */
+  v.append(el("h2", null, "Lo que más les costó"));
+  const dif = datos.dificultad.filter(d => d.chicos >= 2).slice(0, 8);
+  if (!dif.length) {
+    v.append(el("div", "vacio",
+      "Cuando al menos dos chicos hayan hecho la misma actividad, acá vas a ver cuáles les costaron más. Sirve para elegir qué repasar en clase."));
+  } else {
+    const p = el("div", "panel");
+    p.append(el("p", "aviso",
+      "Ordenado de menor a mayor promedio de estrellas. Las de arriba son las que conviene repasar el domingo."));
+    const tabla = el("div", "tabla-scroll");
+    const t = el("table");
+    t.innerHTML = "<thead><tr><th>Misión</th><th>Actividad</th><th class='num'>Chicos</th>" +
+                  "<th class='num'>Promedio ⭐</th><th class='num'>Intentos</th><th class='num'>Pidieron pista</th></tr></thead>";
+    const tb = el("tbody");
+    dif.forEach(d => {
+      const tr = el("tr");
+      tr.append(el("td", null, tituloLeccion(d.leccion)));
+      tr.append(el("td", null, d.estacion));
+      tr.append(el("td", "num", String(d.chicos)));
+      tr.append(el("td", "num", Number(d.promedio_estrellas).toFixed(1) + " / 3"));
+      tr.append(el("td", "num", Number(d.promedio_intentos).toFixed(1)));
+      tr.append(el("td", "num", String(d.uso_pista)));
+      tb.append(tr);
+    });
+    t.append(tb);
+    tabla.append(t);
+    p.append(tabla);
+    v.append(p);
+  }
+
+  if (perdidos.length) {
+    v.append(el("h2", null, "Hace rato que no entran"));
+    const p = el("div", "panel");
+    p.append(el("p", "aviso", "Más de dos semanas sin abrir la app. Quizás convenga preguntarles cómo andan."));
+    const ul = el("ul");
+    perdidos.forEach(a => ul.append(el("li", null, NOMBRE(a) + " — última vez: " + fecha(a.ultimo_acceso))));
+    p.append(ul);
+    v.append(p);
+  }
+}
+
+/* ------------------------------------------------------------------
+   CHICOS
+   ------------------------------------------------------------------ */
+function alumnos(v) {
+  if (!datos.alumnos.length) {
+    v.append(el("div", "vacio", "Todavía no entró nadie. Los chicos aparecen acá solos la primera vez que abren la app con el código " + datos.codigo + "."));
+    return;
+  }
+  const disponibles = datos.lecciones.filter(l => l.disponible);
+
+  const p = el("div", "panel");
+  const tabla = el("div", "tabla-scroll");
+  const t = el("table");
+  const thead = el("thead");
+  const trh = el("tr");
+  trh.append(el("th", null, "Chico"));
+  disponibles.forEach(l => trh.append(el("th", "num", "M" + l.orden)));
+  trh.append(el("th", "num", "Total"));
+  trh.append(el("th", null, "Última vez"));
+  trh.append(el("th", null, ""));
+  thead.append(trh);
+  t.append(thead);
+
+  const tb = el("tbody");
+  datos.alumnos.forEach(a => {
+    const tr = el("tr", a.activo ? null : "inactivo");
+    const tdN = el("td");
+    tdN.append(el("strong", null, NOMBRE(a)));
+    if (!a.activo) tdN.append(el("span", "pill gris", " inactivo"));
+    tr.append(tdN);
+
+    disponibles.forEach(l => {
+      const n = Number((a.por_leccion || {})[l.slug] || 0);
+      const td = el("td", "num");
+      const max = l.estrellas_max || 18;
+      td.append(el("div", null, n + "/" + max));
+      const b = el("div", "barrita");
+      const relleno = el("div");
+      relleno.style.width = Math.min(100, n / max * 100) + "%";
+      b.append(relleno);
+      td.append(b);
+      tr.append(td);
+    });
+
+    tr.append(el("td", "num", String(a.estrellas)));
+    tr.append(el("td", null, fecha(a.ultimo_acceso)));
+
+    const acc = el("td");
+    const bAct = el("button", "ghost chico", a.activo ? "Desactivar" : "Reactivar");
+    bAct.onclick = () => accionAlumno(a, a.activo ? "desactivar" : "activar");
+    const bRe = el("button", "peligro chico", "Reiniciar");
+    bRe.style.marginLeft = "6px";
+    bRe.onclick = () => accionAlumno(a, "reiniciar");
+    acc.append(bAct, bRe);
+    tr.append(acc);
+    tb.append(tr);
+  });
+  t.append(tb);
+  tabla.append(t);
+  p.append(tabla);
+  v.append(p);
+
+  v.append(el("p", "aviso",
+    "“Desactivar” le impide entrar sin borrar nada — sirve si alguien se anotó con el nombre mal escrito. " +
+    "“Reiniciar” le borra el progreso y lo que escribió, y no se puede deshacer."));
+}
+
+async function accionAlumno(a, accion) {
+  const textos = {
+    desactivar: "¿Desactivar a " + NOMBRE(a) + "? No va a poder entrar, pero no se borra nada.",
+    activar:    "¿Reactivar a " + NOMBRE(a) + "?",
+    reiniciar:  "¿Borrar TODO el progreso y las respuestas de " + NOMBRE(a) + "? Esto no se puede deshacer."
+  };
+  if (!confirm(textos[accion])) return;
+  const r = await rpc("ed_maestro_alumno", { p_token: token, p_alumno: a.id, p_accion: accion });
+  if (!r.ok) { alert(r.error); return; }
+  await cargar();
+}
+
+/* ------------------------------------------------------------------
+   PREGUNTAS
+   ------------------------------------------------------------------ */
+function preguntas(v) {
+  const abiertas = datos.consultas.filter(c => !c.respondida_en);
+  const cerradas = datos.consultas.filter(c => c.respondida_en);
+
+  if (!datos.consultas.length) {
+    v.append(el("div", "vacio",
+      "Todavía nadie preguntó nada. Dentro de cada actividad los chicos tienen un botón “No entiendo esta actividad”; lo que escriban aparece acá. Sólo vos lo ves."));
+    return;
+  }
+
+  v.append(el("h2", null, "Esperando tu respuesta (" + abiertas.length + ")"));
+  if (!abiertas.length) v.append(el("div", "vacio", "Ninguna pendiente. Al día."));
+  abiertas.forEach(c => v.append(tarjetaConsulta(c, true)));
+
+  if (cerradas.length) {
+    v.append(el("h2", null, "Ya respondidas (" + cerradas.length + ")"));
+    cerradas.forEach(c => v.append(tarjetaConsulta(c, false)));
+  }
+}
+
+function tarjetaConsulta(c, abierta) {
+  const d = el("div", "consulta" + (abierta ? " pendiente" : ""));
+  d.append(el("div", "quien", c.alumno + (c.apellido ? " " + c.apellido.toUpperCase() + "." : "")));
+  d.append(el("div", "donde",
+    tituloLeccion(c.leccion) + " · actividad “" + (c.estacion || "?") + "” · " + fecha(c.cuando)));
+  d.append(el("div", "texto", c.pregunta));
+
+  if (c.respuesta) {
+    const r = el("div", "resp");
+    r.append(el("strong", null, "Le contestaste: "));
+    r.append(el("span", null, c.respuesta));
+    d.append(r);
+    d.append(el("p", "aviso", c.vista ? "Ya la leyó." : "Todavía no la leyó."));
+    const b = el("button", "ghost chico", "Corregir la respuesta");
+    b.style.marginTop = "8px";
+    b.onclick = () => { b.remove(); d.append(cajaRespuesta(c)); };
+    d.append(b);
+  } else {
+    d.append(cajaRespuesta(c));
+  }
+  return d;
+}
+
+function cajaRespuesta(c) {
+  const caja = el("div");
+  caja.style.marginTop = "10px";
+  const ta = el("textarea");
+  ta.rows = 3;
+  ta.placeholder = "Explicale con tus palabras…";
+  ta.value = c.respuesta || "";
+  const b = el("button", null, "Responder");
+  b.style.marginTop = "8px";
+  const err = el("span", "error");
+  err.style.marginLeft = "10px";
+  b.onclick = async () => {
+    if (!ta.value.trim()) { err.textContent = "Escribí algo."; return; }
+    b.disabled = true;
+    const r = await rpc("ed_maestro_responder", {
+      p_token: token, p_consulta: c.id, p_respuesta: ta.value.trim()
+    });
+    if (!r.ok) { err.textContent = r.error; b.disabled = false; return; }
+    await cargar();
+  };
+  caja.append(ta, b, err);
+  return caja;
+}
+
+/* ------------------------------------------------------------------
+   LO QUE ESCRIBIERON
+   ------------------------------------------------------------------ */
+let filtroLeccion = "";
+
+function respuestas(v) {
+  if (!datos.respuestas.length) {
+    v.append(el("div", "vacio",
+      "Todavía no entregaron ninguna respuesta escrita. Son las del “Informe del detective” de cada misión."));
+    return;
+  }
+
+  const f = el("div", "filtros");
+  f.append(el("label", null, "Misión:"));
+  const sel = el("select");
+  sel.append(new Option("Todas", ""));
+  datos.lecciones.forEach(l => sel.append(new Option(l.titulo, l.slug)));
+  sel.value = filtroLeccion;
+  sel.onchange = () => { filtroLeccion = sel.value; pintar(); };
+  f.append(sel);
+  v.append(f);
+
+  const lista = datos.respuestas.filter(r => !filtroLeccion || r.leccion === filtroLeccion);
+  if (!lista.length) { v.append(el("div", "vacio", "Nadie entregó nada en esa misión todavía.")); return; }
+
+  v.append(el("p", "aviso",
+    "Esto es lo que más sirve para la clase: elegí dos o tres y leelas en voz alta el domingo (avisándoles antes)."));
+
+  lista.forEach(r => {
+    const d = el("div", "respuesta-alumno");
+    d.append(el("div", "quien", r.alumno + (r.apellido ? " " + r.apellido.toUpperCase() + "." : "")));
+    d.append(el("div", "donde", tituloLeccion(r.leccion) + " · " + fecha(r.cuando)));
+    d.append(el("div", "texto", r.texto));
+    v.append(d);
+  });
+}
+
+/* ------------------------------------------------------------------
+   MISIONES
+   ------------------------------------------------------------------ */
+function misiones(v) {
+  v.append(el("p", "aviso",
+    "Podés cerrar una misión para que no aparezca disponible hasta que la des en clase. " +
+    "Las cerradas se ven igual en la portada, pero con candado."));
+
+  const p = el("div", "panel");
+  const tabla = el("div", "tabla-scroll");
+  const t = el("table");
+  t.innerHTML = "<thead><tr><th class='num'>#</th><th>Misión</th><th class='num'>Estado</th>" +
+                "<th class='num'>La empezaron</th><th></th></tr></thead>";
+  const tb = el("tbody");
+
+  datos.lecciones.forEach(l => {
+    const cuantos = datos.alumnos.filter(a => (a.por_leccion || {})[l.slug]).length;
+    const tr = el("tr");
+    tr.append(el("td", "num", String(l.orden)));
+    tr.append(el("td", null, l.titulo));
+    const est = el("td", "num");
+    est.append(el("span", "pill " + (l.disponible ? "ok" : "gris"), l.disponible ? "Abierta" : "Cerrada"));
+    tr.append(est);
+    tr.append(el("td", "num", String(cuantos)));
+    const acc = el("td");
+    const b = el("button", l.disponible ? "peligro chico" : "chico", l.disponible ? "Cerrar" : "Abrir");
+    b.onclick = async () => {
+      const r = await rpc("ed_maestro_leccion", {
+        p_token: token, p_slug: l.slug, p_disponible: !l.disponible
+      });
+      if (!r.ok) { alert(r.error); return; }
+      await cargar();
+    };
+    acc.append(b);
+    tr.append(acc);
+    tb.append(tr);
+  });
+  t.append(tb);
+  tabla.append(t);
+  p.append(tabla);
+  v.append(p);
+
+  v.append(el("p", "aviso",
+    "Ojo: abrir una misión que todavía no tiene su archivo de contenido hace que los chicos vean un error al entrar."));
+}
+
+/* ------------------------------------------------------------------
+   Exportar
+   ------------------------------------------------------------------ */
+$("#btnCsv").onclick = () => {
+  const disponibles = datos.lecciones.filter(l => l.disponible);
+  const filas = [["Nombre", "Apellido", "Activo", ...disponibles.map(l => "M" + l.orden + " " + l.titulo),
+                  "Total estrellas", "Ultimo acceso"]];
+  datos.alumnos.forEach(a => {
+    filas.push([
+      a.nombre, a.apellido || "", a.activo ? "si" : "no",
+      ...disponibles.map(l => String((a.por_leccion || {})[l.slug] || 0)),
+      String(a.estrellas), a.ultimo_acceso || ""
+    ]);
+  });
+  const csv = filas.map(f => f.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(",")).join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" }));
+  a.download = "grupo-d-" + new Date().toISOString().slice(0, 10) + ".csv";
+  a.click();
+};
+
+if (token) cargar();
+</script>
+</body>
+</html>

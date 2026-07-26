@@ -85,6 +85,16 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
 .quien button{background:none;color:var(--soft);padding:2px 6px;font-size:.82rem;text-decoration:underline;font-weight:600}
 .sync{font-size:.78rem;font-weight:700}
 .sync.off{color:#c0392b}
+/* ---- Preguntarle al maestro ---- */
+.consulta{margin-top:16px;border-top:2px dashed #e4e0f2;padding-top:14px}
+.consulta .preguntar{background:#f1eefb;color:var(--violet);font-size:.86rem;padding:8px 13px}
+.consulta textarea{margin-top:10px}
+.hilo{background:#f7f5ff;border-radius:12px;padding:12px 14px;margin-bottom:10px;line-height:1.5}
+.hilo .q{font-weight:700}
+.hilo .q b,.hilo .a b{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:var(--soft);font-weight:800;margin-bottom:3px}
+.hilo .a{margin-top:10px;background:#e6faf0;border-radius:10px;padding:10px 12px;font-weight:400}
+.hilo .esperando{margin-top:8px;font-size:.85rem;color:var(--soft);font-style:italic}
+
 /* ---- Portada: selector de misión ---- */
 .misiones{display:grid;gap:16px;margin-top:6px}
 .mision{background:var(--paper);border-radius:20px;padding:20px;box-shadow:0 10px 26px #26304b1c;border:2px solid #fff;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;text-align:left;width:100%;color:var(--ink);font-weight:400;transition:transform .15s,box-shadow .15s}
@@ -160,7 +170,11 @@ const SUPA_URL = "https://grswqigekcopfrozcxqj.supabase.co";
 const SUPA_KEY = "sb_publishable_AGlBHQBCR12TzPnCjuLeKQ_jEwi42TF";
 /* Sin ?leccion= en la URL, la app muestra la portada con el selector. */
 const LECCION  = new URLSearchParams(location.search).get("leccion");
-const LS = k => "ed:" + LECCION + ":" + k;
+
+/* Las claves locales llevan adentro quién es el dueño. Sin esto, dos
+   hermanos que comparten el teléfono se pisan el progreso, y peor: el
+   segundo abre la app y ve la oración que escribió el primero. */
+const LS = k => "ed:" + (sesion ? sesion.token.slice(0, 8) : "anon") + ":" + LECCION + ":" + k;
 const $  = s => document.querySelector(s);
 
 /* ==================================================================
@@ -169,6 +183,19 @@ const $  = s => document.querySelector(s);
    y los envíos quedan en una cola que se reintenta más adelante.
    ================================================================== */
 let sesion = JSON.parse(localStorage.getItem("ed:sesion") || "null");
+
+/* Al entrar alguien distinto en el mismo teléfono, borro lo del anterior.
+   Las claves viejas sin dueño (de versiones previas) también se van. */
+function limpiarDeOtroDueno() {
+  const mio = sesion ? sesion.token.slice(0, 8) : null;
+  Object.keys(localStorage).forEach(k => {
+    if (!k.startsWith("ed:") || k === "ed:sesion" || k === "ed:pendientes") return;
+    const dueno = k.split(":")[1];
+    /* Las claves nuevas son ed:<dueño>:<lección>:<campo> */
+    if (k.split(":").length < 4 || dueno !== mio) localStorage.removeItem(k);
+  });
+}
+limpiarDeOtroDueno();
 
 async function rpc(fn, params) {
   const r = await fetch(SUPA_URL + "/rest/v1/rpc/" + fn, {
@@ -237,6 +264,7 @@ $("#gEntrar").onclick = async () => {
     if (!r.ok) { err.textContent = r.error; return; }
     sesion = { token: r.token, nombre: r.nombre, grupo: r.grupo };
     localStorage.setItem("ed:sesion", JSON.stringify(sesion));
+    limpiarDeOtroDueno();
     err.textContent = "";
     arrancar();
   } catch {
@@ -345,6 +373,88 @@ function cabecera(seccion, i, est) {
   }
   seccion.append(h);
   if (est.instruccion) seccion.append(el("p", "hint", est.instruccion));
+}
+
+/* ------------------------------------------------------------------
+   Preguntarle al maestro. Va al final de cada estación: si el chico se
+   traba un martes a la noche, no tiene a quién preguntarle.
+   Es chico -> maestro nada más; nadie ve lo que preguntó otro.
+   ------------------------------------------------------------------ */
+let consultas = {};
+
+async function cargarConsultas() {
+  try {
+    const r = await rpc("ed_mis_consultas", { p_token: sesion.token, p_leccion: LECCION });
+    if (!r.ok) return;
+    consultas = {};
+    (r.consultas || []).forEach(c => {
+      if (!consultas[c.estacion]) consultas[c.estacion] = [];
+      consultas[c.estacion].push(c);
+    });
+  } catch { /* sin conexión: se pregunta en otro momento */ }
+}
+
+function bloqueConsulta(seccion, est) {
+  const caja = el("div", "consulta");
+
+  (consultas[est.id] || []).forEach(c => {
+    const h = el("div", "hilo");
+    const q = el("div", "q");
+    q.append(el("b", null, "Preguntaste"));
+    q.append(el("span", null, c.pregunta));
+    h.append(q);
+    if (c.respuesta) {
+      const a = el("div", "a");
+      a.append(el("b", null, "Te contestó tu maestro"));
+      a.append(el("span", null, c.respuesta));
+      h.append(a);
+    } else {
+      h.append(el("p", "esperando", "Tu maestro todavía no la vio. Te va a contestar acá."));
+    }
+    caja.append(h);
+  });
+
+  const b = el("button", "preguntar", "🙋 No entiendo esta actividad");
+  b.onclick = () => {
+    b.remove();
+    const ta = el("textarea");
+    ta.rows = 3;
+    ta.placeholder = "¿Qué es lo que no se entiende? Contale a tu maestro con tus palabras…";
+    const enviarBtn = el("button", null, "Enviar la pregunta");
+    const fb = el("p", "feedback");
+    caja.append(ta, enviarBtn, fb);
+
+    enviarBtn.onclick = async () => {
+      const texto = ta.value.trim();
+      if (texto.length < 5) {
+        fb.className = "feedback no";
+        fb.textContent = "Escribí un poco más para que se entienda la duda.";
+        return;
+      }
+      enviarBtn.disabled = true;
+      try {
+        const r = await rpc("ed_consulta_crear", {
+          p_token: sesion.token, p_leccion: LECCION,
+          p_estacion: est.id, p_pregunta: texto
+        });
+        if (!r.ok) {
+          fb.className = "feedback no";
+          fb.textContent = r.error;
+          enviarBtn.disabled = false;
+          return;
+        }
+        ta.remove(); enviarBtn.remove();
+        fb.className = "feedback ok";
+        fb.textContent = "✅ Pregunta enviada. Tu maestro te va a contestar acá mismo.";
+      } catch {
+        fb.className = "feedback no";
+        fb.textContent = "No pude enviarla ahora. Probá de nuevo cuando tengas señal.";
+        enviarBtn.disabled = false;
+      }
+    };
+  };
+  caja.append(b);
+  seccion.append(caja);
 }
 
 function botonPista(destino, texto, alUsar) {
@@ -915,6 +1025,8 @@ async function arrancar() {
     }
   } catch { marcarSync(false); }
 
+  await cargarConsultas();
+
   const main = $("#estaciones");
   main.innerHTML = "";
 
@@ -931,6 +1043,8 @@ async function arrancar() {
     const dibujar = RENDER[est.tipo];
     if (dibujar) dibujar(s, est);
     else s.append(el("p", "hint", "Actividad desconocida: " + est.tipo));
+    /* La oración es entre el chico y Dios: ahí no va el canal al maestro. */
+    if (est.tipo !== "oracion") bloqueConsulta(s, est);
     main.append(s);
     pintarEstrellas(est.id);
     /* Si ya la resolvió antes, le devuelvo el dígito sin obligarla a rehacerla. */
