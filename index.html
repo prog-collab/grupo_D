@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#6c4cc9">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="iconos/icono-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Explorador">
+<meta name="mobile-web-app-capable" content="yes">
 <title>La Gran Aventura del Explorador Bíblico</title>
 <style>
 :root{--violet:#6949c6;--blue:#2479c9;--gold:#ffc83d;--ink:#26304b;--paper:#fffdf8;--mint:#e6faf0;--soft:#5a6480}
@@ -111,6 +118,24 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
 .mision .accion{color:var(--violet);font-weight:800}
 .mision.lista .accion{color:#1d7a4c}
 .volver{display:inline-block;margin:0 0 4px;background:#ffffffcc;color:var(--violet);font-size:.88rem;padding:8px 14px}
+/* ---- Entrada de maestros y modo demo ---- */
+.instalar{margin-top:16px;text-align:center}
+.instalar button{background:#e9f3ff;color:#1b5c9b;border:2px solid #bcd9f5;font-size:.9rem}
+.instalar .comoIos{background:#eef9ff;border-left:5px solid var(--blue);border-radius:0 12px 12px 0;padding:11px 14px;margin-top:10px;font-size:.87rem;line-height:1.5;text-align:left;color:var(--soft)}
+.soy-maestro{margin-top:20px;padding-top:16px;border-top:1px solid #e6e2f2;text-align:center}
+.soy-maestro a{color:var(--soft);font-size:.86rem;font-weight:700;text-decoration:none;border-bottom:1px dashed #b9b2d4;padding-bottom:2px}
+.demo-banda{position:sticky;top:0;z-index:9;background:#3a2a6b;color:#fff;padding:9px max(4%,14px);display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.86rem;font-weight:700}
+.demo-banda .txt{flex:1 1 200px;line-height:1.4}
+.demo-banda button{background:#ffffff26;color:#fff;font-size:.82rem;padding:6px 12px}
+.demo-banda button:hover:not(:disabled){background:#ffffff3d}
+.solucion{margin-top:14px}
+.solucion>button{background:#fff5d8;color:#7a5800;font-size:.85rem;padding:8px 13px}
+.solucion .caja{background:#fffaeb;border:2px dashed #e3bc63;border-radius:12px;padding:13px 15px;margin-top:10px;line-height:1.55;font-size:.92rem}
+.solucion .caja h4{margin:0 0 8px;font-size:.86rem;text-transform:uppercase;letter-spacing:.5px;color:#8a6400}
+.solucion .caja ol,.solucion .caja ul{margin:0;padding-left:20px}
+.solucion .caja li{margin:5px 0}
+.solucion .caja .bien{color:#1d7a4c;font-weight:700}
+.solucion .caja .mal{color:#8a8fa3}
 .confetti{position:fixed;pointer-events:none;z-index:100;animation:fall 2.5s forwards;font-size:1.4rem}
 @keyframes fall{to{transform:translateY(100vh) rotate(540deg);opacity:0}}
 .oculto{display:none!important}
@@ -137,10 +162,18 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
   <button id="gEntrar">Entrar</button>
   <p class="feedback no" id="gError"></p>
   <p class="aviso">Tu maestro puede ver qué actividades hiciste y qué escribiste en ellas. Lo que escribas en <b>Mi oración</b> no se manda a ningún lado: queda sólo en este teléfono.</p>
+  <div class="instalar oculto" id="instalarCaja"></div>
+  <p class="soy-maestro"><a href="panel.html">Soy maestro · entrar al panel →</a></p>
 </div>
 
 <!-- ===================== APLICACIÓN ===================== -->
 <div id="app" class="oculto">
+  <div id="demoBanda" class="demo-banda oculto">
+    <span class="txt">🧪 <b>Modo demo</b> · nada de lo que hagas acá se guarda ni le llega a los chicos</span>
+    <button id="demoReiniciar">Empezar de nuevo</button>
+    <button id="demoSalir">Volver al panel</button>
+  </div>
+
   <header class="hero">
     <div class="badge">✦ MISIÓN BÍBLICA ✦</div>
     <h1 id="titulo">…</h1>
@@ -169,7 +202,13 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
 const SUPA_URL = "https://grswqigekcopfrozcxqj.supabase.co";
 const SUPA_KEY = "sb_publishable_AGlBHQBCR12TzPnCjuLeKQ_jEwi42TF";
 /* Sin ?leccion= en la URL, la app muestra la portada con el selector. */
-const LECCION  = new URLSearchParams(location.search).get("leccion");
+const PARAMS   = new URLSearchParams(location.search);
+const LECCION  = PARAMS.get("leccion");
+
+/* Modo demo: el maestro recorre las actividades para revisarlas antes de
+   darlas. No guarda nada, no le llega nada a los chicos y no toca el
+   progreso de nadie. Se entra desde el panel del maestro. */
+const DEMO = PARAMS.get("demo") === "1";
 
 /* Las claves locales llevan adentro quién es el dueño. Sin esto, dos
    hermanos que comparten el teléfono se pisan el progreso, y peor: el
@@ -177,16 +216,31 @@ const LECCION  = new URLSearchParams(location.search).get("leccion");
 const LS = k => "ed:" + (sesion ? sesion.token.slice(0, 8) : "anon") + ":" + LECCION + ":" + k;
 const $  = s => document.querySelector(s);
 
+/* En demo todo vive en memoria: al cerrar la pestaña no queda rastro, y
+   sobre todo no se pisa lo que el chico tenga guardado en ese teléfono. */
+const guardado = DEMO ? (() => {
+  const m = new Map();
+  return {
+    getItem: k => (m.has(k) ? m.get(k) : null),
+    setItem: (k, v) => m.set(k, String(v)),
+    removeItem: k => m.delete(k)
+  };
+})() : localStorage;
+
 /* ==================================================================
    Puente con Supabase.
    Si falla, la app sigue andando: todo se guarda igual en el teléfono
    y los envíos quedan en una cola que se reintenta más adelante.
    ================================================================== */
-let sesion = JSON.parse(localStorage.getItem("ed:sesion") || "null");
+let sesion = DEMO
+  ? { token: "demo0000", nombre: "Modo demo", grupo: "—" }
+  : JSON.parse(localStorage.getItem("ed:sesion") || "null");
 
 /* Al entrar alguien distinto en el mismo teléfono, borro lo del anterior.
    Las claves viejas sin dueño (de versiones previas) también se van. */
 function limpiarDeOtroDueno() {
+  /* En demo esto borraría el progreso real del chico que use ese teléfono. */
+  if (DEMO) return;
   const mio = sesion ? sesion.token.slice(0, 8) : null;
   Object.keys(localStorage).forEach(k => {
     if (!k.startsWith("ed:") || k === "ed:sesion" || k === "ed:pendientes") return;
@@ -213,7 +267,7 @@ async function rpc(fn, params) {
 
 function marcarSync(ok) {
   const el = $("#pSync");
-  if (!el) return;
+  if (!el || DEMO) return;
   el.textContent = ok ? "" : "⚠ sin conexión";
   el.className = "sync" + (ok ? "" : " off");
 }
@@ -238,7 +292,8 @@ async function vaciarCola() {
 }
 
 async function enviar(fn, params) {
-  if (!sesion) return;
+  /* En demo el maestro está probando: nada de esto sale del teléfono. */
+  if (DEMO || !sesion) return;
   try { await rpc(fn, params); marcarSync(true); }
   catch { encolar(fn, params); marcarSync(false); }
 }
@@ -285,9 +340,9 @@ $("#qSalir").onclick = () => {
    Estado de la lección
    ================================================================== */
 let leccion = null;
-const estado = JSON.parse(localStorage.getItem(LS("estado")) || "{}");
+const estado = JSON.parse(guardado.getItem(LS("estado")) || "{}");
 
-function guardarEstado() { localStorage.setItem(LS("estado"), JSON.stringify(estado)); }
+function guardarEstado() { guardado.setItem(LS("estado"), JSON.stringify(estado)); }
 
 /* Sin errores y sin pista, tres estrellas. Cada tropiezo cuesta. */
 function estrellasDe(intentos, usoPista) {
@@ -395,6 +450,8 @@ async function cargarConsultas() {
 }
 
 function bloqueConsulta(seccion, est) {
+  /* En demo no hay a quién preguntarle: el maestro es el que está probando. */
+  if (DEMO) return;
   const caja = el("div", "consulta");
 
   (consultas[est.id] || []).forEach(c => {
@@ -455,6 +512,72 @@ function bloqueConsulta(seccion, est) {
   };
   caja.append(b);
   seccion.append(caja);
+}
+
+/* ------------------------------------------------------------------
+   Sólo en demo: la hoja de respuestas de cada actividad, sacada del
+   mismo JSON que juegan los chicos. Sirve para revisar el contenido sin
+   tener que resolver todo a mano — y para cazar erratas antes del domingo.
+   ------------------------------------------------------------------ */
+const SOLUCION = {};
+
+SOLUCION.quiz = est => {
+  const ol = el("ol");
+  est.preguntas.forEach(p => {
+    const li = el("li");
+    li.append(el("div", null, p.enunciado));
+    li.append(el("div", "bien", "✓ " + p.opciones[p.correcta]));
+    if (p.evidencia) {
+      li.append(el("div", "bien",
+        "✓ " + p.evidencia.enunciado + " → " + p.evidencia.opciones[p.evidencia.correcta]));
+    }
+    ol.append(li);
+  });
+  return ol;
+};
+
+SOLUCION["caza-error"] = est => {
+  const ul = el("ul");
+  est.afirmaciones.forEach(a => {
+    const li = el("li", a.falsa ? "bien" : "mal");
+    li.textContent = (a.falsa ? "MARCAR (es falsa): " : "dejar sin marcar: ") + a.texto;
+    ul.append(li);
+  });
+  return ul;
+};
+
+SOLUCION["linea-tiempo"] = est => {
+  const ol = el("ol");
+  est.eventos.slice().sort((a, b) => a.orden - b.orden)
+    .forEach(e => ol.append(el("li", null, e.texto)));
+  return ol;
+};
+
+SOLUCION.versiculo = est => el("div", "bien", est.respuesta);
+
+SOLUCION.emparejar = est => {
+  const ul = el("ul");
+  est.pares.forEach(p => ul.append(el("li", null, p.a + "  →  " + p.b)));
+  return ul;
+};
+
+function bloqueSolucion(seccion, est) {
+  if (!DEMO) return;
+  const arma = SOLUCION[est.tipo];
+  if (!arma) return;
+
+  const cont = el("div", "solucion");
+  const b = el("button", null, "🔎 Ver las respuestas");
+  b.onclick = () => {
+    b.remove();
+    const caja = el("div", "caja");
+    caja.append(el("h4", null, "Respuestas · sólo vos las ves"));
+    caja.append(arma(est));
+    if (est.digito) caja.append(el("p", null, "Dígito del cofre: " + est.digito));
+    cont.append(caja);
+  };
+  cont.append(b);
+  seccion.append(cont);
 }
 
 function botonPista(destino, texto, alUsar) {
@@ -760,7 +883,7 @@ RENDER.texto = (s, est) => {
   const ta = el("textarea");
   ta.rows = 6;
   ta.placeholder = "Mi respuesta, con evidencia del texto…";
-  ta.value = localStorage.getItem(LS(est.id)) || "";
+  ta.value = guardado.getItem(LS(est.id)) || "";
   const cont = el("p", "contador");
   const btn = el("button", null, "Entregar al maestro");
   const fb = el("p", "feedback");
@@ -782,7 +905,7 @@ RENDER.texto = (s, est) => {
     const n = ta.value.trim().length;
     cont.textContent = n + " caracteres" + (n < minimo ? " (mínimo " + minimo + ")" : "");
     btn.disabled = n < minimo;
-    localStorage.setItem(LS(est.id), ta.value);
+    guardado.setItem(LS(est.id), ta.value);
   }
   ta.oninput = refrescar;
   refrescar();
@@ -804,8 +927,8 @@ RENDER.oracion = (s, est) => {
   const ta = el("textarea");
   ta.rows = 6;
   ta.placeholder = "Querido Dios…";
-  ta.value = localStorage.getItem(LS(est.id)) || "";
-  ta.oninput = () => localStorage.setItem(LS(est.id), ta.value);
+  ta.value = guardado.getItem(LS(est.id)) || "";
+  ta.oninput = () => guardado.setItem(LS(est.id), ta.value);
   s.append(ta);
   s.append(el("p", "privado", "🔒 " + (est.privado || "Esto queda sólo en tu teléfono.")));
 };
@@ -920,9 +1043,11 @@ function diploma(nombre) {
    ================================================================== */
 async function portada() {
   $("#progressWrap").classList.add("oculto");
-  $("#titulo").textContent = "Elegí tu misión";
-  $("#subtitulo").textContent = "Cada misión es un relato distinto del primer semestre. Podés hacerlas en cualquier orden, dejarlas por la mitad y volver.";
-  document.title = "Explorador Bíblico · Misiones";
+  $("#titulo").textContent = DEMO ? "¿Qué misión querés revisar?" : "Elegí tu misión";
+  $("#subtitulo").textContent = DEMO
+    ? "Entrás a cualquiera, también a las que todavía tenés cerradas. Dentro de cada actividad vas a ver un botón para mostrar las respuestas."
+    : "Cada misión es un relato distinto del primer semestre. Podés hacerlas en cualquier orden, dejarlas por la mitad y volver.";
+  document.title = DEMO ? "Modo demo · Explorador Bíblico" : "Explorador Bíblico · Misiones";
 
   const main = $("#estaciones");
   main.innerHTML = "";
@@ -930,8 +1055,10 @@ async function portada() {
   let lecciones = [], resumen = {};
   try {
     lecciones = await rpc("ed_lecciones", {});
-    const r = await rpc("ed_mi_resumen", { p_token: sesion.token });
-    if (r.ok) resumen = r.lecciones || {};
+    if (!DEMO) {
+      const r = await rpc("ed_mi_resumen", { p_token: sesion.token });
+      if (r.ok) resumen = r.lecciones || {};
+    }
     marcarSync(true);
   } catch {
     marcarSync(false);
@@ -947,8 +1074,12 @@ async function portada() {
     const pct  = Math.min(100, Math.round(mio.estrellas / max * 100));
     const listo = mio.estrellas >= max;
 
-    const b = el("button", "mision" + (listo ? " lista" : "") + (l.disponible ? "" : " trabada"));
-    b.disabled = !l.disponible;
+    /* En demo el maestro entra a todas, incluso a las que todavía tiene
+       cerradas: justamente quiere revisarlas antes de abrirlas. */
+    const entrable = DEMO || l.disponible;
+
+    const b = el("button", "mision" + (listo ? " lista" : "") + (entrable ? "" : " trabada"));
+    b.disabled = !entrable;
 
     b.append(el("div", "orden", l.disponible ? (listo ? "✓" : String(l.orden)) : "🔒"));
 
@@ -956,7 +1087,7 @@ async function portada() {
     cuerpo.append(el("h3", null, l.titulo));
     cuerpo.append(el("p", "tema", l.tema || ""));
 
-    if (l.disponible) {
+    if (l.disponible && !DEMO) {
       const barra = el("div", "barra");
       const relleno = el("div");
       relleno.style.width = pct + "%";
@@ -965,7 +1096,10 @@ async function portada() {
     }
 
     const pie = el("div", "pie");
-    if (!l.disponible) {
+    if (DEMO) {
+      pie.append(el("span", null, l.disponible ? "Abierta para los chicos" : "🔒 Cerrada para los chicos"));
+      pie.append(el("span", "accion", "Probar →"));
+    } else if (!l.disponible) {
       pie.append(el("span", null, "Todavía no está lista"));
       pie.append(el("span", "accion", "Próximamente"));
     } else {
@@ -976,10 +1110,15 @@ async function portada() {
     cuerpo.append(pie);
     b.append(cuerpo);
 
-    if (l.disponible) b.onclick = () => { location.search = "?leccion=" + l.slug; };
+    if (entrable) b.onclick = () => { location.search = "?leccion=" + l.slug + (DEMO ? "&demo=1" : ""); };
     cont.append(b);
   });
   main.append(cont);
+
+  /* El que ya entró una vez no vuelve a ver la puerta, así que la
+     invitación a instalar la app tiene que estar también acá. */
+  main.append($("#instalarCaja"));
+  ofrecerInstalacion();
 }
 
 /* ==================================================================
@@ -990,7 +1129,12 @@ async function arrancar() {
   $("#app").classList.remove("oculto");
   $("#qNombre").textContent = sesion.nombre;
 
-  vaciarCola();
+  if (DEMO) {
+    $("#demoBanda").classList.remove("oculto");
+    document.querySelector(".quien").classList.add("oculto");
+  } else {
+    vaciarCola();
+  }
   if (!LECCION) return portada();
 
   try {
@@ -998,9 +1142,21 @@ async function arrancar() {
     if (!r.ok) throw new Error("no encontrada");
     leccion = await r.json();
   } catch {
-    $("#estaciones").innerHTML =
-      '<section class="station"><h2>No pude cargar la misión</h2>' +
-      '<p class="hint">Revisá tu conexión y volvé a entrar en un rato.</p></section>';
+    /* Al maestro le digo la causa más probable: la misión está abierta en el
+       panel pero todavía no subimos su archivo de contenido. */
+    const aviso = el("section", "station");
+    if (DEMO) {
+      aviso.append(el("h2", null, "Esta misión todavía no tiene contenido"));
+      const p = el("p", "hint");
+      p.append(el("span", null, "Falta el archivo "));
+      p.append(el("b", null, "lecciones/" + LECCION + ".json"));
+      p.append(el("span", null, ". Hasta que exista, no la abras para los chicos: les va a dar error al entrar."));
+      aviso.append(p);
+    } else {
+      aviso.append(el("h2", null, "No pude cargar la misión"));
+      aviso.append(el("p", "hint", "Revisá tu conexión y volvé a entrar en un rato."));
+    }
+    $("#estaciones").replaceChildren(aviso);
     return;
   }
 
@@ -1010,7 +1166,7 @@ async function arrancar() {
 
   /* Traigo del servidor lo que ya tenía y me quedo con lo mejor de cada lado,
      por si hizo actividades en otro teléfono. */
-  try {
+  if (!DEMO) try {
     const r = await rpc("ed_mi_estado", { p_token: sesion.token, p_leccion: LECCION });
     if (r.ok) {
       for (const [id, v] of Object.entries(r.estaciones || {})) {
@@ -1018,20 +1174,20 @@ async function arrancar() {
           estado[id] = { estrellas: v.estrellas, intentos: v.intentos, pista: v.uso_pista };
       }
       for (const [id, texto] of Object.entries(r.respuestas || {})) {
-        if (!localStorage.getItem(LS(id))) localStorage.setItem(LS(id), texto);
+        if (!guardado.getItem(LS(id))) guardado.setItem(LS(id), texto);
       }
       guardarEstado();
       marcarSync(true);
     }
   } catch { marcarSync(false); }
 
-  await cargarConsultas();
+  if (!DEMO) await cargarConsultas();
 
   const main = $("#estaciones");
   main.innerHTML = "";
 
   const volver = el("button", "volver", "← Todas las misiones");
-  volver.onclick = () => { location.search = ""; };
+  volver.onclick = () => { location.search = DEMO ? "?demo=1" : ""; };
   main.append(volver);
 
   let n = 0;
@@ -1045,6 +1201,7 @@ async function arrancar() {
     else s.append(el("p", "hint", "Actividad desconocida: " + est.tipo));
     /* La oración es entre el chico y Dios: ahí no va el canal al maestro. */
     if (est.tipo !== "oracion") bloqueConsulta(s, est);
+    bloqueSolucion(s, est);
     main.append(s);
     pintarEstrellas(est.id);
     /* Si ya la resolvió antes, le devuelvo el dígito sin obligarla a rehacerla. */
@@ -1054,8 +1211,86 @@ async function arrancar() {
   actualizarProgreso();
 }
 
+/* ==================================================================
+   Service worker: hace que la app se pueda instalar en el teléfono y
+   que abra aunque el chico no tenga datos en ese momento.
+   ================================================================== */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+
+/* ------------------------------------------------------------------
+   Instalar en el teléfono. Android avisa solo con beforeinstallprompt;
+   el iPhone no tiene nada parecido, así que ahí explico los pasos.
+   Si ya está instalada, no molesto con nada de esto.
+   ------------------------------------------------------------------ */
+let instalador = null;
+const yaInstalada = () =>
+  matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+
+function ofrecerInstalacion() {
+  const caja = $("#instalarCaja");
+  if (!caja || DEMO || yaInstalada()) return;
+  caja.innerHTML = "";
+
+  if (instalador) {
+    const b = el("button", null, "📲 Instalar la app en el teléfono");
+    b.onclick = async () => {
+      const pedido = instalador;
+      instalador = null;
+      b.disabled = true;
+      pedido.prompt();
+      await pedido.userChoice;
+      caja.classList.add("oculto");
+    };
+    caja.append(b);
+    caja.classList.remove("oculto");
+    return;
+  }
+
+  /* iPhone y iPad: el botón no existe, hay que contarle el camino. */
+  if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+    caja.append(el("div", "comoIos",
+      "📲 Para tenerla como app: tocá el botón Compartir de Safari (el cuadradito con la flecha) " +
+      "y elegí “Agregar a pantalla de inicio”."));
+    caja.classList.remove("oculto");
+  }
+}
+
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  instalador = e;
+  ofrecerInstalacion();
+});
+ofrecerInstalacion();
+
+/* ==================================================================
+   Arranque
+   ================================================================== */
 window.addEventListener("online", vaciarCola);
-if (sesion) arrancar();
+
+if (DEMO) {
+  $("#demoReiniciar").onclick = () => {
+    if (confirm("¿Empezar la prueba de nuevo, con todo en cero?")) location.reload();
+  };
+  $("#demoSalir").onclick = () => { location.href = "panel.html"; };
+}
+
+/* El demo se entra desde el panel: si no hay sesión de maestro abierta en
+   esta pestaña, no tiene sentido mostrarlo (y menos las respuestas). */
+if (DEMO && !sessionStorage.getItem("ed:maestro")) {
+  const g = $("#gate");
+  g.innerHTML = "";
+  g.append(el("h2", null, "Modo demo"));
+  g.append(el("p", "hint",
+    "Esto es para que los maestros prueben las actividades antes de darlas. " +
+    "Entrá primero al panel y desde ahí tocá “Probar las actividades”."));
+  const b = el("button", null, "Ir al panel del maestro");
+  b.onclick = () => { location.href = "panel.html"; };
+  g.append(b);
+} else if (sesion) {
+  arrancar();
+}
 </script>
 </body>
 </html>

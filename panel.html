@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#26304b">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="iconos/icono-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Explorador">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Panel del maestro · Grupo D</title>
 <style>
 :root{--violet:#6949c6;--blue:#2479c9;--gold:#ffc83d;--ink:#26304b;--paper:#fff;--soft:#5a6480;--linea:#e6e3f0;--verde:#1d7a4c;--rojo:#c0392b}
@@ -68,6 +74,9 @@ textarea{resize:vertical}
 .gate p{color:var(--soft);line-height:1.5;margin-top:0}
 .gate label{display:block;font-weight:700;margin:14px 0 6px;font-size:.9rem}
 .gate button{width:100%;margin-top:18px;padding:12px}
+.gate .volver-app{display:block;margin-top:18px;text-align:center;font-size:.86rem;color:var(--soft);font-weight:700}
+.demo-nota{background:#f3efff;border:2px solid #d9cff5;border-radius:12px;padding:12px 14px;margin-bottom:16px;line-height:1.55;font-size:.9rem}
+.demo-nota b{color:var(--violet)}
 .error{color:var(--rojo);font-weight:700;margin-top:12px;min-height:20px}
 .oculto{display:none!important}
 .aviso{font-size:.85rem;color:var(--soft);line-height:1.55;margin-top:10px}
@@ -90,6 +99,7 @@ textarea{resize:vertical}
   <button id="gEntrar">Entrar</button>
   <p class="error" id="gError"></p>
   <p class="aviso">Acá vas a ver los nombres de los chicos y lo que escribieron. No lo abras en una computadora compartida.</p>
+  <a class="volver-app" href="index.html">← Volver a la app de los chicos</a>
 </div>
 
 <!-- ================= PANEL ================= -->
@@ -101,6 +111,7 @@ textarea{resize:vertical}
         <div class="meta" id="metaGrupo"></div>
       </div>
       <div class="der">
+        <button class="ghost chico" id="btnDemo">🧪 Probar las actividades</button>
         <button class="ghost chico" id="btnRefrescar">Actualizar</button>
         <button class="ghost chico" id="btnCsv">Exportar CSV</button>
         <button class="ghost chico" id="btnSalir">Salir</button>
@@ -176,6 +187,10 @@ $("#gEntrar").onclick = async () => {
 
 $("#btnSalir").onclick = cerrarSesion;
 $("#btnRefrescar").onclick = () => cargar();
+
+/* Abrir la demo en esta misma pestaña: así la app encuentra la sesión de
+   maestro en sessionStorage y sabe que no es un chico curioso. */
+$("#btnDemo").onclick = () => { location.href = "index.html?demo=1"; };
 
 /* ==================================================================
    Carga
@@ -514,6 +529,13 @@ function respuestas(v) {
    MISIONES
    ------------------------------------------------------------------ */
 function misiones(v) {
+  const nota = el("div", "demo-nota");
+  nota.append(el("b", null, "Antes de abrir una misión, probala. "));
+  nota.append(el("span", null,
+    "Con “Probar” hacés las actividades como si fueras un chico, pero nada se guarda ni cuenta para nadie. " +
+    "Dentro de cada actividad tenés un botón para ver las respuestas, así revisás que estén bien."));
+  v.append(nota);
+
   v.append(el("p", "aviso",
     "Podés cerrar una misión para que no aparezca disponible hasta que la des en clase. " +
     "Las cerradas se ven igual en la portada, pero con candado."));
@@ -535,6 +557,10 @@ function misiones(v) {
     tr.append(est);
     tr.append(el("td", "num", String(cuantos)));
     const acc = el("td");
+    const bProbar = el("button", "ghost chico", "Probar");
+    bProbar.style.marginRight = "6px";
+    bProbar.onclick = () => { location.href = "index.html?leccion=" + encodeURIComponent(l.slug) + "&demo=1"; };
+    acc.append(bProbar);
     const b = el("button", l.disponible ? "peligro chico" : "chico", l.disponible ? "Cerrar" : "Abrir");
     b.onclick = async () => {
       const r = await rpc("ed_maestro_leccion", {
@@ -576,6 +602,12 @@ $("#btnCsv").onclick = () => {
   a.download = "grupo-d-" + new Date().toISOString().slice(0, 10) + ".csv";
   a.click();
 };
+
+/* El panel vive dentro de la misma app instalada que usan los chicos, así
+   que comparte el service worker: abre igual con mala señal. */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
 
 if (token) cargar();
 </script>

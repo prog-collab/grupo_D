@@ -1,0 +1,26 @@
+{
+  "name": "Explorador Bíblico · Grupo D",
+  "short_name": "Explorador",
+  "description": "Actividades de escuela dominical del Grupo D — Asamblea Cristiana.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#e9e1ff",
+  "theme_color": "#6c4cc9",
+  "lang": "es-AR",
+  "categories": ["education"],
+  "icons": [
+    { "src": "iconos/icono-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "iconos/icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "iconos/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Panel del maestro",
+      "short_name": "Panel",
+      "description": "Ver el progreso de los chicos y contestar sus preguntas",
+      "url": "panel.html"
+    }
+  ]
+}
