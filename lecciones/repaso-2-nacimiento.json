@@ -1,0 +1,209 @@
+{
+  "slug": "repaso-2-nacimiento",
+  "titulo": "La noche del nacimiento",
+  "subtitulo": "Un censo, un pesebre, unos pastores y unos extranjeros que venían siguiendo una estrella. Esta misión es sobre lo que el relato dice de verdad… y lo que todo el mundo cree que dice.",
+  "version": "Reina-Valera 1960",
+  "candado": "Cada estación con 🔒 te da un dígito. Juntá los cuatro para abrir el cofre.",
+  "estaciones": [
+    {
+      "id": "lectura",
+      "tipo": "pasaje",
+      "titulo": "El expediente",
+      "instruccion": "Ojo con esta lección: el relato del nacimiento es el que más se cuenta y también el que más se cuenta mal. Leé con atención lo que está escrito, no lo que viste en el pesebre de la iglesia.",
+      "bloques": [
+        {
+          "cita": "Lucas 2:1-20",
+          "relato": "El emperador ordenó un censo y cada uno tuvo que ir a inscribirse a su ciudad de origen. Por eso José subió de Nazaret a Belén, porque era de la familia de David, y llevó a María. Ahí nació Jesús. Esa misma noche, en el campo, unos pastores cuidaban sus ovejas.",
+          "versiculos": [
+            { "ref": "Lucas 2:1",  "texto": "Aconteció en aquellos días, que se promulgó un edicto de parte de Augusto César, que todo el mundo fuese empadronado." },
+            { "ref": "Lucas 2:7",  "texto": "Y dio a luz a su hijo primogénito, y lo envolvió en pañales, y lo acostó en un pesebre, porque no había lugar para ellos en el mesón." },
+            { "ref": "Lucas 2:10-11", "texto": "No temáis; porque he aquí os doy nuevas de gran gozo, que será para todo el pueblo: que os ha nacido hoy, en la ciudad de David, un Salvador, que es CRISTO el Señor." },
+            { "ref": "Lucas 2:12", "texto": "Esto os servirá de señal: Hallaréis al niño envuelto en pañales, acostado en un pesebre." },
+            { "ref": "Lucas 2:14", "texto": "¡Gloria a Dios en las alturas, y en la tierra paz, buena voluntad para con los hombres!" },
+            { "ref": "Lucas 2:19", "texto": "Pero María guardaba todas estas cosas, meditándolas en su corazón." }
+          ]
+        },
+        {
+          "cita": "Mateo 2:1-12",
+          "relato": "Este es otro relato, escrito por otro autor, y no pasa la misma noche. Unos sabios del oriente llegaron a Jerusalén buscando a un rey recién nacido. Fueron al palacio, que es donde uno buscaría a un rey. Herodes reunió a los que sabían de las Escrituras para preguntarles dónde tenía que nacer el Mesías.",
+          "versiculos": [
+            { "ref": "Mateo 2:2",  "texto": "¿Dónde está el rey de los judíos, que ha nacido? Porque su estrella hemos visto en el oriente, y venimos a adorarle." },
+            { "ref": "Mateo 2:5",  "texto": "Ellos le dijeron: En Belén de Judea; porque así está escrito por el profeta." },
+            { "ref": "Mateo 2:11", "texto": "Y al entrar en la casa, vieron al niño con su madre María, y postrándose, lo adoraron; y abriendo sus tesoros, le ofrecieron presentes: oro, incienso y mirra." },
+            { "ref": "Mateo 2:16", "texto": "Herodes… mandó matar a todos los niños menores de dos años que había en Belén y en todos sus alrededores, conforme al tiempo que había inquirido de los magos." }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "quiz-nacimiento",
+      "tipo": "quiz",
+      "titulo": "Interrogatorio",
+      "instruccion": "Cuatro preguntas, y después de cada una te voy a pedir el versículo. Todas se responden con el expediente: si dudás, volvé a leer antes de tocar.",
+      "digito": "5",
+      "preguntas": [
+        {
+          "enunciado": "El ángel les da a los pastores una señal para reconocerlo: un niño envuelto en pañales, acostado en un pesebre. Los pañales los usaban todos los bebés. Entonces, ¿qué parte de esa señal servía realmente para encontrarlo?",
+          "opciones": [
+            "El pesebre: ningún otro recién nacido de Belén iba a estar acostado ahí.",
+            "Los pañales, que eran de un color especial que sólo ellos reconocían.",
+            "Ninguna de las dos: el ángel además les dio la dirección exacta de la casa.",
+            "Las dos cosas juntas, porque en esa época casi nadie usaba pañales."
+          ],
+          "correcta": 0,
+          "explicacion": "Los pañales eran lo normal; el pesebre no. Un pesebre es donde come el animal, no donde se acuesta un bebé. Esa rareza era justamente la pista.",
+          "pista": "Pensá cuál de los dos datos era raro y cuál era lo que hacían todos.",
+          "evidencia": {
+            "enunciado": "¿Dónde está la señal que dio el ángel?",
+            "opciones": ["Lucas 2:7", "Lucas 2:12", "Lucas 2:14"],
+            "correcta": 1
+          }
+        },
+        {
+          "enunciado": "Los sabios vieron la estrella y llegaron a Jerusalén, al palacio. Pero Jesús no estaba ahí. ¿Cómo se enteraron de que tenían que ir a Belén?",
+          "opciones": [
+            "La estrella los llevó directo a Belén desde que salieron de su tierra.",
+            "Un ángel se les apareció en Jerusalén y les indicó el camino.",
+            "Por lo que estaba escrito en el profeta, que los que sabían las Escrituras le leyeron a Herodes.",
+            "Herodes lo dedujo estudiando las estrellas junto con ellos."
+          ],
+          "correcta": 2,
+          "explicacion": "Esto es lo más interesante del relato: la estrella los llevó hasta Jerusalén, pero el último tramo se lo dio la Escritura. Buscaban en un palacio y el texto los mandó a un pueblo chico.",
+          "pista": "Fijate a quiénes hace llamar Herodes cuando los sabios le preguntan, y qué le contestan.",
+          "evidencia": {
+            "enunciado": "¿En qué versículo contestan “En Belén de Judea”?",
+            "opciones": ["Mateo 2:2", "Mateo 2:5", "Mateo 2:11"],
+            "correcta": 1
+          }
+        },
+        {
+          "enunciado": "Herodes mandó matar a los niños menores de dos años “conforme al tiempo que había inquirido de los magos”. ¿Qué se deduce de ese dato?",
+          "opciones": [
+            "Que los magos llegaron esa misma noche, junto con los pastores.",
+            "Que los magos llegaron bastante tiempo después del nacimiento.",
+            "Que Herodes se equivocó en la cuenta y exageró por miedo.",
+            "Que el viaje de los magos duró exactamente dos años."
+          ],
+          "correcta": 1,
+          "explicacion": "Herodes calculó el margen según lo que los magos le contaron sobre cuándo apareció la estrella. Si dio una orden hasta los dos años, es porque el nacimiento ya quedaba lejos. Por eso Mateo dice que entraron en una casa y no en un establo.",
+          "pista": "¿Por qué eligió dos años y no un día? El margen sale de lo que los magos le contaron.",
+          "evidencia": {
+            "enunciado": "¿Dónde dice que entraron en una casa?",
+            "opciones": ["Mateo 2:2", "Mateo 2:11", "Lucas 2:7"],
+            "correcta": 1
+          }
+        },
+        {
+          "enunciado": "¿Qué hicieron los pastores después de ver al niño?",
+          "opciones": [
+            "Le dejaron un cordero de regalo y se volvieron al campo.",
+            "Se quedaron a vivir en Belén para cuidar a la familia.",
+            "Volvieron en silencio, porque el ángel les había pedido que no contaran nada.",
+            "Contaron a todos lo que se les había dicho acerca del niño."
+          ],
+          "correcta": 3,
+          "explicacion": "Los primeros en contar la noticia no fueron sacerdotes ni gente importante: fueron unos trabajadores del campo que volvieron hablando y glorificando a Dios.",
+          "pista": "El relato termina con los pastores haciendo dos cosas: contar y alabar.",
+          "evidencia": {
+            "enunciado": "¿Dónde lo dice?",
+            "opciones": ["Lucas 2:14", "Lucas 2:17", "Lucas 2:19"],
+            "correcta": 1
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "caza-error",
+      "tipo": "caza-error",
+      "titulo": "Caza del error: el pesebre de mentira",
+      "instruccion": "Estas siete afirmaciones son las que casi todo el mundo repite sobre la Navidad. Varias NO están en la Biblia. Marcá sólo las falsas. Aviso: algunas te van a doler.",
+      "digito": "1",
+      "afirmaciones": [
+        { "texto": "Los magos que visitaron a Jesús eran tres.", "falsa": true,
+          "porque": "El texto nunca dice cuántos eran. Se supone que fueron tres porque los regalos son tres, pero eso lo agregó la tradición, no Mateo." },
+        { "texto": "Los magos eran reyes.", "falsa": true,
+          "porque": "Mateo los llama magos del oriente: hombres que estudiaban los astros. Nunca los llama reyes. Lo de “los reyes magos” vino muchos siglos después." },
+        { "texto": "Un mesonero les dijo a José y a María que no había lugar.", "falsa": true,
+          "porque": "No aparece ningún mesonero en todo el relato. Lucas sólo dice que no había lugar para ellos en el mesón. El mesonero enojado es un personaje inventado." },
+        { "texto": "Los magos encontraron a Jesús en el pesebre, la misma noche que nació.", "falsa": true,
+          "porque": "Mateo dice que al entrar en la casa vieron al niño. Y Herodes mandó matar niños de hasta dos años según el tiempo que los magos le dijeron: ya había pasado bastante." },
+        { "texto": "A los pastores los guió un ángel, no la estrella.", "falsa": false,
+          "porque": "Correcto, y mucha gente los mezcla. La estrella es de los magos, en Mateo. A los pastores, en Lucas, se les aparece un ángel." },
+        { "texto": "José y María fueron a Belén por un censo que ordenó Augusto César.", "falsa": false,
+          "porque": "Correcto. Así empieza Lucas 2: cada uno tenía que inscribirse en su ciudad, y José era de la familia de David." },
+        { "texto": "María guardaba todas estas cosas y las meditaba en su corazón.", "falsa": false,
+          "porque": "Correcto, es Lucas 2:19. En medio de todo el alboroto, ella se quedaba pensando." }
+      ]
+    },
+
+    {
+      "id": "linea-tiempo",
+      "tipo": "linea-tiempo",
+      "titulo": "Línea de tiempo",
+      "instruccion": "Ocho hechos de los dos relatos, mezclados. Ordenalos. Ojo: no todo pasó la misma noche, y si te equivocás se reinicia.",
+      "digito": "8",
+      "eventos": [
+        { "texto": "Augusto César ordena que todos se inscriban en un censo",         "orden": 1 },
+        { "texto": "José y María viajan de Nazaret a Belén",                          "orden": 2 },
+        { "texto": "Nace Jesús y lo acuestan en un pesebre",                          "orden": 3 },
+        { "texto": "Un ángel anuncia la noticia a unos pastores en el campo",         "orden": 4 },
+        { "texto": "Los pastores van a Belén y encuentran al niño",                   "orden": 5 },
+        { "texto": "Unos sabios del oriente llegan a Jerusalén preguntando por el rey", "orden": 6 },
+        { "texto": "Los que saben las Escrituras señalan Belén ante Herodes",         "orden": 7 },
+        { "texto": "Los sabios entran en la casa y adoran al niño",                   "orden": 8 }
+      ]
+    },
+
+    {
+      "id": "versiculo",
+      "tipo": "versiculo",
+      "titulo": "El anuncio del ángel",
+      "instruccion": "Armá lo que el ángel les dijo a los pastores (Lucas 2:11). Fijate bien en el orden: dice tres cosas sobre quién es el que nació.",
+      "piezas": ["que os ha nacido", "hoy,", "en la ciudad", "de David,", "un Salvador,", "que es CRISTO", "el Señor."],
+      "respuesta": "que os ha nacido hoy, en la ciudad de David, un Salvador, que es CRISTO el Señor.",
+      "pista": "Arranca con el hecho (“que os ha nacido…”), después el lugar, y recién al final los tres títulos.",
+      "explicacion": "El ángel no dice “nació un bebé hermoso”. Dice tres títulos enormes de una sola vez: Salvador, Cristo y Señor. Y se los dice a unos pastores."
+    },
+
+    {
+      "id": "profecias",
+      "tipo": "emparejar",
+      "titulo": "Lo que ya estaba escrito",
+      "instruccion": "Cada uno de estos textos se escribió siglos antes de esa noche. Uní cada uno con lo que le corresponde.",
+      "digito": "3",
+      "izquierda": "Escrito siglos antes",
+      "derecha": "Lo que pasó",
+      "pares": [
+        { "a": "“Pero tú, Belén Efrata… de ti me saldrá el que será Señor en Israel” (Miqueas 5:2)", "b": "La respuesta que le dan a Herodes cuando pregunta dónde nacería" },
+        { "a": "“Porque un niño nos es nacido, hijo nos es dado… Príncipe de Paz” (Isaías 9:6)",     "b": "El anuncio del ángel: un Salvador, que es Cristo el Señor" },
+        { "a": "“Saldrá ESTRELLA de Jacob, y se levantará cetro de Israel” (Números 24:17)",        "b": "Lo que vieron los sabios en el oriente" },
+        { "a": "“De Egipto llamé a mi hijo” (Oseas 11:1)",                                          "b": "La huida de la familia cuando Herodes los buscaba" }
+      ],
+      "explicacion": "Fijate el detalle: los que sabían las Escrituras pudieron decir exactamente dónde iba a nacer el Mesías… y no se movieron de Jerusalén para ir a verlo. Los que viajaron fueron los extranjeros."
+    },
+
+    {
+      "id": "detective",
+      "tipo": "texto",
+      "titulo": "Informe del detective",
+      "instruccion": "Dios eligió avisarles a unos pastores, que trabajaban de noche y no eran nadie importante, y a unos extranjeros del oriente que ni siquiera eran de Israel. En cambio, los que estudiaban las Escrituras sabían dónde iba a nacer y se quedaron en Jerusalén. ¿Qué te parece que muestra eso? Defendé tu respuesta con algo que diga el texto.",
+      "minimo": 140,
+      "guia": [
+        "¿Citaste algo del relato, y no sólo lo que sentís?",
+        "¿Explicaste por qué llegaste a esa conclusión?",
+        "¿Se entiende sin que yo tenga que adivinar lo que quisiste decir?"
+      ],
+      "nota": "Tu maestro va a leer esta respuesta."
+    },
+
+    {
+      "id": "oracion",
+      "tipo": "oracion",
+      "titulo": "Mi oración",
+      "instruccion": "Los pastores volvieron contando lo que habían visto. Escribí una oración sobre algo que quieras agradecer o pedir esta semana.",
+      "privado": "Esto queda sólo en tu teléfono. No se manda a ningún lado y tu maestro no lo ve."
+    }
+  ]
+}

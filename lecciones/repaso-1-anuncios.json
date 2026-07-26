@@ -2,7 +2,7 @@
   "slug": "repaso-1-anuncios",
   "titulo": "Los anuncios que cambiaron el mundo",
   "subtitulo": "Gabriel visita a Zacarías y a María. Dos anuncios parecidos, dos respuestas muy distintas.",
-  "version": "Reina-Valera 1909 (dominio público)",
+  "version": "Reina-Valera 1960",
   "candado": "Cada estación con 🔒 te da un dígito. Juntá los cuatro para abrir el cofre.",
   "estaciones": [
     {
@@ -15,20 +15,20 @@
           "cita": "Lucas 1:5-25",
           "relato": "Zacarías era sacerdote. Él y su esposa Elisabet ya eran ancianos y nunca habían podido tener hijos. Un día le tocó entrar al templo a quemar el incienso, y ahí, parado a la derecha del altar, se le apareció el ángel Gabriel.",
           "versiculos": [
-            { "ref": "Lucas 1:13", "texto": "Zacarías, tu oración ha sido oída, y tu mujer Elisabet te parirá un hijo, y llamarás su nombre Juan." },
-            { "ref": "Lucas 1:18", "texto": "¿En qué conoceré esto? porque yo soy viejo, y mi mujer avanzada en días." },
-            { "ref": "Lucas 1:20", "texto": "Y he aquí estarás mudo y no podrás hablar, hasta el día que esto sea hecho, por cuanto no creíste á mis palabras." }
+            { "ref": "Lucas 1:13", "texto": "Zacarías, porque tu oración ha sido oída, y tu mujer Elisabet te dará a luz un hijo, y llamarás su nombre Juan." },
+            { "ref": "Lucas 1:18", "texto": "¿En qué conoceré esto? Porque yo soy viejo, y mi mujer es de edad avanzada." },
+            { "ref": "Lucas 1:20", "texto": "Y ahora quedarás mudo y no podrás hablar, hasta el día en que esto se haga, por cuanto no creíste mis palabras, las cuales se cumplirán a su tiempo." }
           ]
         },
         {
           "cita": "Lucas 1:26-38",
           "relato": "Seis meses después, Gabriel fue enviado a Nazaret, un pueblo de Galilea, a una joven llamada María. Le anunció que iba a tener un hijo, que se llamaría Jesús, y que su reino no se iba a terminar nunca. María también preguntó, pero de otra manera.",
           "versiculos": [
-            { "ref": "Lucas 1:33", "texto": "Y reinará en la casa de Jacob por siempre; y de su reino no habrá fin." },
-            { "ref": "Lucas 1:34", "texto": "¿Cómo será esto? porque no conozco varón." },
-            { "ref": "Lucas 1:36", "texto": "Y he aquí, Elisabet tu parienta, también ella ha concebido hijo en su vejez; y este es el sexto mes á ella que es llamada la estéril." },
-            { "ref": "Lucas 1:37", "texto": "Porque ninguna cosa es imposible para Dios." },
-            { "ref": "Lucas 1:38", "texto": "He aquí la sierva del Señor; hágase en mí conforme á tu palabra." }
+            { "ref": "Lucas 1:33", "texto": "y reinará sobre la casa de Jacob para siempre, y su reino no tendrá fin." },
+            { "ref": "Lucas 1:34", "texto": "¿Cómo será esto? pues no conozco varón." },
+            { "ref": "Lucas 1:36", "texto": "Y he aquí tu parienta Elisabet, ella también ha concebido hijo en su vejez; y este es el sexto mes para ella, la que llamaban estéril." },
+            { "ref": "Lucas 1:37", "texto": "porque nada hay imposible para Dios." },
+            { "ref": "Lucas 1:38", "texto": "He aquí la sierva del Señor; hágase conmigo conforme a tu palabra." }
           ]
         }
       ]
@@ -50,7 +50,7 @@
             "María no preguntó nada en realidad: sólo pensó su pregunta en silencio."
           ],
           "correcta": 0,
-          "explicacion": "Zacarías dudaba de que fuera a pasar y pedía una garantía. María no dudaba de que iba a pasar: quería entender cómo. El ángel mismo lo dice: “por cuanto no creíste á mis palabras”.",
+          "explicacion": "Zacarías dudaba de que fuera a pasar y pedía una garantía. María no dudaba de que iba a pasar: quería entender cómo. El ángel mismo lo dice: “por cuanto no creíste mis palabras”.",
           "pista": "Fijate qué le reprocha Gabriel en Lucas 1:20. La palabra exacta que usa te da la respuesta.",
           "evidencia": {
             "enunciado": "¿Dónde dice por qué Zacarías quedó mudo?",
@@ -149,8 +149,8 @@
       "tipo": "versiculo",
       "titulo": "La respuesta de María",
       "instruccion": "Armá lo que María le contestó al ángel (Lucas 1:38). Ojo: no te doy el arranque.",
-      "piezas": ["He aquí", "la sierva", "del Señor;", "hágase", "en mí", "conforme", "á tu palabra."],
-      "respuesta": "He aquí la sierva del Señor; hágase en mí conforme á tu palabra.",
+      "piezas": ["He aquí", "la sierva", "del Señor;", "hágase", "conmigo", "conforme", "a tu palabra."],
+      "respuesta": "He aquí la sierva del Señor; hágase conmigo conforme a tu palabra.",
       "pista": "Empieza igual que muchas frases de la Biblia cuando alguien se presenta delante de Dios: “He aquí…”.",
       "explicacion": "María no dice “está bien, lo acepto”. Dice que es la sierva del Señor: se pone a disposición antes de saber cómo va a terminar todo."
     },
@@ -164,10 +164,10 @@
       "izquierda": "Escrito siglos antes",
       "derecha": "Lo que pasó en Lucas 1",
       "pares": [
-        { "a": "“He aquí, yo envío mi mensajero, el cual preparará el camino delante de mí” (Malaquías 3:1)", "b": "El hijo que Gabriel le anuncia a Zacarías" },
-        { "a": "“Tu casa y tu reino serán firmes para siempre delante de tu rostro” (2 Samuel 7:16)",          "b": "“De su reino no habrá fin”" },
-        { "a": "“He aquí que la virgen concebirá, y parirá un hijo” (Isaías 7:14)",                            "b": "El anuncio a María en Nazaret" },
-        { "a": "“Voz que clama en el desierto: Barred camino á Jehová” (Isaías 40:3)",                         "b": "Juan predicando años más tarde" }
+        { "a": "“He aquí, yo envío mi mensajero, el cual preparará el camino delante de mí” (Malaquías 3:1)",        "b": "El hijo que Gabriel le anuncia a Zacarías" },
+        { "a": "“Será afirmada tu casa y tu reino para siempre delante de tu rostro” (2 Samuel 7:16)",              "b": "“Su reino no tendrá fin”" },
+        { "a": "“He aquí que la virgen concebirá, y dará a luz un hijo” (Isaías 7:14)",                             "b": "El anuncio a María en Nazaret" },
+        { "a": "“Voz que clama en el desierto: Preparad camino a Jehová” (Isaías 40:3)",                            "b": "Juan predicando años más tarde" }
       ],
       "explicacion": "Ninguno de estos anuncios fue una sorpresa improvisada: Dios los venía anunciando desde hacía cientos de años."
     },
@@ -190,7 +190,7 @@
       "id": "oracion",
       "tipo": "oracion",
       "titulo": "Mi oración",
-      "instruccion": "María dijo “hágase en mí conforme a tu palabra” sin saber lo que venía. Escribí una oración honesta a Dios sobre algo que te cueste dejar en sus manos.",
+      "instruccion": "María dijo “hágase conmigo conforme a tu palabra” sin saber lo que venía. Escribí una oración honesta a Dios sobre algo que te cueste dejar en sus manos.",
       "privado": "Esto queda sólo en tu teléfono. No se manda a ningún lado y tu maestro no lo ve."
     }
   ]
