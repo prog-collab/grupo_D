@@ -12,9 +12,10 @@
       "instruccion": "Tres momentos de la vida de Juan: el día que nació, los años en el desierto, y el día que vio llegar a Jesús. Leelos con atención: varias preguntas se responden con un detalle chiquito.",
       "bloques": [
         {
-          "cita": "Lucas 1:57-80",
-          "relato": "Cuando nació el hijo de Zacarías y Elisabet, los parientes daban por hecho que se iba a llamar Zacarías, como el padre. Elisabet dijo que no. Y como Zacarías seguía sin poder hablar desde la visita de Gabriel, tuvo que pedir algo para escribir.",
+          "cita": "Lucas 1:20 · 1:57-80",
+          "relato": "Meses antes, cuando Gabriel se le apareció en el templo, Zacarías no le creyó y quedó mudo, con fecha de vencimiento incluida. Cuando por fin nació el hijo de Zacarías y Elisabet, los parientes daban por hecho que se iba a llamar Zacarías, como el padre. Elisabet dijo que no. Y como Zacarías seguía sin poder hablar, tuvo que pedir algo para escribir.",
           "versiculos": [
+            { "ref": "Lucas 1:20", "texto": "Y ahora quedarás mudo y no podrás hablar, hasta el día en que esto se haga, por cuanto no creíste mis palabras, las cuales se cumplirán a su tiempo." },
             { "ref": "Lucas 1:60", "texto": "Y respondiendo su madre, dijo: No; se llamará Juan." },
             { "ref": "Lucas 1:63", "texto": "Y pidiendo una tablilla, escribió, diciendo: Juan es su nombre. Y todos se maravillaron." },
             { "ref": "Lucas 1:64", "texto": "Al momento fue abierta su boca y suelta su lengua, y habló bendiciendo a Dios." },

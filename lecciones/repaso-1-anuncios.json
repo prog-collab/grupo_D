@@ -15,20 +15,23 @@
           "cita": "Lucas 1:5-25",
           "relato": "Zacarías era sacerdote. Él y su esposa Elisabet ya eran ancianos y nunca habían podido tener hijos. Un día le tocó entrar al templo a quemar el incienso, y ahí, parado a la derecha del altar, se le apareció el ángel Gabriel.",
           "versiculos": [
+            { "ref": "Lucas 1:9",  "texto": "conforme a la costumbre del sacerdocio, le tocó en suerte ofrecer el incienso, entrando en el santuario del Señor." },
             { "ref": "Lucas 1:13", "texto": "Zacarías, porque tu oración ha sido oída, y tu mujer Elisabet te dará a luz un hijo, y llamarás su nombre Juan." },
             { "ref": "Lucas 1:18", "texto": "¿En qué conoceré esto? Porque yo soy viejo, y mi mujer es de edad avanzada." },
             { "ref": "Lucas 1:20", "texto": "Y ahora quedarás mudo y no podrás hablar, hasta el día en que esto se haga, por cuanto no creíste mis palabras, las cuales se cumplirán a su tiempo." }
           ]
         },
         {
-          "cita": "Lucas 1:26-38",
-          "relato": "Seis meses después, Gabriel fue enviado a Nazaret, un pueblo de Galilea, a una joven llamada María. Le anunció que iba a tener un hijo, que se llamaría Jesús, y que su reino no se iba a terminar nunca. María también preguntó, pero de otra manera.",
+          "cita": "Lucas 1:26-38 · 1:56",
+          "relato": "Seis meses después, Gabriel fue enviado a Nazaret, un pueblo de Galilea, a una joven llamada María. Le anunció que iba a tener un hijo, que se llamaría Jesús, y que su reino no se iba a terminar nunca. María también preguntó, pero de otra manera. Después del anuncio, María fue a visitar a Elisabet y se quedó un buen tiempo con ella.",
           "versiculos": [
+            { "ref": "Lucas 1:31", "texto": "Y ahora, concebirás en tu vientre, y darás a luz un hijo, y llamarás su nombre JESÚS." },
             { "ref": "Lucas 1:33", "texto": "y reinará sobre la casa de Jacob para siempre, y su reino no tendrá fin." },
             { "ref": "Lucas 1:34", "texto": "¿Cómo será esto? pues no conozco varón." },
             { "ref": "Lucas 1:36", "texto": "Y he aquí tu parienta Elisabet, ella también ha concebido hijo en su vejez; y este es el sexto mes para ella, la que llamaban estéril." },
             { "ref": "Lucas 1:37", "texto": "porque nada hay imposible para Dios." },
-            { "ref": "Lucas 1:38", "texto": "He aquí la sierva del Señor; hágase conmigo conforme a tu palabra." }
+            { "ref": "Lucas 1:38", "texto": "He aquí la sierva del Señor; hágase conmigo conforme a tu palabra." },
+            { "ref": "Lucas 1:56", "texto": "Y se quedó María con ella como tres meses; después se volvió a su casa." }
           ]
         }
       ]
@@ -105,7 +108,7 @@
           "pista": "Es una cuenta. Sumá los meses que da el texto.",
           "evidencia": {
             "enunciado": "¿De dónde sacaste los tres meses?",
-            "opciones": ["Lucas 1:36", "Lucas 1:56", "Lucas 1:80"],
+            "opciones": ["Lucas 1:36", "Lucas 1:56", "Lucas 1:38"],
             "correcta": 1
           }
         }

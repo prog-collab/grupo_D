@@ -15,6 +15,7 @@
           "cita": "Mateo 3:13-17",
           "relato": "Jesús viajó desde Galilea hasta el Jordán con un pedido que dejó a Juan sin saber qué hacer. Juan sabía perfectamente quién era el que tenía adelante, y lo primero que hizo fue negarse.",
           "versiculos": [
+            { "ref": "Mateo 3:13", "texto": "Entonces Jesús vino de Galilea a Juan al Jordán, para ser bautizado por él." },
             { "ref": "Mateo 3:14", "texto": "Mas Juan se le oponía, diciendo: Yo necesito ser bautizado por ti, ¿y tú vienes a mí?" },
             { "ref": "Mateo 3:15", "texto": "Pero Jesús le respondió: Deja ahora, porque así conviene que cumplamos toda justicia. Entonces le dejó." },
             { "ref": "Mateo 3:16", "texto": "Y Jesús, después que fue bautizado, subió luego del agua; y he aquí los cielos le fueron abiertos, y vio al Espíritu de Dios que descendía como paloma, y venía sobre él." },
