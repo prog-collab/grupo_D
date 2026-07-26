@@ -1,50 +1,857 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#6c4cc9">
-  <title>La Gran Aventura del Explorador Bíblico</title>
-  <style>
-    :root{--violet:#6949c6;--blue:#2479c9;--gold:#ffc83d;--ink:#26304b;--paper:#fffdf8;--mint:#e6faf0;--coral:#ff856d}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(160deg,#e9e1ff,#dff4ff 55%,#fff4ce);min-height:100vh}.hero{padding:42px 20px 50px;text-align:center;color:#fff;background:linear-gradient(135deg,#5636ac,#2077bd);position:relative;overflow:hidden}.hero:before,.hero:after{content:"✦";position:absolute;color:#ffd45c;font-size:7rem;opacity:.22}.hero:before{left:6%;top:-25px}.hero:after{right:6%;bottom:-55px}.hero h1{margin:6px auto;font-size:clamp(2rem,6vw,3.5rem);line-height:1.06;max-width:760px}.hero p{font-size:1.1rem;margin:12px auto 0;max-width:590px}.badge{display:inline-block;background:#ffd454;color:#493500;border-radius:30px;padding:6px 14px;font-weight:800;font-size:.9rem}.progress-wrap{position:sticky;top:0;z-index:5;background:#fff;padding:12px max(5%,20px);box-shadow:0 2px 12px #26304b22}.progress-line{height:13px;background:#e4e6ef;border-radius:30px;overflow:hidden}.progress-line div{height:100%;width:0;background:linear-gradient(90deg,#f7bd2d,#ff785a);border-radius:30px;transition:.4s}.progress-text{display:flex;justify-content:space-between;font-size:.88rem;font-weight:700;margin-bottom:6px}.container{max-width:980px;margin:-22px auto 0;padding:0 18px 60px}.station{background:var(--paper);border-radius:22px;padding:27px;margin:20px 0;box-shadow:0 10px 26px #26304b1c;border:2px solid #fff}.station h2{margin:0 0 7px;font-size:1.45rem}.station h2 span{display:inline-grid;place-items:center;background:var(--mint);width:38px;height:38px;border-radius:50%;margin-right:8px}.hint{margin:0 0 18px;color:#5a6480}button,.button{font:inherit;font-weight:800;border:0;border-radius:12px;padding:10px 17px;cursor:pointer;background:var(--violet);color:#fff;transition:transform .15s,filter .15s}button:hover{transform:translateY(-2px);filter:brightness(1.07)}button:disabled{opacity:.55;cursor:default;transform:none}.choice{display:block;text-align:left;width:100%;margin:9px 0;background:#f0ebff;color:var(--ink);border:2px solid transparent}.choice:hover{border-color:#ad98eb}.correct{background:#bcefd2!important;border-color:#3aaf6b!important}.wrong{background:#ffd2cb!important;border-color:#e25c51!important}.feedback{font-weight:700;min-height:25px;margin:12px 0 0}.cards{display:flex;gap:9px;flex-wrap:wrap}.word-card{background:#fff1b9;color:#574100;border:2px dashed #dfae2e;padding:10px 13px;border-radius:11px;cursor:grab;font-weight:800}.dropzone{margin-top:13px;min-height:54px;background:#f0f5ff;border:2px dashed #8cb0e2;border-radius:12px;padding:8px;display:flex;gap:8px;flex-wrap:wrap}.word-card.dragging{opacity:.4}.sopa{display:grid;grid-template-columns:repeat(8,36px);gap:4px;justify-content:start;margin:13px 0}.cell{width:36px;height:36px;border:0;border-radius:8px;padding:0;background:#edf4ff;color:#26304b;font-weight:900}.cell.selected{background:#ffda66}.cell.found{background:#8be2b1}.word-list{display:flex;flex-wrap:wrap;gap:7px}.word-list span{padding:4px 10px;border-radius:20px;background:#eef0f8;font-weight:700;font-size:.9rem}.word-list .done{text-decoration:line-through;background:#bcefd2}.memory{display:grid;grid-template-columns:repeat(4,minmax(60px,120px));gap:10px;max-width:520px}.memory button{height:84px;font-size:1.7rem;background:#e6ddff}.memory button.open{background:#fff4c9}.memory button.matched{background:#9be5b9}.truefalse{display:flex;gap:10px}.truefalse button{background:#f0ebff;color:var(--ink)}.truefalse button:first-child{background:#caefd8}.truefalse button:last-child{background:#ffd7d0}.story{display:flex;flex-wrap:wrap;gap:9px}.story button{background:#e8f1ff;color:var(--ink);border:2px solid #a5c5ec}.story button.active{background:#bcefd2;border-color:#38aa69}.path-result{background:#eef9ff;border-radius:12px;padding:14px;min-height:53px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:25px}.video{aspect-ratio:16/9;width:100%;border:0;border-radius:13px;background:#dbe4ed}textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px;padding:12px;font:inherit;resize:vertical}.checkline{display:flex;gap:10px;align-items:center;background:#fff7d7;padding:12px;border-radius:12px;margin-top:12px;font-weight:700}.checkline input{width:21px;height:21px}canvas{width:100%;max-width:540px;border:3px dashed #a796e0;border-radius:14px;background:#fff;touch-action:none;display:block}.canvas-tools{display:flex;gap:10px;align-items:center;margin:10px 0}.finish{text-align:center;background:linear-gradient(135deg,#6744bd,#2588c4);color:white}.finish h2{font-size:2rem}.finish input{max-width:400px;display:block;margin:14px auto;border:0}.finish button{background:#ffd152;color:#3b2c00}.locked{opacity:.58}.confetti{position:fixed;pointer-events:none;z-index:100;animation:fall 2.5s forwards}@keyframes fall{to{transform:translateY(100vh) rotate(540deg);opacity:0}}@media(max-width:640px){.station{padding:20px}.two-col{grid-template-columns:1fr}.sopa{grid-template-columns:repeat(8,31px)}.cell{width:31px;height:31px}.memory{grid-template-columns:repeat(4,1fr)}.memory button{height:70px}}
-    .sopa{grid-template-columns:repeat(10,32px)}.cell{width:32px;height:32px}@media(max-width:640px){.sopa{grid-template-columns:repeat(10,29px)}.cell{width:29px;height:29px}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#6c4cc9">
+<title>La Gran Aventura del Explorador Bíblico</title>
+<style>
+:root{--violet:#6949c6;--blue:#2479c9;--gold:#ffc83d;--ink:#26304b;--paper:#fffdf8;--mint:#e6faf0;--soft:#5a6480}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(160deg,#e9e1ff,#dff4ff 55%,#fff4ce);min-height:100vh}
+.hero{padding:38px 20px 46px;text-align:center;color:#fff;background:linear-gradient(135deg,#5636ac,#2077bd);position:relative;overflow:hidden}
+.hero:before,.hero:after{content:"✦";position:absolute;color:#ffd45c;font-size:7rem;opacity:.22}
+.hero:before{left:6%;top:-25px}.hero:after{right:6%;bottom:-55px}
+.hero h1{margin:6px auto;font-size:clamp(1.7rem,5.5vw,3rem);line-height:1.08;max-width:760px;position:relative}
+.hero p{font-size:1.05rem;margin:12px auto 0;max-width:600px;position:relative;opacity:.95}
+.badge{display:inline-block;background:#ffd454;color:#493500;border-radius:30px;padding:6px 14px;font-weight:800;font-size:.85rem;position:relative}
+.progress-wrap{position:sticky;top:0;z-index:5;background:#fff;padding:10px max(5%,18px);box-shadow:0 2px 12px #26304b22}
+.progress-line{height:12px;background:#e4e6ef;border-radius:30px;overflow:hidden}
+.progress-line div{height:100%;width:0;background:linear-gradient(90deg,#f7bd2d,#ff785a);border-radius:30px;transition:.4s}
+.progress-text{display:flex;justify-content:space-between;gap:10px;font-size:.85rem;font-weight:700;margin-bottom:6px}
+.container{max-width:900px;margin:-22px auto 0;padding:0 16px 70px}
+.station{background:var(--paper);border-radius:22px;padding:24px;margin:18px 0;box-shadow:0 10px 26px #26304b1c;border:2px solid #fff}
+.station h2{margin:0 0 6px;font-size:1.3rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.num{display:inline-grid;place-items:center;background:var(--mint);min-width:36px;height:36px;border-radius:50%;font-size:.95rem;flex:none}
+.stars{margin-left:auto;font-size:1rem;letter-spacing:2px}
+.hint{margin:0 0 16px;color:var(--soft);line-height:1.5}
+button,.button{font:inherit;font-weight:800;border:0;border-radius:12px;padding:10px 17px;cursor:pointer;background:var(--violet);color:#fff;transition:transform .15s,filter .15s}
+button:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.07)}
+button:disabled{opacity:.55;cursor:default;transform:none}
+.ghost{background:#eceaf7;color:var(--violet)}
+.choice{display:block;text-align:left;width:100%;margin:9px 0;background:#f0ebff;color:var(--ink);border:2px solid transparent;line-height:1.45}
+.choice:hover:not(:disabled){border-color:#ad98eb}
+.correct{background:#bcefd2!important;border-color:#3aaf6b!important;color:var(--ink)!important}
+.wrong{background:#ffd2cb!important;border-color:#e25c51!important;color:var(--ink)!important}
+.feedback{font-weight:700;margin:12px 0 0;line-height:1.5}
+.feedback.ok{color:#1d7a4c}.feedback.no{color:#c0392b}
+.explica{background:#eef9ff;border-left:5px solid var(--blue);border-radius:0 12px 12px 0;padding:12px 14px;margin-top:12px;line-height:1.55}
+.pista-box{background:#fff7d7;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:12px 14px;margin-top:12px;line-height:1.55}
+.passage{background:#fff;border:2px solid #e7e2f5;border-radius:14px;padding:16px;margin:12px 0}
+.passage .ref{font-weight:800;color:var(--violet);font-size:.9rem}
+.passage .relato{margin:8px 0 12px;line-height:1.6}
+.verso{border-left:4px solid #d9d0f2;padding:6px 0 6px 12px;margin:8px 0;line-height:1.55}
+.verso b{display:block;font-size:.82rem;color:var(--soft);font-weight:700}
+.verso i{font-style:italic}
+.pieces,.answer{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.answer{min-height:52px;background:#f0f5ff;border:2px dashed #8cb0e2;border-radius:12px;padding:8px;align-items:flex-start}
+.answer:empty:before{content:"Tocá las piezas de abajo";color:#8fa2c4;font-weight:700;padding:6px}
+.piece{background:#fff1b9;color:#574100;border:2px solid #dfae2e;padding:9px 12px;border-radius:11px;font-weight:800;cursor:pointer;font-size:.95rem}
+.piece.used{display:none}
+.check-item{display:flex;gap:11px;align-items:flex-start;background:#fff;border:2px solid #e7e2f5;padding:12px;border-radius:12px;margin:9px 0;cursor:pointer;line-height:1.5}
+.check-item input{width:21px;height:21px;margin-top:2px;flex:none;cursor:pointer}
+.check-item.era-falsa{background:#ffeae6;border-color:#e25c51}
+.check-item.era-cierta{background:#eefaf2;border-color:#3aaf6b}
+.check-item small{display:block;color:var(--soft);margin-top:5px}
+.tarjetas{display:flex;flex-wrap:wrap;gap:9px}
+.tarjetas button{background:#e8f1ff;color:var(--ink);border:2px solid #a5c5ec;text-align:left;flex:1 1 260px;line-height:1.4}
+.tarjetas button.ok{background:#bcefd2;border-color:#38aa69}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.match h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;color:var(--soft);margin:0 0 8px}
+.match button{display:block;width:100%;text-align:left;background:#fff;color:var(--ink);border:2px solid #e0daf3;margin-bottom:8px;font-weight:600;font-size:.9rem;line-height:1.4}
+.match button.sel{border-color:var(--violet);background:#f0ebff}
+.match button.ok{background:#bcefd2;border-color:#38aa69;cursor:default}
+textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px;padding:12px;font:inherit;resize:vertical;background:#fff;color:var(--ink)}
+.contador{font-size:.85rem;color:var(--soft);margin-top:6px;text-align:right}
+.guia{background:#f6f4ff;border-radius:12px;padding:12px 14px;margin-top:12px}
+.guia li{margin:4px 0;line-height:1.45}
+.privado{background:var(--mint);border-radius:12px;padding:11px 14px;font-size:.9rem;margin-top:12px;line-height:1.45}
+.digito{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--gold);color:#493500;font-weight:900;font-size:1.15rem;vertical-align:middle}
+.cofre{text-align:center;background:linear-gradient(135deg,#6744bd,#2588c4);color:#fff}
+.cofre h2{justify-content:center;font-size:1.7rem}
+.cofre .hint{color:#e4dbff}
+.slots{display:flex;gap:10px;justify-content:center;margin:16px 0}
+.slot{width:52px;height:60px;border-radius:12px;background:#ffffff22;border:2px dashed #ffffff77;display:grid;place-items:center;font-size:1.6rem;font-weight:900}
+.slot.on{background:var(--gold);color:#493500;border-style:solid;border-color:#fff}
+.cofre input{max-width:360px;display:block;margin:14px auto;border:0;text-align:center;font-size:1.3rem;letter-spacing:6px;font-weight:900}
+.cofre input.nombre{letter-spacing:normal;font-size:1rem;font-weight:600}
+.cofre button{background:#ffd152;color:#3b2c00}
+.gate{max-width:440px;margin:60px auto;background:var(--paper);border-radius:22px;padding:28px;box-shadow:0 10px 30px #26304b26}
+.gate h2{margin-top:0}
+.gate label{display:block;font-weight:700;margin:14px 0 6px;font-size:.92rem}
+.gate button{width:100%;margin-top:18px;padding:13px}
+.gate .aviso{font-size:.85rem;color:var(--soft);margin-top:16px;line-height:1.5}
+.quien{font-size:.82rem;color:var(--soft);text-align:right;padding:6px max(5%,18px) 0;margin:0}
+.quien button{background:none;color:var(--soft);padding:2px 6px;font-size:.82rem;text-decoration:underline;font-weight:600}
+.sync{font-size:.78rem;font-weight:700}
+.sync.off{color:#c0392b}
+.confetti{position:fixed;pointer-events:none;z-index:100;animation:fall 2.5s forwards;font-size:1.4rem}
+@keyframes fall{to{transform:translateY(100vh) rotate(540deg);opacity:0}}
+.oculto{display:none!important}
+@media(max-width:640px){
+  .station{padding:19px}
+  .match{grid-template-columns:1fr}
+  .tarjetas button{flex:1 1 100%}
+  .stars{margin-left:0;width:100%}
+}
+</style>
 </head>
 <body>
-  <header class="hero"><div class="badge">✦ MISIÓN BÍBLICA DE LA SEMANA ✦</div><h1>La Gran Aventura: Los Anuncios que Cambiaron el Mundo</h1><p>Seguiremos las huellas de María, Juan el Bautista y los sabios de Oriente. Leé con atención, relacioná pistas y descubrí cómo Dios preparó la llegada de Jesús.</p></header>
-  <div class="progress-wrap"><div class="progress-text"><span>⭐ <span id="stars">0</span> estrellas ganadas</span><span id="percent">0% completado</span></div><div class="progress-line"><div id="bar"></div></div></div>
-  <main class="container">
-    <section class="station" id="verse"><h2><span>1</span> Rompecabezas de la Anunciación</h2><p class="hint">Arrastrá las palabras al recuadro para ordenar la respuesta del ángel a María (Lucas 1:37).</p><div class="cards" id="words"><span class="word-card" draggable="true">Porque</span><span class="word-card" draggable="true">nada</span><span class="word-card" draggable="true">hay</span><span class="word-card" draggable="true">imposible</span><span class="word-card" draggable="true">para Dios</span></div><div class="dropzone" id="drop">Soltá las palabras aquí</div><button id="checkVerse">Comprobar</button><p class="feedback" id="verseFeedback"></p></section>
-    <section class="station" id="quiz"><h2><span>2</span> Quiz: el mensaje de Gabriel</h2><p class="hint">El ángel dijo que Jesús sería llamado “Hijo del Altísimo”. ¿Qué anunció también acerca de su reino?</p><div id="quizChoices"><button class="choice">Que duraría solamente mientras viviera María.</button><button class="choice" data-right="1">Que no tendría fin.</button><button class="choice">Que estaría en Jerusalén por siete años.</button><button class="choice">Que pertenecería a Herodes.</button></div><p class="feedback" id="quizFeedback"></p></section>
-    <section class="station" id="soup"><h2><span>3</span> Busca las pistas</h2><p class="hint">Las palabras pueden ir en cualquier dirección: horizontal, vertical, diagonal o al revés. Tocá las letras en el orden correcto y resolvé estas pistas.</p><div class="sopa" id="grid"></div><div class="word-list" id="wordList"><span>Mensajero de Dios</span><span>Madre de Jesús</span><span>El que preparó el camino</span><span>Guía de los sabios</span><span>Ciudad del nacimiento</span></div><p class="feedback" id="soupFeedback"></p></section>
-    <section class="station" id="memo"><h2><span>4</span> Memotest de símbolos</h2><p class="hint">Encontrá las parejas: cada símbolo es una pista de estos relatos. Al terminar, explicá a alguien qué representa cada uno.</p><div class="memory" id="memory"></div><p class="feedback" id="memoFeedback"></p></section>
-    <section class="station" id="truth"><h2><span>5</span> ¿Verdadero o falso?</h2><p class="hint">“Juan el Bautista era mayor que Jesús y preparó a la gente para recibirlo.”</p><div class="truefalse"><button data-value="true">✓ Verdadero</button><button data-value="false">✗ Falso</button></div><p class="feedback" id="truthFeedback"></p></section>
-    <section class="station" id="story"><h2><span>6</span> Ordená la vida de Juan el Bautista</h2><p class="hint">Elegí las tarjetas en el orden en que aparecen en Lucas 1 y los Evangelios.</p><div class="story" id="storyCards"><button data-order="2">Nace Juan y Zacarías alaba a Dios</button><button data-order="4">Predica: “Preparen el camino del Señor”</button><button data-order="1">Gabriel anuncia su nacimiento a Zacarías</button><button data-order="3">Crece y vive en el desierto</button></div><p class="feedback" id="storyFeedback"></p></section>
-    <section class="station" id="path"><h2><span>7</span> Seguí la estrella</h2><p class="hint">Los sabios vieron una señal y emprendieron un viaje largo. Al llegar a Jerusalén, ¿qué pregunta hicieron?</p><button class="choice path-choice" data-good="1">“¿Dónde está el rey de los judíos que ha nacido?”</button><button class="choice path-choice" data-good="0">“¿Dónde podemos conseguir más regalos?”</button><div class="path-result" id="pathResult">Elegí una opción y pensá por qué los sabios buscaban a Jesús.</div></section>
-    <section class="station" id="complete"><h2><span>8</span> Completá la misión de Juan</h2><p class="hint">“Preparad el ________ del Señor” (Lucas 3:4).</p><button class="choice complete-choice">pesebre</button><button class="choice complete-choice" data-right="1">camino</button><button class="choice complete-choice">palacio</button><p class="feedback" id="completeFeedback"></p></section>
-    <section class="station"><h2><span>9</span> Detective de los relatos</h2><p class="hint">Leé Lucas 1:26–38, Mateo 2:1–12 y Lucas 1:57–80. Elegí una similitud importante entre María, Zacarías y los sabios: ¿cómo respondieron al mensaje de Dios? Explicalo con una cita o un detalle del relato.</p><textarea id="videoThought" rows="4" placeholder="Mi evidencia del texto es..."></textarea></section>
-    <section class="station two-col"><div><h2><span>10</span> Desafío de la semana</h2><p class="hint">Elegí una acción que conecte con los relatos.</p><label class="checkline"><input type="checkbox" class="challenge"> Leí Lucas 1:26–38 y anoté una frase que me sorprendió.</label><label class="checkline"><input type="checkbox" class="challenge"> Busqué en un mapa el recorrido probable de Oriente a Belén.</label><label class="checkline"><input type="checkbox" class="challenge"> Expliqué a alguien por qué Juan preparó el camino para Jesús.</label></div><div><h2><span>11</span> Mi oración</h2><p class="hint">María respondió: “Hágase conmigo conforme a tu palabra”. Escribí una oración honesta a Dios.</p><textarea id="prayer" rows="6" placeholder="Querido Dios..."></textarea></div></section>
-    <section class="station"><h2><span>12</span> Diseñá una ruta de Oriente a Belén</h2><p class="hint">Dibujá un mapa con la estrella, el camino de los sabios y Belén. Agregá al menos tres detalles que te parezcan importantes.</p><canvas id="canvas" width="540" height="330"></canvas><div class="canvas-tools"><label>Color <input type="color" id="color" value="#6949c6"></label><button id="clearCanvas">Borrar</button><button id="saveDrawing">Guardar dibujo</button></div></section>
-    <section class="station finish" id="final"><h2>🏆 ¡Tesoro final!</h2><p>Cuando completes todas las estrellas, escribí tu nombre para crear tu diploma.</p><input id="name" type="text" placeholder="Tu nombre" maxlength="45"><button id="diploma">Descargar mi diploma</button><p id="finalFeedback"></p></section>
-  </main>
+
+<!-- ===================== PUERTA DE ENTRADA ===================== -->
+<div id="gate" class="gate">
+  <h2>¡Hola, explorador!</h2>
+  <p class="hint">Escribí el código que te dio tu maestro y tu nombre. No hace falta contraseña ni correo.</p>
+  <label for="gCodigo">Código del grupo</label>
+  <input type="text" id="gCodigo" placeholder="GRUPOD" autocomplete="off" maxlength="20">
+  <label for="gNombre">Tu nombre</label>
+  <input type="text" id="gNombre" placeholder="Tu nombre" autocomplete="off" maxlength="40">
+  <label for="gApellido">Inicial de tu apellido <span style="font-weight:400;color:#5a6480">(si hay otro con tu nombre)</span></label>
+  <input type="text" id="gApellido" placeholder="G" autocomplete="off" maxlength="2">
+  <button id="gEntrar">Entrar</button>
+  <p class="feedback no" id="gError"></p>
+  <p class="aviso">Tu maestro puede ver qué actividades hiciste y qué escribiste en ellas. Lo que escribas en <b>Mi oración</b> no se manda a ningún lado: queda sólo en este teléfono.</p>
+</div>
+
+<!-- ===================== APLICACIÓN ===================== -->
+<div id="app" class="oculto">
+  <header class="hero">
+    <div class="badge">✦ MISIÓN BÍBLICA ✦</div>
+    <h1 id="titulo">…</h1>
+    <p id="subtitulo"></p>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-text">
+      <span>⭐ <span id="pEstrellas">0</span> de <span id="pTotal">0</span> estrellas</span>
+      <span id="pSync" class="sync"></span>
+      <span id="pPorcentaje">0%</span>
+    </div>
+    <div class="progress-line"><div id="pBarra"></div></div>
+  </div>
+  <p class="quien">Sos <b id="qNombre"></b> · <button id="qSalir">salir</button></p>
+
+  <main class="container" id="estaciones"></main>
+</div>
+
 <script>
-const done=new Set(JSON.parse(localStorage.getItem('ebd-done-navidad')||'[]'));const total=8;
-function save(){localStorage.setItem('ebd-done-navidad',JSON.stringify([...done]));update()};function complete(id){if(!done.has(id)){done.add(id);save();celebrate()}}function update(){let n=done.size;document.querySelector('#stars').textContent=n;document.querySelector('#percent').textContent=Math.round(n/total*100)+'% completado';document.querySelector('#bar').style.width=n/total*100+'%'}update();
-function celebrate(){for(let i=0;i<22;i++){let x=document.createElement('i');x.className='confetti';x.textContent=['⭐','✦','🌟'][i%3];x.style.left=Math.random()*100+'vw';x.style.top='-25px';x.style.color=['#ffbd26','#e9587b','#45b6e9'][i%3];x.style.animationDelay=Math.random()*.45+'s';document.body.append(x);setTimeout(()=>x.remove(),3000)}}
-// Verse drag-and-drop
-let dragging;document.querySelectorAll('.word-card').forEach(c=>{c.addEventListener('dragstart',()=>{dragging=c;c.classList.add('dragging')});c.addEventListener('dragend',()=>c.classList.remove('dragging'))});let drop=document.querySelector('#drop');drop.addEventListener('dragover',e=>e.preventDefault());drop.addEventListener('drop',e=>{e.preventDefault();if(dragging){if(drop.textContent.includes('Soltá'))drop.textContent='';drop.append(dragging)}});document.querySelector('#checkVerse').onclick=()=>{let a=[...drop.querySelectorAll('.word-card')].map(x=>x.textContent).join(' ');let f=document.querySelector('#verseFeedback');if(a==='Porque nada hay imposible para Dios'){f.textContent='✅ ¡Excelente! Gabriel explicó que para Dios nada es imposible (Lucas 1:37).';complete('verse')}else f.textContent='Probá de nuevo: la frase empieza “Porque nada…”.'};
-// Quiz and verse completion
-function choices(parent,feedback,id,text){document.querySelectorAll(parent+' .choice').forEach(b=>b.onclick=()=>{if(b.dataset.right){b.classList.add('correct');document.querySelector(feedback).textContent='✅ ¡Correcto! '+text;complete(id)}else{b.classList.add('wrong');document.querySelector(feedback).textContent='Casi. Volvé a pensar y probá otra opción.'}})}choices('#quizChoices','#quizFeedback','quiz','El reino de Jesús no tendría fin (Lucas 1:33).');choices('#complete','#completeFeedback','complete','¡Muy bien! Juan llamó a preparar el camino del Señor.');
-// Word puzzle: click letters and test contiguous selected letters
-const targets=[['GABRIEL','Mensajero de Dios'],['MARIA','Madre de Jesús'],['JUAN','El que preparó el camino'],['ESTRELLA','Guía de los sabios'],['BELEN','Ciudad del nacimiento']];const gridLetters=Array(100).fill(0).map(()=>"ABCDEFGHILMNOPRSTU"[Math.floor(Math.random()*19)]);const placeWord=(word,spots)=>spots.forEach((spot,index)=>gridLetters[spot]=word[index]);placeWord('GABRIEL',[0,11,22,33,44,55,66]);placeWord('MARIA',[19,29,39,49,59]);placeWord('JUAN',[88,87,86,85]);placeWord('ESTRELLA',[91,82,73,64,55,46,37,28]);placeWord('BELEN',[50,51,52,53,54]);let selected=[];let direction=null;let grid=document.querySelector('#grid');const clearSelection=()=>{selected.forEach(i=>grid.children[i].classList.remove('selected'));selected=[];direction=null};gridLetters.forEach((letter,i)=>{let b=document.createElement('button');b.className='cell';b.textContent=letter;b.dataset.i=i;b.onclick=()=>{if(b.classList.contains('found')||selected.includes(i))return;if(selected.length){let step=i-selected[selected.length-1];let allowed=[-11,-10,-9,-1,1,9,10,11];if(!allowed.includes(step)||(direction!==null&&step!==direction)){clearSelection();document.querySelector('#soupFeedback').textContent='Las letras de una pista deben formar una línea recta.';return}if(direction===null)direction=step}selected.push(i);b.classList.add('selected');let value=selected.map(x=>gridLetters[x]).join('');let match=targets.find(([word])=>word===value);let possible=targets.some(([word])=>word.startsWith(value));if(match){selected.forEach(x=>grid.children[x].className='cell found');document.querySelectorAll('#wordList span').forEach(x=>{if(x.textContent===match[1])x.classList.add('done')});clearSelection();if(document.querySelectorAll('#wordList .done').length===targets.length){document.querySelector('#soupFeedback').textContent='✅ ¡Encontraste las cinco pistas en direcciones distintas!';complete('soup')}}else if(!possible){clearSelection();document.querySelector('#soupFeedback').textContent='Esa secuencia no corresponde a una pista. Probá otro punto de inicio.'}};grid.append(b)});
-// Memory
-let icons=['🕊️','🕊️','⭐','⭐','👑','👑','🌊','🌊'];icons.sort(()=>Math.random()-.5);let open=[];let matches=0;icons.forEach((icon,i)=>{let b=document.createElement('button');b.textContent='❔';b.onclick=()=>{if(open.length===2||b.classList.contains('matched')||open.includes(b))return;b.textContent=icon;b.classList.add('open');open.push(b);if(open.length===2){if(open[0].textContent===open[1].textContent){open.forEach(x=>x.className='matched');matches+=2;open=[];if(matches===8){document.querySelector('#memoFeedback').textContent='✅ ¡Memoria de explorador! Paloma, estrella, corona y agua: ¿con cuál relato conectás cada una?';complete('memo')}}else setTimeout(()=>{open.forEach(x=>{x.textContent='❔';x.className='' });open=[]},650)}};document.querySelector('#memory').append(b)});
-document.querySelectorAll('#truth button').forEach(b=>b.onclick=()=>{let f=document.querySelector('#truthFeedback');if(b.dataset.value==='true'){f.textContent='✅ ¡Verdadero! Juan nació antes y su misión fue preparar a las personas para Jesús.';complete('truth')}else f.textContent='Releé Lucas 1:13–17 y Lucas 3:4–6.'});
-let step=1;document.querySelectorAll('#storyCards button').forEach(b=>b.onclick=()=>{if(+b.dataset.order===step){b.classList.add('active');b.disabled=true;step++;if(step===5){document.querySelector('#storyFeedback').textContent='✅ ¡Historia ordenada correctamente!';complete('story')}}else document.querySelector('#storyFeedback').textContent='Ese hecho va en otro momento. ¡Intentá con otra tarjeta!'});
-document.querySelectorAll('.path-choice').forEach(b=>b.onclick=()=>{let r=document.querySelector('#pathResult');if(b.dataset.good==='1'){r.textContent='✅ ¡Exacto! Esa es la pregunta de Mateo 2:2. Los sabios buscaban al rey que había nacido.';complete('path')}else r.textContent='Los sabios no viajaron sólo por curiosidad: buscaban al rey anunciado. Probá otra opción.'});
-// persistent text / challenge
-['videoThought','prayer','name'].forEach(id=>{let el=document.getElementById(id);el.value=localStorage.getItem('ebd-'+id)||'';el.oninput=()=>localStorage.setItem('ebd-'+id,el.value)});document.querySelectorAll('.challenge').forEach((x,i)=>{x.checked=localStorage.getItem('challenge'+i)==='1';x.onchange=()=>localStorage.setItem('challenge'+i,x.checked?'1':'0')});
-// Canvas
-let canvas=document.querySelector('#canvas'),ctx=canvas.getContext('2d'),drawing=false,last;ctx.lineWidth=5;ctx.lineCap='round';function point(e){let r=canvas.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return{x:(p.clientX-r.left)*canvas.width/r.width,y:(p.clientY-r.top)*canvas.height/r.height}}function draw(e){if(!drawing)return;e.preventDefault();let p=point(e);ctx.strokeStyle=document.querySelector('#color').value;ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p}canvas.addEventListener('pointerdown',e=>{drawing=true;last=point(e)});canvas.addEventListener('pointermove',draw);['pointerup','pointerleave'].forEach(ev=>canvas.addEventListener(ev,()=>drawing=false));document.querySelector('#clearCanvas').onclick=()=>ctx.clearRect(0,0,canvas.width,canvas.height);document.querySelector('#saveDrawing').onclick=()=>{let a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='mi-arca.png';a.click()};
-document.querySelector('#diploma').onclick=()=>{let n=document.querySelector('#name').value.trim();let f=document.querySelector('#finalFeedback');if(!n)return f.textContent='Escribí tu nombre primero.';if(done.size<total)return f.textContent='¡Casi! Todavía te faltan '+(total-done.size)+' estrella(s).';let c=document.createElement('canvas');c.width=1400;c.height=900;let x=c.getContext('2d');x.fillStyle='#fff8df';x.fillRect(0,0,c.width,c.height);x.strokeStyle='#6949c6';x.lineWidth=28;x.strokeRect(35,35,1330,830);x.fillStyle='#6949c6';x.textAlign='center';x.font='bold 70px system-ui';x.fillText('DIPLOMA DEL EXPLORADOR BÍBLICO',700,180);x.fillStyle='#26304b';x.font='38px system-ui';x.fillText('Se reconoce con alegría a',700,290);x.fillStyle='#c17d00';x.font='bold 90px cursive';x.fillText(n,700,410);x.fillStyle='#26304b';x.font='38px system-ui';x.fillText('por completar la Gran Aventura del Explorador Bíblico',700,510);x.font='78px system-ui';x.fillText('⭐  ✦  🏆  ✦  ⭐',700,650);x.font='30px system-ui';x.fillText('¡Que sigas creciendo en fe, amor y esperanza!',700,750);let a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='diploma-explorador-biblico.png';a.click();f.textContent='🎉 ¡Misión cumplida! Tu diploma se está descargando.';celebrate()};
-</script></body></html>
+"use strict";
+
+/* ==================================================================
+   Configuración
+   ================================================================== */
+const SUPA_URL = "https://grswqigekcopfrozcxqj.supabase.co";
+const SUPA_KEY = "sb_publishable_AGlBHQBCR12TzPnCjuLeKQ_jEwi42TF";
+const LECCION  = new URLSearchParams(location.search).get("leccion") || "repaso-1-anuncios";
+const LS = k => "ed:" + LECCION + ":" + k;
+const $  = s => document.querySelector(s);
+
+/* ==================================================================
+   Puente con Supabase.
+   Si falla, la app sigue andando: todo se guarda igual en el teléfono
+   y los envíos quedan en una cola que se reintenta más adelante.
+   ================================================================== */
+let sesion = JSON.parse(localStorage.getItem("ed:sesion") || "null");
+
+async function rpc(fn, params) {
+  const r = await fetch(SUPA_URL + "/rest/v1/rpc/" + fn, {
+    method: "POST",
+    headers: {
+      "apikey": SUPA_KEY,
+      "Authorization": "Bearer " + SUPA_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(params)
+  });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+
+function marcarSync(ok) {
+  const el = $("#pSync");
+  if (!el) return;
+  el.textContent = ok ? "" : "⚠ sin conexión";
+  el.className = "sync" + (ok ? "" : " off");
+}
+
+const PENDIENTES = "ed:pendientes";
+
+function encolar(fn, params) {
+  const q = JSON.parse(localStorage.getItem(PENDIENTES) || "[]");
+  q.push({ fn, params });
+  localStorage.setItem(PENDIENTES, JSON.stringify(q.slice(-100)));
+}
+
+async function vaciarCola() {
+  const q = JSON.parse(localStorage.getItem(PENDIENTES) || "[]");
+  if (!q.length) return;
+  const quedan = [];
+  for (const item of q) {
+    try { await rpc(item.fn, item.params); } catch { quedan.push(item); }
+  }
+  localStorage.setItem(PENDIENTES, JSON.stringify(quedan));
+  marcarSync(quedan.length === 0);
+}
+
+async function enviar(fn, params) {
+  if (!sesion) return;
+  try { await rpc(fn, params); marcarSync(true); }
+  catch { encolar(fn, params); marcarSync(false); }
+}
+
+/* ==================================================================
+   Puerta de entrada
+   ================================================================== */
+$("#gEntrar").onclick = async () => {
+  const codigo = $("#gCodigo").value.trim();
+  const nombre = $("#gNombre").value.trim();
+  const err = $("#gError");
+  if (codigo.length < 3 || nombre.length < 2) {
+    err.textContent = "Completá el código del grupo y tu nombre.";
+    return;
+  }
+  err.textContent = "Entrando…";
+  try {
+    const r = await rpc("ed_entrar", {
+      p_codigo: codigo,
+      p_nombre: nombre,
+      p_apellido_inicial: $("#gApellido").value.trim() || null
+    });
+    if (!r.ok) { err.textContent = r.error; return; }
+    sesion = { token: r.token, nombre: r.nombre, grupo: r.grupo };
+    localStorage.setItem("ed:sesion", JSON.stringify(sesion));
+    err.textContent = "";
+    arrancar();
+  } catch {
+    err.textContent = "No pude conectarme. Revisá tu internet e intentá de nuevo.";
+  }
+};
+
+["gCodigo", "gNombre", "gApellido"].forEach(id =>
+  $("#" + id).addEventListener("keydown", e => { if (e.key === "Enter") $("#gEntrar").click(); }));
+
+$("#qSalir").onclick = () => {
+  if (!confirm("¿Salir? Tu progreso queda guardado y podés volver a entrar con tu nombre.")) return;
+  localStorage.removeItem("ed:sesion");
+  location.reload();
+};
+
+/* ==================================================================
+   Estado de la lección
+   ================================================================== */
+let leccion = null;
+const estado = JSON.parse(localStorage.getItem(LS("estado")) || "{}");
+
+function guardarEstado() { localStorage.setItem(LS("estado"), JSON.stringify(estado)); }
+
+/* Sin errores y sin pista, tres estrellas. Cada tropiezo cuesta. */
+function estrellasDe(intentos, usoPista) {
+  if (intentos <= 1 && !usoPista) return 3;
+  if (intentos <= 3) return 2;
+  return 1;
+}
+
+function conPuntaje() {
+  return leccion.estaciones.filter(e => e.tipo !== "pasaje" && e.tipo !== "oracion");
+}
+
+function completar(id, intentos, usoPista) {
+  const nueva = estrellasDe(intentos, usoPista);
+  const previo = (estado[id] && estado[id].estrellas) || 0;
+  estado[id] = { estrellas: Math.max(previo, nueva), intentos: intentos, pista: !!usoPista };
+  guardarEstado();
+  actualizarProgreso();
+  festejar();
+  enviar("ed_progreso_guardar", {
+    p_token: sesion.token, p_leccion: LECCION, p_estacion: id,
+    p_estrellas: estado[id].estrellas, p_uso_pista: !!usoPista,
+    p_intentos: intentos, p_segundos: null
+  });
+  return estado[id].estrellas;
+}
+
+function actualizarProgreso() {
+  const lista = conPuntaje();
+  const total = lista.length * 3;
+  const suma = lista.reduce((a, e) => a + ((estado[e.id] && estado[e.id].estrellas) || 0), 0);
+  $("#pEstrellas").textContent = suma;
+  $("#pTotal").textContent = total;
+  const pct = total ? Math.round(suma / total * 100) : 0;
+  $("#pPorcentaje").textContent = pct + "%";
+  $("#pBarra").style.width = pct + "%";
+  actualizarCofre();
+}
+
+function pintarEstrellas(id) {
+  const el = document.querySelector('[data-estrellas="' + id + '"]');
+  if (!el) return;
+  const n = (estado[id] && estado[id].estrellas) || 0;
+  el.textContent = "⭐".repeat(n) + "☆".repeat(3 - n);
+}
+
+function festejar() {
+  for (let i = 0; i < 18; i++) {
+    const x = document.createElement("i");
+    x.className = "confetti";
+    x.textContent = ["⭐", "✦", "🌟"][i % 3];
+    x.style.left = Math.random() * 100 + "vw";
+    x.style.top = "-25px";
+    x.style.color = ["#ffbd26", "#e9587b", "#45b6e9"][i % 3];
+    x.style.animationDelay = Math.random() * .45 + "s";
+    document.body.append(x);
+    setTimeout(() => x.remove(), 3000);
+  }
+}
+
+/* ==================================================================
+   Utilidades de render
+   ================================================================== */
+function el(tag, cls, texto) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (texto != null) n.textContent = texto;
+  return n;
+}
+
+function mezclar(a) {
+  return a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(p => p[1]);
+}
+
+function cabecera(seccion, i, est) {
+  const h = el("h2");
+  h.append(el("span", "num", est.tipo === "pasaje" ? "📖" : String(i)));
+  h.append(el("span", null, est.titulo));
+  if (est.tipo !== "pasaje" && est.tipo !== "oracion") {
+    const s = el("span", "stars");
+    s.dataset.estrellas = est.id;
+    h.append(s);
+  }
+  seccion.append(h);
+  if (est.instruccion) seccion.append(el("p", "hint", est.instruccion));
+}
+
+function botonPista(destino, texto, alUsar) {
+  if (!texto) return;
+  const b = el("button", "ghost", "💡 Necesito una pista");
+  b.onclick = () => {
+    b.replaceWith(el("div", "pista-box", texto));
+    alUsar();
+  };
+  destino.append(b);
+}
+
+/* ==================================================================
+   Tipos de estación
+   ================================================================== */
+const RENDER = {};
+
+/* ---------- Pasaje bíblico ---------- */
+RENDER.pasaje = (s, est) => {
+  est.bloques.forEach(b => {
+    const caja = el("div", "passage");
+    caja.append(el("div", "ref", b.cita));
+    if (b.relato) caja.append(el("p", "relato", b.relato));
+    (b.versiculos || []).forEach(v => {
+      const d = el("div", "verso");
+      d.append(el("b", null, v.ref));
+      d.append(el("i", null, "“" + v.texto + "”"));
+      caja.append(d);
+    });
+    s.append(caja);
+  });
+  if (leccion.version) s.append(el("p", "hint", "Texto bíblico: " + leccion.version));
+};
+
+/* ---------- Quiz con evidencia obligatoria ---------- */
+RENDER.quiz = (s, est) => {
+  let indice = 0, intentos = 1, pista = false;
+  const zona = el("div");
+  const fb = el("p", "feedback");
+  s.append(zona, fb);
+
+  function pregunta() {
+    zona.innerHTML = "";
+    if (indice >= est.preguntas.length) {
+      const n = completar(est.id, intentos, pista);
+      pintarEstrellas(est.id);
+      fb.className = "feedback ok";
+      fb.textContent = "✅ Terminaste el interrogatorio con " + n + " de 3 estrellas.";
+      if (est.digito) mostrarDigito(s, est.digito);
+      return;
+    }
+    const p = est.preguntas[indice];
+    zona.append(el("p", "hint", "Pregunta " + (indice + 1) + " de " + est.preguntas.length));
+    const enun = el("p", null, p.enunciado);
+    enun.style.fontWeight = "700";
+    enun.style.lineHeight = "1.5";
+    zona.append(enun);
+
+    mezclar(p.opciones.map((t, i) => ({ t: t, i: i }))).forEach(o => {
+      const b = el("button", "choice", o.t);
+      b.onclick = () => {
+        if (o.i === p.correcta) {
+          b.classList.add("correct");
+          zona.querySelectorAll(".choice").forEach(x => x.disabled = true);
+          const pista_btn = zona.querySelector(".ghost");
+          if (pista_btn) pista_btn.remove();
+          fb.textContent = "";
+          evidencia(p);
+        } else {
+          b.classList.add("wrong");
+          b.disabled = true;
+          intentos++;
+          fb.className = "feedback no";
+          fb.textContent = "Esa no. Volvé al texto y fijate bien.";
+        }
+      };
+      zona.append(b);
+    });
+    botonPista(zona, p.pista, () => { pista = true; });
+  }
+
+  function evidencia(p) {
+    if (!p.evidencia) { avanzar(p); return; }
+    const caja = el("div", "explica");
+    caja.append(el("p", null, "Bien. Ahora demostralo: " + p.evidencia.enunciado));
+    p.evidencia.opciones.forEach((t, i) => {
+      const b = el("button", "choice", t);
+      b.onclick = () => {
+        const todas = caja.querySelectorAll(".choice");
+        todas.forEach(x => x.disabled = true);
+        if (i === p.evidencia.correcta) {
+          b.classList.add("correct");
+        } else {
+          b.classList.add("wrong");
+          todas[p.evidencia.correcta].classList.add("correct");
+          intentos++;
+          fb.className = "feedback no";
+          fb.textContent = "Acertaste la respuesta pero no el versículo. Era " +
+                           p.evidencia.opciones[p.evidencia.correcta] + ".";
+        }
+        avanzar(p);
+      };
+      caja.append(b);
+    });
+    zona.append(caja);
+  }
+
+  function avanzar(p) {
+    if (p.explicacion) zona.append(el("div", "explica", p.explicacion));
+    const b = el("button", null, indice + 1 >= est.preguntas.length ? "Terminar" : "Siguiente pregunta →");
+    b.onclick = () => { indice++; fb.textContent = ""; pregunta(); };
+    zona.append(b);
+  }
+
+  pregunta();
+};
+
+/* ---------- Caza del error ---------- */
+RENDER["caza-error"] = (s, est) => {
+  let intentos = 1;
+  const lista = el("div");
+  mezclar(est.afirmaciones.slice()).forEach(a => {
+    const lab = el("label", "check-item");
+    const chk = el("input");
+    chk.type = "checkbox";
+    lab.append(chk, el("span", null, a.texto));
+    lab._dato = a;
+    lab._chk = chk;
+    lista.append(lab);
+  });
+  const btn = el("button", null, "Comprobar");
+  const fb = el("p", "feedback");
+  s.append(lista, btn, fb);
+
+  btn.onclick = () => {
+    let todoBien = true;
+    lista.querySelectorAll(".check-item").forEach(lab => {
+      if (lab._chk.checked !== lab._dato.falsa) todoBien = false;
+    });
+    if (!todoBien) {
+      intentos++;
+      fb.className = "feedback no";
+      /* El primer error no regala nada. Recién al segundo le digo cuántas son. */
+      if (intentos <= 2) {
+        fb.textContent = "Todavía no. Alguna te falta o alguna te sobra: releé el expediente.";
+      } else {
+        const falsas = est.afirmaciones.filter(a => a.falsa).length;
+        fb.textContent = "Todavía no. Te doy una mano: son exactamente " + falsas + " falsas.";
+      }
+      return;
+    }
+    lista.querySelectorAll(".check-item").forEach(lab => {
+      lab.classList.add(lab._dato.falsa ? "era-falsa" : "era-cierta");
+      lab._chk.disabled = true;
+      lab.append(el("small", null, lab._dato.porque));
+    });
+    btn.disabled = true;
+    const n = completar(est.id, intentos, false);
+    pintarEstrellas(est.id);
+    fb.className = "feedback ok";
+    fb.textContent = "✅ Las cazaste todas. " + n + " de 3 estrellas.";
+    if (est.digito) mostrarDigito(s, est.digito);
+  };
+};
+
+/* ---------- Línea de tiempo ---------- */
+RENDER["linea-tiempo"] = (s, est) => {
+  let paso = 1, intentos = 1;
+  const cont = el("div", "tarjetas");
+  const fb = el("p", "feedback");
+  mezclar(est.eventos.slice()).forEach(ev => {
+    const b = el("button", null, ev.texto);
+    b._orden = ev.orden;
+    b.onclick = () => {
+      if (b._orden === paso) {
+        b.classList.add("ok");
+        b.disabled = true;
+        paso++;
+        if (paso > est.eventos.length) {
+          const n = completar(est.id, intentos, false);
+          pintarEstrellas(est.id);
+          fb.className = "feedback ok";
+          fb.textContent = "✅ Línea de tiempo correcta. " + n + " de 3 estrellas.";
+          if (est.digito) mostrarDigito(s, est.digito);
+        }
+      } else {
+        intentos++;
+        paso = 1;
+        cont.querySelectorAll("button").forEach(x => { x.classList.remove("ok"); x.disabled = false; });
+        fb.className = "feedback no";
+        fb.textContent = "Ese hecho no va ahí. Se reinicia: pensá bien qué fue lo primero de todo.";
+      }
+    };
+    cont.append(b);
+  });
+  s.append(cont, fb);
+};
+
+/* ---------- Armar el versículo ---------- */
+RENDER.versiculo = (s, est) => {
+  let intentos = 0, pista = false;
+  const resp = el("div", "answer");
+  const piezas = el("div", "pieces");
+  mezclar(est.piezas.slice()).forEach(t => {
+    const p = el("span", "piece", t);
+    p.onclick = () => {
+      if (p.classList.contains("used")) return;
+      p.classList.add("used");
+      const copia = el("span", "piece", t);
+      copia.onclick = () => { copia.remove(); p.classList.remove("used"); };
+      resp.append(copia);
+    };
+    piezas.append(p);
+  });
+  const btn = el("button", null, "Comprobar");
+  const fb = el("p", "feedback");
+  s.append(resp, piezas, btn);
+  botonPista(s, est.pista, () => { pista = true; });
+  s.append(fb);
+
+  btn.onclick = () => {
+    intentos++;
+    const armado = [...resp.querySelectorAll(".piece")].map(x => x.textContent).join(" ");
+    if (armado === est.respuesta) {
+      btn.disabled = true;
+      resp.querySelectorAll(".piece").forEach(x => x.onclick = null);
+      const n = completar(est.id, intentos, pista);
+      pintarEstrellas(est.id);
+      fb.className = "feedback ok";
+      fb.textContent = "✅ ¡Exacto! " + n + " de 3 estrellas.";
+      if (est.explicacion) s.append(el("div", "explica", est.explicacion));
+      if (est.digito) mostrarDigito(s, est.digito);
+    } else {
+      fb.className = "feedback no";
+      fb.textContent = "Todavía no. Tocá una pieza que ya pusiste para sacarla y probá otro orden.";
+    }
+  };
+};
+
+/* ---------- Emparejar (profecía ↔ cumplimiento) ---------- */
+RENDER.emparejar = (s, est) => {
+  let intentos = 1, resueltos = 0, elegido = null;
+  const grid = el("div", "match");
+  const colA = el("div", "col");
+  const colB = el("div", "col");
+  colA.append(el("h3", null, est.izquierda || "Columna A"));
+  colB.append(el("h3", null, est.derecha || "Columna B"));
+  const fb = el("p", "feedback");
+
+  mezclar(est.pares.map((p, i) => ({ t: p.a, i: i }))).forEach(o => {
+    const b = el("button", null, o.t);
+    b._par = o.i; b._lado = "a";
+    b.onclick = () => elegir(b);
+    colA.append(b);
+  });
+  mezclar(est.pares.map((p, i) => ({ t: p.b, i: i }))).forEach(o => {
+    const b = el("button", null, o.t);
+    b._par = o.i; b._lado = "b";
+    b.onclick = () => elegir(b);
+    colB.append(b);
+  });
+
+  function elegir(b) {
+    if (b.classList.contains("ok")) return;
+    if (!elegido) { elegido = b; b.classList.add("sel"); return; }
+    if (elegido === b) { b.classList.remove("sel"); elegido = null; return; }
+    if (elegido._lado === b._lado) {
+      elegido.classList.remove("sel");
+      elegido = b;
+      b.classList.add("sel");
+      return;
+    }
+    if (elegido._par === b._par) {
+      elegido.classList.remove("sel");
+      elegido.classList.add("ok");
+      b.classList.add("ok");
+      elegido = null;
+      resueltos++;
+      fb.className = "feedback ok";
+      fb.textContent = "Par correcto.";
+      if (resueltos === est.pares.length) {
+        const n = completar(est.id, intentos, false);
+        pintarEstrellas(est.id);
+        fb.textContent = "✅ Uniste los " + est.pares.length + ". " + n + " de 3 estrellas.";
+        if (est.explicacion) s.append(el("div", "explica", est.explicacion));
+        if (est.digito) mostrarDigito(s, est.digito);
+      }
+    } else {
+      intentos++;
+      elegido.classList.remove("sel");
+      elegido = null;
+      fb.className = "feedback no";
+      fb.textContent = "Ese no es el par. Leé de nuevo qué anuncia cada texto antiguo.";
+    }
+  }
+
+  grid.append(colA, colB);
+  s.append(grid, fb);
+};
+
+/* ---------- Respuesta escrita: esto sí lo lee el maestro ---------- */
+RENDER.texto = (s, est) => {
+  const ta = el("textarea");
+  ta.rows = 6;
+  ta.placeholder = "Mi respuesta, con evidencia del texto…";
+  ta.value = localStorage.getItem(LS(est.id)) || "";
+  const cont = el("p", "contador");
+  const btn = el("button", null, "Entregar al maestro");
+  const fb = el("p", "feedback");
+
+  s.append(ta, cont);
+  if (est.guia) {
+    const g = el("div", "guia");
+    g.append(el("b", null, "Antes de entregar, revisá:"));
+    const ul = el("ul");
+    est.guia.forEach(t => ul.append(el("li", null, t)));
+    g.append(ul);
+    s.append(g);
+  }
+  s.append(btn, fb);
+  if (est.nota) s.append(el("p", "privado", "👀 " + est.nota));
+
+  const minimo = est.minimo || 100;
+  function refrescar() {
+    const n = ta.value.trim().length;
+    cont.textContent = n + " caracteres" + (n < minimo ? " (mínimo " + minimo + ")" : "");
+    btn.disabled = n < minimo;
+    localStorage.setItem(LS(est.id), ta.value);
+  }
+  ta.oninput = refrescar;
+  refrescar();
+
+  btn.onclick = () => {
+    enviar("ed_respuesta_guardar", {
+      p_token: sesion.token, p_leccion: LECCION,
+      p_estacion: est.id, p_texto: ta.value.trim()
+    });
+    const n = completar(est.id, 1, false);
+    pintarEstrellas(est.id);
+    fb.className = "feedback ok";
+    fb.textContent = "✅ Entregado. " + n + " de 3 estrellas. Si lo mejorás, podés volver a entregarlo.";
+  };
+};
+
+/* ---------- Oración: nunca sale del teléfono ---------- */
+RENDER.oracion = (s, est) => {
+  const ta = el("textarea");
+  ta.rows = 6;
+  ta.placeholder = "Querido Dios…";
+  ta.value = localStorage.getItem(LS(est.id)) || "";
+  ta.oninput = () => localStorage.setItem(LS(est.id), ta.value);
+  s.append(ta);
+  s.append(el("p", "privado", "🔒 " + (est.privado || "Esto queda sólo en tu teléfono.")));
+};
+
+/* ==================================================================
+   Candado final
+   ================================================================== */
+function conDigito() { return leccion.estaciones.filter(e => e.digito); }
+function codigoCorrecto() { return conDigito().map(e => e.digito).join(""); }
+
+function mostrarDigito(s, d) {
+  if (s.querySelector(".digito")) return;
+  const p = el("p");
+  p.style.marginTop = "14px";
+  p.append(el("span", null, "🔓 Dígito para el cofre: "));
+  p.append(el("span", "digito", d));
+  s.append(p);
+  actualizarCofre();
+}
+
+function actualizarCofre() {
+  const slots = document.getElementById("slots");
+  if (!slots) return;
+  slots.innerHTML = "";
+  conDigito().forEach(e => {
+    const ganado = ((estado[e.id] && estado[e.id].estrellas) || 0) > 0;
+    slots.append(el("div", "slot" + (ganado ? " on" : ""), ganado ? e.digito : "?"));
+  });
+}
+
+function renderCofre(main) {
+  const s = el("section", "station cofre");
+  const h = el("h2");
+  h.append(el("span", null, "🔐 El cofre"));
+  s.append(h);
+  s.append(el("p", "hint", leccion.candado || "Juntá los dígitos y abrí el cofre."));
+
+  const slots = el("div", "slots");
+  slots.id = "slots";
+  s.append(slots);
+
+  const codigo = el("input");
+  codigo.type = "text";
+  codigo.placeholder = "····";
+  codigo.maxLength = conDigito().length;
+  codigo.inputMode = "numeric";
+
+  const nombre = el("input");
+  nombre.type = "text";
+  nombre.className = "nombre";
+  nombre.placeholder = "Tu nombre para el diploma";
+  nombre.maxLength = 45;
+  nombre.value = (sesion && sesion.nombre) || "";
+
+  const btn = el("button", null, "Abrir el cofre");
+  const fb = el("p", "feedback");
+  s.append(codigo, nombre, btn, fb);
+  main.append(s);
+
+  btn.onclick = () => {
+    if (codigo.value.trim() !== codigoCorrecto()) {
+      fb.className = "feedback no";
+      fb.textContent = "Ese código no abre el cofre. Te falta el dígito de alguna estación.";
+      return;
+    }
+    const n = nombre.value.trim();
+    if (!n) {
+      fb.className = "feedback no";
+      fb.textContent = "Escribí tu nombre para el diploma.";
+      return;
+    }
+    diploma(n);
+    fb.className = "feedback ok";
+    fb.textContent = "🎉 ¡Cofre abierto! Tu diploma se está descargando.";
+    festejar();
+  };
+  actualizarCofre();
+}
+
+function diploma(nombre) {
+  const suma = conPuntaje().reduce((a, e) => a + ((estado[e.id] && estado[e.id].estrellas) || 0), 0);
+  const c = document.createElement("canvas");
+  c.width = 1400; c.height = 900;
+  const x = c.getContext("2d");
+  x.fillStyle = "#fff8df"; x.fillRect(0, 0, c.width, c.height);
+  x.strokeStyle = "#6949c6"; x.lineWidth = 28; x.strokeRect(35, 35, 1330, 830);
+  x.textAlign = "center";
+  x.fillStyle = "#6949c6"; x.font = "bold 60px system-ui";
+  x.fillText("DIPLOMA DEL EXPLORADOR BÍBLICO", 700, 165);
+  x.fillStyle = "#26304b"; x.font = "34px system-ui";
+  x.fillText("Se reconoce con alegría a", 700, 265);
+  x.fillStyle = "#c17d00"; x.font = "bold 84px cursive";
+  x.fillText(nombre, 700, 385);
+  x.fillStyle = "#26304b"; x.font = "32px system-ui";
+  x.fillText("por completar la misión", 700, 470);
+  x.font = "bold 34px system-ui";
+  x.fillText("“" + leccion.titulo + "”", 700, 524);
+  x.font = "58px system-ui";
+  x.fillText("⭐ " + suma + " estrellas ⭐", 700, 630);
+  x.font = "28px system-ui";
+  x.fillText("¡Que sigas creciendo en fe, amor y esperanza!", 700, 730);
+  x.fillStyle = "#5a6480"; x.font = "22px system-ui";
+  x.fillText("Escuela Dominical · Asamblea Cristiana · Grupo D", 700, 792);
+  const a = document.createElement("a");
+  a.href = c.toDataURL("image/png");
+  a.download = "diploma-" + LECCION + ".png";
+  a.click();
+}
+
+/* ==================================================================
+   Arranque
+   ================================================================== */
+async function arrancar() {
+  $("#gate").classList.add("oculto");
+  $("#app").classList.remove("oculto");
+  $("#qNombre").textContent = sesion.nombre;
+
+  try {
+    const r = await fetch("lecciones/" + LECCION + ".json", { cache: "no-cache" });
+    if (!r.ok) throw new Error("no encontrada");
+    leccion = await r.json();
+  } catch {
+    $("#estaciones").innerHTML =
+      '<section class="station"><h2>No pude cargar la misión</h2>' +
+      '<p class="hint">Revisá tu conexión y volvé a entrar en un rato.</p></section>';
+    return;
+  }
+
+  $("#titulo").textContent = leccion.titulo;
+  $("#subtitulo").textContent = leccion.subtitulo || "";
+  document.title = leccion.titulo;
+
+  /* Traigo del servidor lo que ya tenía y me quedo con lo mejor de cada lado,
+     por si hizo actividades en otro teléfono. */
+  try {
+    const r = await rpc("ed_mi_estado", { p_token: sesion.token, p_leccion: LECCION });
+    if (r.ok) {
+      for (const [id, v] of Object.entries(r.estaciones || {})) {
+        if (((estado[id] && estado[id].estrellas) || 0) < v.estrellas)
+          estado[id] = { estrellas: v.estrellas, intentos: v.intentos, pista: v.uso_pista };
+      }
+      for (const [id, texto] of Object.entries(r.respuestas || {})) {
+        if (!localStorage.getItem(LS(id))) localStorage.setItem(LS(id), texto);
+      }
+      guardarEstado();
+      marcarSync(true);
+    }
+  } catch { marcarSync(false); }
+
+  vaciarCola();
+
+  const main = $("#estaciones");
+  main.innerHTML = "";
+  let n = 0;
+  leccion.estaciones.forEach(est => {
+    const s = el("section", "station");
+    s.id = "est-" + est.id;
+    if (est.tipo !== "pasaje") n++;
+    cabecera(s, n, est);
+    const dibujar = RENDER[est.tipo];
+    if (dibujar) dibujar(s, est);
+    else s.append(el("p", "hint", "Actividad desconocida: " + est.tipo));
+    main.append(s);
+    pintarEstrellas(est.id);
+    /* Si ya la resolvió antes, le devuelvo el dígito sin obligarla a rehacerla. */
+    if (est.digito && ((estado[est.id] && estado[est.id].estrellas) || 0) > 0) mostrarDigito(s, est.digito);
+  });
+  renderCofre(main);
+  actualizarProgreso();
+}
+
+window.addEventListener("online", vaciarCola);
+if (sesion) arrancar();
+</script>
+</body>
+</html>

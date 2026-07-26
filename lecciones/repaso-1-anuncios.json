@@ -1,0 +1,197 @@
+{
+  "slug": "repaso-1-anuncios",
+  "titulo": "Los anuncios que cambiaron el mundo",
+  "subtitulo": "Gabriel visita a Zacarías y a María. Dos anuncios parecidos, dos respuestas muy distintas.",
+  "version": "Reina-Valera 1909 (dominio público)",
+  "candado": "Cada estación con 🔒 te da un dígito. Juntá los cuatro para abrir el cofre.",
+  "estaciones": [
+    {
+      "id": "lectura",
+      "tipo": "pasaje",
+      "titulo": "El expediente",
+      "instruccion": "Leé con atención antes de empezar. Vas a poder volver acá en cualquier momento, pero las preguntas de abajo se responden con esto.",
+      "bloques": [
+        {
+          "cita": "Lucas 1:5-25",
+          "relato": "Zacarías era sacerdote. Él y su esposa Elisabet ya eran ancianos y nunca habían podido tener hijos. Un día le tocó entrar al templo a quemar el incienso, y ahí, parado a la derecha del altar, se le apareció el ángel Gabriel.",
+          "versiculos": [
+            { "ref": "Lucas 1:13", "texto": "Zacarías, tu oración ha sido oída, y tu mujer Elisabet te parirá un hijo, y llamarás su nombre Juan." },
+            { "ref": "Lucas 1:18", "texto": "¿En qué conoceré esto? porque yo soy viejo, y mi mujer avanzada en días." },
+            { "ref": "Lucas 1:20", "texto": "Y he aquí estarás mudo y no podrás hablar, hasta el día que esto sea hecho, por cuanto no creíste á mis palabras." }
+          ]
+        },
+        {
+          "cita": "Lucas 1:26-38",
+          "relato": "Seis meses después, Gabriel fue enviado a Nazaret, un pueblo de Galilea, a una joven llamada María. Le anunció que iba a tener un hijo, que se llamaría Jesús, y que su reino no se iba a terminar nunca. María también preguntó, pero de otra manera.",
+          "versiculos": [
+            { "ref": "Lucas 1:33", "texto": "Y reinará en la casa de Jacob por siempre; y de su reino no habrá fin." },
+            { "ref": "Lucas 1:34", "texto": "¿Cómo será esto? porque no conozco varón." },
+            { "ref": "Lucas 1:36", "texto": "Y he aquí, Elisabet tu parienta, también ella ha concebido hijo en su vejez; y este es el sexto mes á ella que es llamada la estéril." },
+            { "ref": "Lucas 1:37", "texto": "Porque ninguna cosa es imposible para Dios." },
+            { "ref": "Lucas 1:38", "texto": "He aquí la sierva del Señor; hágase en mí conforme á tu palabra." }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "quiz-anuncios",
+      "tipo": "quiz",
+      "titulo": "Interrogatorio",
+      "instruccion": "Cuatro preguntas. Después de cada una te voy a pedir el versículo donde lo leíste: acertar sin saber dónde dice no cuenta.",
+      "digito": "7",
+      "preguntas": [
+        {
+          "enunciado": "Zacarías preguntó “¿En qué conoceré esto?” y María preguntó “¿Cómo será esto?”. Son casi la misma pregunta, pero él quedó mudo y ella no. ¿Cuál es la diferencia?",
+          "opciones": [
+            "Zacarías pidió una prueba de que iba a pasar; María preguntó de qué manera iba a pasar.",
+            "Zacarías habló más fuerte y le faltó el respeto al ángel.",
+            "Zacarías era hombre y sacerdote, así que Dios le exigía más que a una joven.",
+            "María no preguntó nada en realidad: sólo pensó su pregunta en silencio."
+          ],
+          "correcta": 0,
+          "explicacion": "Zacarías dudaba de que fuera a pasar y pedía una garantía. María no dudaba de que iba a pasar: quería entender cómo. El ángel mismo lo dice: “por cuanto no creíste á mis palabras”.",
+          "pista": "Fijate qué le reprocha Gabriel en Lucas 1:20. La palabra exacta que usa te da la respuesta.",
+          "evidencia": {
+            "enunciado": "¿Dónde dice por qué Zacarías quedó mudo?",
+            "opciones": ["Lucas 1:13", "Lucas 1:18", "Lucas 1:20"],
+            "correcta": 2
+          }
+        },
+        {
+          "enunciado": "¿Qué anunció Gabriel sobre el reino de Jesús?",
+          "opciones": [
+            "Que sería el reino más grande de toda la tierra.",
+            "Que no tendría fin.",
+            "Que duraría hasta que Jesús volviera al cielo.",
+            "Que reinaría después de derrotar a los romanos."
+          ],
+          "correcta": 1,
+          "explicacion": "Todas suenan grandes, pero el texto dice algo mucho más fuerte que “grande”: dice que no se termina nunca.",
+          "pista": "No preguntes qué tan grande. Preguntá cuánto dura.",
+          "evidencia": {
+            "enunciado": "¿En qué versículo lo leíste?",
+            "opciones": ["Lucas 1:31", "Lucas 1:33", "Lucas 1:37"],
+            "correcta": 1
+          }
+        },
+        {
+          "enunciado": "¿Dónde estaba Zacarías cuando se le apareció Gabriel?",
+          "opciones": [
+            "En su casa, mientras oraba por la noche.",
+            "En el camino de vuelta de Jerusalén.",
+            "En el templo, junto al altar del incienso.",
+            "En la sinagoga de su pueblo, leyendo el rollo."
+          ],
+          "correcta": 2,
+          "explicacion": "Estaba cumpliendo su turno como sacerdote, adentro del templo. Afuera la gente lo esperaba y se extrañó de que tardara tanto.",
+          "pista": "¿Cuál era el trabajo de Zacarías, y dónde se hacía ese trabajo?",
+          "evidencia": {
+            "enunciado": "¿Qué estaba haciendo ahí?",
+            "opciones": ["Quemando el incienso", "Ofreciendo un cordero", "Leyendo la ley al pueblo"],
+            "correcta": 0
+          }
+        },
+        {
+          "enunciado": "Gabriel visita a María “al sexto mes” del embarazo de Elisabet, y María después se queda con ella como tres meses (Lucas 1:26, 36, 56). ¿Qué estaba por pasar cuando María se volvió a su casa?",
+          "opciones": [
+            "Elisabet recién se enteraba de que iba a tener un hijo.",
+            "Elisabet estaba por dar a luz a Juan.",
+            "Faltaban todavía seis meses para que naciera Juan.",
+            "Jesús ya había nacido en Belén."
+          ],
+          "correcta": 1,
+          "explicacion": "Seis más tres da nueve. María se quedó justo hasta el final del embarazo de Elisabet: se fue cuando Juan estaba por nacer.",
+          "pista": "Es una cuenta. Sumá los meses que da el texto.",
+          "evidencia": {
+            "enunciado": "¿De dónde sacaste los tres meses?",
+            "opciones": ["Lucas 1:36", "Lucas 1:56", "Lucas 1:80"],
+            "correcta": 1
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "caza-error",
+      "tipo": "caza-error",
+      "titulo": "Caza del error",
+      "instruccion": "Seis afirmaciones sobre el relato. Algunas son falsas, pero ninguna es obvia: hay que acordarse bien del texto. Marcá SÓLO las falsas y después comprobá. No te voy a decir cuántas son… al menos no de entrada.",
+      "digito": "4",
+      "afirmaciones": [
+        { "texto": "Gabriel se le apareció a Zacarías mientras dormía en su casa.", "falsa": true,  "porque": "Fue en el templo, de pie a la derecha del altar del incienso, mientras Zacarías cumplía su turno de sacerdote. No fue un sueño." },
+        { "texto": "Elisabet no podía tener hijos y además ya era anciana.",         "falsa": false, "porque": "Correcto. El texto dice que era estéril y que los dos eran de edad avanzada." },
+        { "texto": "Zacarías quedó ciego por no creerle al ángel.",                  "falsa": true,  "porque": "Quedó mudo, no ciego. Es un detalle que mucha gente cambia de memoria." },
+        { "texto": "Gabriel le dijo a María que al niño lo llamara Emanuel.",        "falsa": true,  "porque": "Le dijo que lo llamara Jesús. Emanuel aparece en la profecía de Isaías y en Mateo, pero no es el nombre que da Gabriel acá." },
+        { "texto": "María era parienta de Elisabet.",                                "falsa": false, "porque": "Correcto. El propio Gabriel se lo dice para mostrarle que Dios ya estaba obrando." },
+        { "texto": "Gabriel visitó a María y a Zacarías el mismo día.",              "falsa": true,  "porque": "Pasaron seis meses entre una visita y la otra. Ese dato es justamente el que permite hacer la cuenta de los tiempos." }
+      ]
+    },
+
+    {
+      "id": "linea-tiempo",
+      "tipo": "linea-tiempo",
+      "titulo": "Línea de tiempo",
+      "instruccion": "Ordená los hechos como pasaron. Tocá las tarjetas en orden: si te equivocás, se reinicia y perdés estrella.",
+      "digito": "2",
+      "eventos": [
+        { "texto": "A Zacarías le toca el turno de quemar el incienso en el templo", "orden": 1 },
+        { "texto": "Gabriel le anuncia que va a tener un hijo y él queda mudo",      "orden": 2 },
+        { "texto": "Elisabet queda embarazada",                                      "orden": 3 },
+        { "texto": "Seis meses después, Gabriel visita a María en Nazaret",          "orden": 4 },
+        { "texto": "María viaja a ver a Elisabet y se queda unos tres meses",        "orden": 5 },
+        { "texto": "Nace Juan y Zacarías vuelve a hablar",                           "orden": 6 }
+      ]
+    },
+
+    {
+      "id": "versiculo",
+      "tipo": "versiculo",
+      "titulo": "La respuesta de María",
+      "instruccion": "Armá lo que María le contestó al ángel (Lucas 1:38). Ojo: no te doy el arranque.",
+      "piezas": ["He aquí", "la sierva", "del Señor;", "hágase", "en mí", "conforme", "á tu palabra."],
+      "respuesta": "He aquí la sierva del Señor; hágase en mí conforme á tu palabra.",
+      "pista": "Empieza igual que muchas frases de la Biblia cuando alguien se presenta delante de Dios: “He aquí…”.",
+      "explicacion": "María no dice “está bien, lo acepto”. Dice que es la sierva del Señor: se pone a disposición antes de saber cómo va a terminar todo."
+    },
+
+    {
+      "id": "profecias",
+      "tipo": "emparejar",
+      "titulo": "Lo que ya estaba escrito",
+      "instruccion": "Siglos antes ya se había anunciado esto. Uní cada texto antiguo con el hecho que le corresponde.",
+      "digito": "9",
+      "izquierda": "Escrito siglos antes",
+      "derecha": "Lo que pasó en Lucas 1",
+      "pares": [
+        { "a": "“He aquí, yo envío mi mensajero, el cual preparará el camino delante de mí” (Malaquías 3:1)", "b": "El hijo que Gabriel le anuncia a Zacarías" },
+        { "a": "“Tu casa y tu reino serán firmes para siempre delante de tu rostro” (2 Samuel 7:16)",          "b": "“De su reino no habrá fin”" },
+        { "a": "“He aquí que la virgen concebirá, y parirá un hijo” (Isaías 7:14)",                            "b": "El anuncio a María en Nazaret" },
+        { "a": "“Voz que clama en el desierto: Barred camino á Jehová” (Isaías 40:3)",                         "b": "Juan predicando años más tarde" }
+      ],
+      "explicacion": "Ninguno de estos anuncios fue una sorpresa improvisada: Dios los venía anunciando desde hacía cientos de años."
+    },
+
+    {
+      "id": "detective",
+      "tipo": "texto",
+      "titulo": "Informe del detective",
+      "instruccion": "Zacarías era sacerdote, conocía las Escrituras y llevaba años sirviendo a Dios. María era una chica muy joven de un pueblo chico. Sin embargo, ella le creyó a Gabriel y él no. ¿Por qué te parece que pasó eso? Defendé tu respuesta con algo que diga el texto, no sólo con lo que te parece.",
+      "minimo": 120,
+      "guia": [
+        "¿Citaste algo del relato?",
+        "¿Diste una razón, no sólo una opinión?",
+        "¿Se entiende sin que yo tenga que adivinar lo que quisiste decir?"
+      ],
+      "nota": "Tu maestro va a leer esta respuesta."
+    },
+
+    {
+      "id": "oracion",
+      "tipo": "oracion",
+      "titulo": "Mi oración",
+      "instruccion": "María dijo “hágase en mí conforme a tu palabra” sin saber lo que venía. Escribí una oración honesta a Dios sobre algo que te cueste dejar en sus manos.",
+      "privado": "Esto queda sólo en tu teléfono. No se manda a ningún lado y tu maestro no lo ve."
+    }
+  ]
+}
