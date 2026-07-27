@@ -26,7 +26,9 @@ body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:va
 .progress-line{height:12px;background:#e4e6ef;border-radius:30px;overflow:hidden}
 .progress-line div{height:100%;width:0;background:linear-gradient(90deg,#f7bd2d,#ff785a);border-radius:30px;transition:.4s}
 .progress-text{display:flex;justify-content:space-between;gap:10px;font-size:.85rem;font-weight:700;margin-bottom:6px}
-.container{max-width:900px;margin:-22px auto 0;padding:0 16px 70px}
+/* Sin margen negativo arriba: la barra de progreso es blanca y opaca, así que
+   subir el contenido no lo solapaba, lo tapaba (se comía el botón de volver). */
+.container{max-width:900px;margin:0 auto;padding:14px 16px 70px}
 /* scroll-margin: deja aire para la barra de progreso pegada arriba cuando
    el JS lleva la estación al tope de la pantalla. */
 .station{background:var(--paper);border-radius:22px;padding:24px;margin:18px 0;box-shadow:0 10px 26px #26304b1c;border:2px solid #fff;scroll-margin-top:76px}
