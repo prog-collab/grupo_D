@@ -134,6 +134,16 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
 .instalar{margin-top:16px;text-align:center}
 .instalar button{background:#e9f3ff;color:#1b5c9b;border:2px solid #bcd9f5;font-size:.9rem}
 .instalar .comoIos{background:#eef9ff;border-left:5px solid var(--blue);border-radius:0 12px 12px 0;padding:11px 14px;margin-top:10px;font-size:.87rem;line-height:1.5;text-align:left;color:var(--soft)}
+/* El mismo ofrecimiento, pero flotando abajo: aparece solo a los 30 segundos.
+   safe-area-inset: en iPhone, arriba de la barra de gestos, no debajo. */
+.instalar-flotante{position:fixed;left:0;right:0;bottom:0;z-index:60;padding:0 12px calc(12px + env(safe-area-inset-bottom));display:flex;justify-content:center;pointer-events:none}
+.instalar-flotante .tarjeta{pointer-events:auto;width:100%;max-width:460px;background:#fff;border-radius:18px;box-shadow:0 12px 34px #26304b3d;border:2px solid #e6eefb;padding:15px 16px;animation:subir .35s ease-out}
+.instalar-flotante p{margin:0 0 11px;font-size:.92rem;line-height:1.45;color:var(--soft)}
+.instalar-flotante b{color:var(--ink)}
+.instalar-flotante .botones{display:flex;gap:9px;flex-wrap:wrap}
+.instalar-flotante .si{flex:1 1 160px;background:#e9f3ff;color:#1b5c9b;border:2px solid #bcd9f5;font-size:.9rem}
+.instalar-flotante .no{background:none;color:var(--soft);font-size:.86rem;text-decoration:underline;font-weight:600;padding:8px 10px}
+@keyframes subir{from{transform:translateY(120%);opacity:0}to{transform:translateY(0);opacity:1}}
 .soy-maestro{margin-top:20px;padding-top:16px;border-top:1px solid #e6e2f2;text-align:center}
 .soy-maestro a{color:var(--soft);font-size:.86rem;font-weight:700;text-decoration:none;border-bottom:1px dashed #b9b2d4;padding-bottom:2px}
 .demo-banda{position:sticky;top:0;z-index:9;background:#3a2a6b;color:#fff;padding:9px max(4%,14px);display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.86rem;font-weight:700}
@@ -265,6 +275,9 @@ let sesion = DEMO
    Guardo el token, que es lo que el servidor entiende; el nombre es sólo
    para mostrarlo en el botón. */
 const PERFILES = "ed:perfiles";
+/* Hasta cuándo no volver a ofrecer instalar la app. Es del teléfono, no de
+   un chico en particular: si son hermanos, alcanza con instalarla una vez. */
+const NO_MOLESTAR = "ed:instalar-despues";
 
 function perfiles() {
   if (DEMO) return [];
@@ -307,7 +320,8 @@ function limpiarHuerfanas() {
   const duenos = new Set(perfiles().map(p => p.token.slice(0, 8)));
   if (sesion) duenos.add(sesion.token.slice(0, 8));
   Object.keys(localStorage).forEach(k => {
-    if (!k.startsWith("ed:") || k === "ed:sesion" || k === "ed:pendientes" || k === PERFILES) return;
+    if (!k.startsWith("ed:") || k === "ed:sesion" || k === "ed:pendientes" ||
+        k === PERFILES || k === NO_MOLESTAR) return;
     if (k.split(":").length < 4 || !duenos.has(k.split(":")[1])) localStorage.removeItem(k);
   });
 }
@@ -1394,12 +1408,84 @@ function ofrecerInstalacion() {
   }
 }
 
+/* ------------------------------------------------------------------
+   El cartel de arriba está al final de la lista de misiones: el que no
+   baja hasta ahí nunca se entera. Así que a los 30 segundos de estar
+   usando la app le ofrezco instalarla con un aviso abajo de todo.
+   No al entrar: recién abrió, todavía no sabe qué es esto.
+   ------------------------------------------------------------------ */
+const ESPERA_INSTALAR = 30000;
+const REINTENTO_INSTALAR = 10000;
+const abierta = Date.now();
+/* Si dice "ahora no", no lo vuelvo a molestar por una semana (NO_MOLESTAR). */
+const SEMANA = 7 * 24 * 60 * 60 * 1000;
+let avisoPuesto = false;
+
+function avisoInstalar() {
+  if (avisoPuesto || DEMO || yaInstalada()) return;
+  /* Mientras está eligiendo su nombre no tiene sentido: que entre primero. */
+  if ($("#app").classList.contains("oculto")) {
+    setTimeout(avisoInstalar, REINTENTO_INSTALAR);
+    return;
+  }
+  if (Number(guardado.getItem(NO_MOLESTAR) || 0) > Date.now()) return;
+
+  const esIos = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  /* Sin botón de Android y sin iPhone no hay nada que ofrecer: en esos
+     navegadores instalar no se puede o se hace desde el menú del propio
+     navegador, y un cartel que no lleva a ningún lado sólo estorba. */
+  if (!instalador && !esIos) return;
+  avisoPuesto = true;
+
+  const caja = el("div", "instalar-flotante");
+  const tarjeta = el("div", "tarjeta");
+  const texto = el("p");
+  texto.append(el("b", null, "📲 Tenela como app"), document.createTextNode(
+    esIos
+      ? ". Tocá el botón Compartir de Safari (el cuadradito con la flecha) y elegí “Agregar a pantalla de inicio”. " +
+        "Después abrís desde el ícono, sin buscar el link."
+      : ". Se abre desde el ícono del teléfono, sin buscar el link, y anda aunque te quedes sin datos."));
+  tarjeta.append(texto);
+
+  const botones = el("div", "botones");
+  const cerrar = () => {
+    guardado.setItem(NO_MOLESTAR, String(Date.now() + SEMANA));
+    caja.remove();
+  };
+
+  if (instalador) {
+    const si = el("button", "si", "Instalar");
+    si.onclick = async () => {
+      const pedido = instalador;
+      instalador = null;
+      si.disabled = true;
+      pedido.prompt();
+      await pedido.userChoice;
+      caja.remove();
+      /* El pedido se gasta de una sola vez: el cartel de la lista ya no sirve. */
+      const fija = $("#instalarCaja");
+      if (fija) fija.classList.add("oculto");
+    };
+    botones.append(si);
+  }
+  const no = el("button", "no", instalador ? "Ahora no" : "Entendido");
+  no.onclick = cerrar;
+  botones.append(no);
+
+  tarjeta.append(botones);
+  caja.append(tarjeta);
+  document.body.append(caja);
+}
+
 window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault();
   instalador = e;
   ofrecerInstalacion();
+  /* Si el evento llegó tarde, los 30 segundos ya pasaron: lo muestro igual. */
+  if (Date.now() - abierta >= ESPERA_INSTALAR) avisoInstalar();
 });
 ofrecerInstalacion();
+setTimeout(avisoInstalar, ESPERA_INSTALAR);
 
 /* ==================================================================
    Arranque
