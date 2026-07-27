@@ -27,7 +27,9 @@ body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:va
 .progress-line div{height:100%;width:0;background:linear-gradient(90deg,#f7bd2d,#ff785a);border-radius:30px;transition:.4s}
 .progress-text{display:flex;justify-content:space-between;gap:10px;font-size:.85rem;font-weight:700;margin-bottom:6px}
 .container{max-width:900px;margin:-22px auto 0;padding:0 16px 70px}
-.station{background:var(--paper);border-radius:22px;padding:24px;margin:18px 0;box-shadow:0 10px 26px #26304b1c;border:2px solid #fff}
+/* scroll-margin: deja aire para la barra de progreso pegada arriba cuando
+   el JS lleva la estación al tope de la pantalla. */
+.station{background:var(--paper);border-radius:22px;padding:24px;margin:18px 0;box-shadow:0 10px 26px #26304b1c;border:2px solid #fff;scroll-margin-top:76px}
 .station h2{margin:0 0 6px;font-size:1.3rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .num{display:inline-grid;place-items:center;background:var(--mint);min-width:36px;height:36px;border-radius:50%;font-size:.95rem;flex:none}
 .stars{margin-left:auto;font-size:1rem;letter-spacing:2px}
@@ -811,7 +813,15 @@ RENDER.quiz = (s, est) => {
   function avanzar(p) {
     if (p.explicacion) zona.append(el("div", "explica", p.explicacion));
     const b = el("button", null, indice + 1 >= est.preguntas.length ? "Terminar" : "Siguiente pregunta →");
-    b.onclick = () => { indice++; fb.textContent = ""; pregunta(); };
+    b.onclick = () => {
+      indice++;
+      fb.textContent = "";
+      pregunta();
+      /* Al pasar de pregunta se van las opciones del versículo y la explicación:
+         la página se acorta y el chico queda mirando abajo de la pregunta nueva.
+         Lo devuelvo al principio de la estación así la ve sin scrollear. */
+      s.scrollIntoView({ block: "start" });
+    };
     zona.append(b);
   }
 
