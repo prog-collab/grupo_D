@@ -220,7 +220,11 @@ async function cargar() {
 /* ==================================================================
    Utilidades
    ================================================================== */
-const NOMBRE = a => a.nombre + (a.apellido ? " " + a.apellido.toUpperCase() + "." : "");
+/* Desde la migración 0006 los chicos entran con el apellido entero, así que
+   ya no hace falta abreviarlo. Las fichas viejas todavía guardan la inicial:
+   se completan solas la primera vez que el chico vuelve a entrar. */
+const CON_APELLIDO = (nombre, apellido) => nombre + (apellido ? " " + apellido : "");
+const NOMBRE = a => CON_APELLIDO(a.nombre, a.apellido);
 const tituloLeccion = slug => {
   const l = datos.lecciones.find(x => x.slug === slug);
   return l ? l.titulo : (slug || "—");
@@ -443,7 +447,7 @@ function preguntas(v) {
 
 function tarjetaConsulta(c, abierta) {
   const d = el("div", "consulta" + (abierta ? " pendiente" : ""));
-  d.append(el("div", "quien", c.alumno + (c.apellido ? " " + c.apellido.toUpperCase() + "." : "")));
+  d.append(el("div", "quien", CON_APELLIDO(c.alumno, c.apellido)));
   d.append(el("div", "donde",
     tituloLeccion(c.leccion) + " · actividad “" + (c.estacion || "?") + "” · " + fecha(c.cuando)));
   d.append(el("div", "texto", c.pregunta));
@@ -518,7 +522,7 @@ function respuestas(v) {
 
   lista.forEach(r => {
     const d = el("div", "respuesta-alumno");
-    d.append(el("div", "quien", r.alumno + (r.apellido ? " " + r.apellido.toUpperCase() + "." : "")));
+    d.append(el("div", "quien", CON_APELLIDO(r.alumno, r.apellido)));
     d.append(el("div", "donde", tituloLeccion(r.leccion) + " · " + fecha(r.cuando)));
     d.append(el("div", "texto", r.texto));
     v.append(d);

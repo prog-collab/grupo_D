@@ -50,8 +50,12 @@ Queda en http://localhost:8899. En Claude Code alcanza con pedir el preview
 ## 2. Cómo funciona, lo mínimo para no romper nada
 
 - **Los chicos entran sin contraseña**: código del grupo (`GRUPOD`) + nombre +
-  inicial del apellido. El servidor devuelve un token que queda en
+  apellido completo. El servidor devuelve un token que queda en
   `localStorage` bajo `ed:sesion`.
+- **Un teléfono puede tener varios chicos**: los que ya entraron quedan en
+  `ed:perfiles` y la puerta les muestra una lista para tocar su nombre. Los
+  mellizos se alternan con un toque, sin volver a escribir nada, y cada uno
+  vuelve a su propio progreso.
 - **Todo se guarda dos veces**: en el teléfono (`localStorage`) y en Supabase
   vía RPCs (`ed_progreso_guardar`, `ed_respuesta_guardar`, …). Si no hay
   internet, lo que no se pudo enviar queda en una cola (`ed:pendientes`) y se
@@ -118,7 +122,7 @@ los chicos el domingo, sin infantilizar. Los tiempos son orientativos.
 |---|---|---|
 | 0:00 | ¿Te acordás de las hojas que repartíamos los domingos? Bueno, se acabaron. Ahora todo esto entra en tu teléfono. | Vos a cámara |
 | 0:12 | Se llama **Explorador Bíblico**, y es una app con misiones. Cada misión es una historia de la Biblia, pero contada como un caso para resolver. | El ícono de la app / la portada |
-| 0:22 | Para entrar no necesitás ni contraseña ni correo. Ponés el código del grupo, que es **GRUPOD**, tu nombre, y la inicial de tu apellido si hay otro que se llama igual que vos. Listo, ya estás adentro. | **Captura 1**: la puerta de entrada, con los campos llenándose |
+| 0:22 | Para entrar no necesitás ni contraseña ni correo. Ponés el código del grupo, que es **GRUPOD**, tu nombre y tu apellido. Listo, ya estás adentro. Y si compartís el teléfono con un hermano, los dos pueden entrar: después cada uno toca su nombre y va a lo suyo. | **Captura 1**: la puerta de entrada, con los campos llenándose |
 | 0:38 | Lo primero que te conviene hacer es instalarla. Si tenés Android, te va a aparecer un botón que dice "Instalar la app en el teléfono": tocalo y te queda con su ícono, como cualquier otra app. Si tenés iPhone, tocá el botón de compartir en Safari y elegí "Agregar a pantalla de inicio". | **Captura 2**: el botón azul de instalar; después, el ícono en la pantalla del teléfono |
 | 0:56 | Y una vez instalada, abre aunque te quedes sin datos. Podés hacer las actividades en el colectivo. | Modo avión y la app abriendo igual |
 | 1:04 | Adentro vas a ver las misiones. Están numeradas, pero las hacés en el orden que quieras, y podés dejar una por la mitad y volver mañana: se guarda todo. | **Captura 3**: la portada con las 4 misiones y las barras de progreso |

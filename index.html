@@ -88,8 +88,16 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
 .gate label{display:block;font-weight:700;margin:14px 0 6px;font-size:.92rem}
 .gate button{width:100%;margin-top:18px;padding:13px}
 .gate .aviso{font-size:.85rem;color:var(--soft);margin-top:16px;line-height:1.5}
+/* ---- Quién sos: los perfiles guardados en este teléfono ---- */
+.perfiles .fila{display:flex;gap:8px;align-items:stretch;margin-top:10px}
+.perfiles .fila button{margin-top:0}
+.perfiles .yo{flex:1;text-align:left;padding:14px 16px;font-size:1.05rem}
+.perfiles .yo small{display:block;font-weight:600;opacity:.75;font-size:.78rem;margin-top:3px}
+.perfiles .quitar{width:auto;flex:0 0 auto;background:#f0ebff;color:var(--soft);padding:0 13px;font-size:1rem}
+.perfiles .otro{background:none;color:var(--violet);text-decoration:underline;font-size:.9rem;padding:8px}
 .quien{font-size:.82rem;color:var(--soft);text-align:right;padding:6px max(5%,18px) 0;margin:0}
 .quien button{background:none;color:var(--soft);padding:2px 6px;font-size:.82rem;text-decoration:underline;font-weight:600}
+.quien .cambiar{color:var(--violet)}
 .sync{font-size:.78rem;font-weight:700}
 .sync.off{color:#c0392b}
 /* ---- Preguntarle al maestro ---- */
@@ -152,14 +160,26 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
 <!-- ===================== PUERTA DE ENTRADA ===================== -->
 <div id="gate" class="gate">
   <h2>¡Hola, explorador!</h2>
-  <p class="hint">Escribí el código que te dio tu maestro y tu nombre. No hace falta contraseña ni correo.</p>
-  <label for="gCodigo">Código del grupo</label>
-  <input type="text" id="gCodigo" placeholder="GRUPOD" autocomplete="off" maxlength="20">
-  <label for="gNombre">Tu nombre</label>
-  <input type="text" id="gNombre" placeholder="Tu nombre" autocomplete="off" maxlength="40">
-  <label for="gApellido">Inicial de tu apellido <span style="font-weight:400;color:#5a6480">(si hay otro con tu nombre)</span></label>
-  <input type="text" id="gApellido" placeholder="G" autocomplete="off" maxlength="2">
-  <button id="gEntrar">Entrar</button>
+
+  <!-- Si en este teléfono ya entró alguien, primero le ofrezco tocar su
+       nombre. Los mellizos comparten el aparato y no tienen por qué
+       escribir todo de nuevo cada vez que se lo pasan. -->
+  <div id="gPerfiles" class="perfiles oculto">
+    <p class="hint">¿Quién sos?</p>
+    <div id="gPerfilesLista"></div>
+    <button id="gOtro" class="otro">Entrar con otro nombre</button>
+  </div>
+
+  <div id="gForm">
+    <p class="hint">Escribí el código que te dio tu maestro, tu nombre y tu apellido. No hace falta contraseña ni correo.</p>
+    <label for="gCodigo">Código del grupo</label>
+    <input type="text" id="gCodigo" placeholder="GRUPOD" autocomplete="off" maxlength="20">
+    <label for="gNombre">Tu nombre</label>
+    <input type="text" id="gNombre" placeholder="Tu nombre" autocomplete="off" maxlength="40">
+    <label for="gApellido">Tu apellido <span style="font-weight:400;color:#5a6480">(completo)</span></label>
+    <input type="text" id="gApellido" placeholder="Tu apellido" autocomplete="off" maxlength="60">
+    <button id="gEntrar">Entrar</button>
+  </div>
   <p class="feedback no" id="gError"></p>
   <p class="aviso">Tu maestro puede ver qué actividades hiciste y qué escribiste en ellas. Lo que escribas en <b>Mi oración</b> no se manda a ningún lado: queda sólo en este teléfono.</p>
   <div class="instalar oculto" id="instalarCaja"></div>
@@ -188,7 +208,7 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
     </div>
     <div class="progress-line"><div id="pBarra"></div></div>
   </div>
-  <p class="quien">Sos <b id="qNombre"></b> · <button id="qSalir">salir</button></p>
+  <p class="quien">Sos <b id="qNombre"></b> · <button id="qCambiar" class="cambiar oculto">cambiar de explorador</button> <button id="qSalir">salir</button></p>
 
   <main class="container" id="estaciones"></main>
 </div>
@@ -236,20 +256,68 @@ let sesion = DEMO
   ? { token: "demo0000", nombre: "Modo demo", grupo: "—" }
   : JSON.parse(localStorage.getItem("ed:sesion") || "null");
 
-/* Al entrar alguien distinto en el mismo teléfono, borro lo del anterior.
-   Las claves viejas sin dueño (de versiones previas) también se van. */
-function limpiarDeOtroDueno() {
-  /* En demo esto borraría el progreso real del chico que use ese teléfono. */
-  if (DEMO) return;
-  const mio = sesion ? sesion.token.slice(0, 8) : null;
+/* Quiénes entraron alguna vez en este teléfono. Los mellizos lo comparten:
+   guardo a los dos y se alternan con un toque, sin volver a tipear nada.
+   Guardo el token, que es lo que el servidor entiende; el nombre es sólo
+   para mostrarlo en el botón. */
+const PERFILES = "ed:perfiles";
+
+function perfiles() {
+  if (DEMO) return [];
+  try { return JSON.parse(localStorage.getItem(PERFILES) || "[]"); }
+  catch { return []; }
+}
+
+function guardarPerfiles(lista) {
+  localStorage.setItem(PERFILES, JSON.stringify(lista.slice(0, 6)));
+}
+
+/* El que acaba de entrar queda primero en la lista. */
+function activarSesion(s) {
+  sesion = s;
+  localStorage.setItem("ed:sesion", JSON.stringify(s));
+  guardarPerfiles([s, ...perfiles().filter(p => p.token !== s.token)]);
+}
+
+function borrarClavesDe(token) {
+  const dueno = token.slice(0, 8);
   Object.keys(localStorage).forEach(k => {
-    if (!k.startsWith("ed:") || k === "ed:sesion" || k === "ed:pendientes") return;
-    const dueno = k.split(":")[1];
-    /* Las claves nuevas son ed:<dueño>:<lección>:<campo> */
-    if (k.split(":").length < 4 || dueno !== mio) localStorage.removeItem(k);
+    if (k.startsWith("ed:" + dueno + ":")) localStorage.removeItem(k);
   });
 }
-limpiarDeOtroDueno();
+
+function olvidarPerfil(token) {
+  guardarPerfiles(perfiles().filter(p => p.token !== token));
+  borrarClavesDe(token);
+  if (sesion && sesion.token === token) {
+    localStorage.removeItem("ed:sesion");
+    sesion = null;
+  }
+}
+
+/* Cada chico tiene sus propias claves (ed:<dueño>:<lección>:<campo>), así que
+   los mellizos ya no se pisan. Lo único que hay que barrer es lo que quedó
+   sin dueño: claves de versiones viejas y de perfiles que alguien quitó. */
+function limpiarHuerfanas() {
+  if (DEMO) return;
+  const duenos = new Set(perfiles().map(p => p.token.slice(0, 8)));
+  if (sesion) duenos.add(sesion.token.slice(0, 8));
+  Object.keys(localStorage).forEach(k => {
+    if (!k.startsWith("ed:") || k === "ed:sesion" || k === "ed:pendientes" || k === PERFILES) return;
+    if (k.split(":").length < 4 || !duenos.has(k.split(":")[1])) localStorage.removeItem(k);
+  });
+}
+
+/* Los que ya venían de la versión anterior tienen sesión pero no figuran
+   en la lista de perfiles: los sumo antes de barrer, si no pierden todo. */
+if (!DEMO && sesion && !perfiles().some(p => p.token === sesion.token)) {
+  guardarPerfiles([sesion, ...perfiles()]);
+}
+limpiarHuerfanas();
+
+function nombreCompleto(s) {
+  return s ? s.nombre + (s.apellido ? " " + s.apellido : "") : "";
+}
 
 async function rpc(fn, params) {
   const r = await fetch(SUPA_URL + "/rest/v1/rpc/" + fn, {
@@ -301,12 +369,62 @@ async function enviar(fn, params) {
 /* ==================================================================
    Puerta de entrada
    ================================================================== */
+/* La lista de "¿quién sos?" con los que ya entraron en este teléfono.
+   Cambiar de chico es un toque y un recargue: cada uno vuelve a su propio
+   progreso, a sus propias respuestas y a su propia oración. */
+function pintarPerfiles() {
+  const lista = perfiles();
+  const caja = $("#gPerfiles");
+  const cont = $("#gPerfilesLista");
+  cont.innerHTML = "";
+
+  if (!lista.length) {
+    caja.classList.add("oculto");
+    $("#gForm").classList.remove("oculto");
+    return;
+  }
+
+  lista.forEach(p => {
+    const fila = el("div", "fila");
+
+    const yo = el("button", "yo");
+    yo.append(el("span", null, nombreCompleto(p)));
+    yo.append(el("small", null, p.grupo || ""));
+    yo.onclick = () => {
+      activarSesion(p);
+      limpiarHuerfanas();
+      location.reload();
+    };
+
+    const quitar = el("button", "quitar", "✕");
+    quitar.title = "Quitar de este teléfono";
+    quitar.onclick = () => {
+      if (!confirm("¿Sacar a " + nombreCompleto(p) + " de este teléfono? Sus estrellas quedan guardadas y puede volver a entrar escribiendo su nombre y apellido.")) return;
+      olvidarPerfil(p.token);
+      pintarPerfiles();
+    };
+
+    fila.append(yo, quitar);
+    cont.append(fila);
+  });
+
+  caja.classList.remove("oculto");
+  $("#gForm").classList.add("oculto");
+}
+
+$("#gOtro").onclick = () => {
+  $("#gForm").classList.remove("oculto");
+  $("#gPerfiles").classList.add("oculto");
+  $("#gCodigo").focus();
+};
+
 $("#gEntrar").onclick = async () => {
-  const codigo = $("#gCodigo").value.trim();
-  const nombre = $("#gNombre").value.trim();
+  const codigo   = $("#gCodigo").value.trim();
+  const nombre   = $("#gNombre").value.trim();
+  const apellido = $("#gApellido").value.trim();
   const err = $("#gError");
-  if (codigo.length < 3 || nombre.length < 2) {
-    err.textContent = "Completá el código del grupo y tu nombre.";
+  if (codigo.length < 3 || nombre.length < 2 || apellido.length < 2) {
+    err.textContent = "Completá el código del grupo, tu nombre y tu apellido completo.";
     return;
   }
   err.textContent = "Entrando…";
@@ -314,12 +432,11 @@ $("#gEntrar").onclick = async () => {
     const r = await rpc("ed_entrar", {
       p_codigo: codigo,
       p_nombre: nombre,
-      p_apellido_inicial: $("#gApellido").value.trim() || null
+      p_apellido: apellido
     });
     if (!r.ok) { err.textContent = r.error; return; }
-    sesion = { token: r.token, nombre: r.nombre, grupo: r.grupo };
-    localStorage.setItem("ed:sesion", JSON.stringify(sesion));
-    limpiarDeOtroDueno();
+    activarSesion({ token: r.token, nombre: r.nombre, apellido: r.apellido, grupo: r.grupo });
+    limpiarHuerfanas();
     err.textContent = "";
     arrancar();
   } catch {
@@ -330,8 +447,14 @@ $("#gEntrar").onclick = async () => {
 ["gCodigo", "gNombre", "gApellido"].forEach(id =>
   $("#" + id).addEventListener("keydown", e => { if (e.key === "Enter") $("#gEntrar").click(); }));
 
+/* Cambiar de explorador no es salir: los dos siguen guardados acá. */
+$("#qCambiar").onclick = () => {
+  localStorage.removeItem("ed:sesion");
+  location.reload();
+};
+
 $("#qSalir").onclick = () => {
-  if (!confirm("¿Salir? Tu progreso queda guardado y podés volver a entrar con tu nombre.")) return;
+  if (!confirm("¿Salir? Tu progreso queda guardado y podés volver a entrar tocando tu nombre.")) return;
   localStorage.removeItem("ed:sesion");
   location.reload();
 };
@@ -981,7 +1104,7 @@ function renderCofre(main) {
   nombre.className = "nombre";
   nombre.placeholder = "Tu nombre para el diploma";
   nombre.maxLength = 45;
-  nombre.value = (sesion && sesion.nombre) || "";
+  nombre.value = nombreCompleto(sesion);
 
   const btn = el("button", null, "Abrir el cofre");
   const fb = el("p", "feedback");
@@ -1127,7 +1250,9 @@ async function portada() {
 async function arrancar() {
   $("#gate").classList.add("oculto");
   $("#app").classList.remove("oculto");
-  $("#qNombre").textContent = sesion.nombre;
+  $("#qNombre").textContent = nombreCompleto(sesion);
+  /* El botón de cambiar sólo tiene sentido si en este teléfono hay otro. */
+  $("#qCambiar").classList.toggle("oculto", perfiles().length < 2);
 
   if (DEMO) {
     $("#demoBanda").classList.remove("oculto");
@@ -1290,6 +1415,8 @@ if (DEMO && !sessionStorage.getItem("ed:maestro")) {
   g.append(b);
 } else if (sesion) {
   arrancar();
+} else {
+  pintarPerfiles();
 }
 </script>
 </body>
