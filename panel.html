@@ -310,11 +310,13 @@ function resumen(v) {
   } else {
     const p = el("div", "panel");
     p.append(el("p", "aviso",
-      "Ordenado de menor a mayor promedio de estrellas. Las de arriba son las que conviene repasar el domingo."));
+      "Ordenado de menor a mayor promedio de estrellas. Las de arriba son las que conviene repasar el domingo. " +
+      "«Intentos» es cuánto le costó al chico la vez que mejor le salió; «la rehicieron», cuántos volvieron a hacerla para mejorar."));
     const tabla = el("div", "tabla-scroll");
     const t = el("table");
     t.innerHTML = "<thead><tr><th>Misión</th><th>Actividad</th><th class='num'>Chicos</th>" +
-                  "<th class='num'>Promedio ⭐</th><th class='num'>Intentos</th><th class='num'>Pidieron pista</th></tr></thead>";
+                  "<th class='num'>Promedio ⭐</th><th class='num'>Intentos</th>" +
+                  "<th class='num'>La rehicieron</th><th class='num'>Pidieron pista</th></tr></thead>";
     const tb = el("tbody");
     dif.forEach(d => {
       const tr = el("tr");
@@ -323,6 +325,7 @@ function resumen(v) {
       tr.append(el("td", "num", String(d.chicos)));
       tr.append(el("td", "num", Number(d.promedio_estrellas).toFixed(1) + " / 3"));
       tr.append(el("td", "num", Number(d.promedio_intentos).toFixed(1)));
+      tr.append(el("td", "num", String(d.rehicieron || 0)));
       tr.append(el("td", "num", String(d.uso_pista)));
       tb.append(tr);
     });

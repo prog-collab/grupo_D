@@ -238,6 +238,39 @@ afirmación era una tercera columna del flex y en un teléfono quedaban las tres
 de dos palabras de ancho — justo cuando el chico está leyendo por qué se
 equivocó. Ahora va debajo, a todo el ancho.
 
+### 3.3 `intentos` quiere decir algo (0010)
+
+`ed_progreso_guardar` hacía `intentos = intentos + excluded.intentos`: sumaba
+los de todas las veces que el chico hizo la actividad, así que el que la
+rehacía para mejorarla quedaba con un número más grande **por haber vuelto a
+intentarlo**. Y no era una columna decorativa: el panel la muestra como
+"Intentos" en *Lo que más les costó* y la usa para ordenar la tabla
+(`order by prom_e asc, prom_i desc`), o sea que una actividad muy repetida se
+trepaba a la lista de las difíciles sin serlo.
+
+El resto de la fila ya describía la **mejor corrida** (estrellas con
+`greatest`, `uso_pista` con `and`) y sólo `intentos` contaba otra cosa. Ahora
+las tres coinciden: `intentos = least(...)`.
+
+Lo que se perdía con la suma —cuántas veces volvió— pasa a su propia columna,
+`veces`, y el panel la muestra como **"La rehicieron"**. Es la información que
+el maestro realmente quería: no es lo mismo sacar 2 estrellas de una que
+sacarlas después de intentarlo cuatro domingos seguidos.
+
+Sobre los datos viejos: **las sumas no se pueden deshacer**, no sabemos en
+cuántas corridas se juntaron. Lo único que hizo la migración sin inventar nada
+fue sacar los valores *imposibles* — los que no alcanzan para las estrellas
+que la propia fila tiene guardadas. Con la escala de 0009, una fila de 3
+estrellas no pudo haber tenido más de `perfecto+1` intentos; si decía más, se
+la bajó al tope. Las filas de 1 estrella no tienen tope y quedaron como
+estaban. Sólo una fila resultó imposible (el `quiz-juan` de Giovanna: 3
+estrellas con 3 intentos). Y `veces` arranca en 1 para todas salvo esa, porque
+no hay forma de saber cuántas fueron.
+
+Igual que 0009, la migración lleva escritas a mano las decisiones de cada
+actividad: **si cambia el contenido de una lección, esos números quedan
+viejos.**
+
 ---
 
 ## 4. Lo que falta: el video para los chicos
