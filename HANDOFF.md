@@ -25,7 +25,7 @@ No hay build ni framework: es HTML + JS a mano, sin dependencias.
 ```
 index.html          la app de los chicos (motor + los 8 tipos de actividad)
 panel.html          el panel del maestro
-lecciones/*.json    el contenido: 4 lecciones, una por archivo
+lecciones/*.json    el contenido: 5 lecciones, una por archivo
 sw.js               service worker (instalable + offline)
 manifest.webmanifest
 iconos/, apple-touch-icon.png
@@ -106,6 +106,23 @@ Dos commits, ambos ya en `master` y publicados:
 Verificado en el navegador: la app abre con el servidor apagado, el demo no
 hace una sola llamada al servidor ni escribe en `localStorage`, y fuera de
 demo el comportamiento de los chicos no cambió.
+
+### Misión 5 — "Desafío final"
+
+Ya tiene su contenido (`lecciones/repaso-5-final.json`) y en la base se llama
+**Desafío final** (antes "Desafío final del semestre").
+
+Es la única que cruza las cuatro misiones anteriores: el expediente junta
+todos los versículos del semestre en orden narrativo —incluida la parte de
+Juan que va antes del nacimiento, que suelta no se nota— y ninguna pregunta
+del quiz se contesta acordándose de una sola misión. Termina con Juan 20:31,
+que es el versículo que explica para qué se escribió el resto.
+
+Mismo formato que las otras: 6 estaciones puntuables (18 estrellas), 4 dígitos
+para el cofre. El código del cofre es **1960**, por la Reina-Valera.
+
+**Queda cerrada.** Se ve en la portada con candado hasta que la abras desde
+el panel → sección de misiones → botón "Abrir", el día que la des en clase.
 
 ---
 

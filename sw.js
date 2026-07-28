@@ -10,7 +10,7 @@
  * Al publicar una versión nueva conviene subir el número de CACHE: eso
  * borra la anterior y evita que queden mezclados archivos viejos y nuevos.
  */
-const CACHE = "explorador-v1";
+const CACHE = "explorador-v2";
 
 const BASICOS = [
   "./",
@@ -24,7 +24,8 @@ const BASICOS = [
   "lecciones/repaso-1-anuncios.json",
   "lecciones/repaso-2-nacimiento.json",
   "lecciones/repaso-3-juan.json",
-  "lecciones/repaso-4-bautismo.json"
+  "lecciones/repaso-4-bautismo.json",
+  "lecciones/repaso-5-final.json"
 ];
 
 async function precargar() {

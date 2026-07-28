@@ -1,0 +1,283 @@
+{
+  "slug": "repaso-5-final",
+  "titulo": "Desafío final",
+  "subtitulo": "Las cuatro misiones anteriores eran cuatro casos sueltos. Esta es la que los junta: acá las preguntas cruzan de un relato a otro, y ninguna se responde acordándose de una sola misión.",
+  "version": "Reina-Valera 1960",
+  "candado": "Cada estación con 🔒 te da un dígito. Juntá los cuatro para abrir el cofre.",
+  "estaciones": [
+    {
+      "id": "lectura",
+      "tipo": "pasaje",
+      "titulo": "El expediente maestro",
+      "instruccion": "Acá está junto todo lo que fuimos leyendo en las cuatro misiones, en orden y sin lo que sobra. No es material nuevo: es el mismo expediente, pero completo. Si venís haciendo las misiones, leelo igual — vas a ver cosas que sueltas no se notaban.",
+      "bloques": [
+        {
+          "cita": "Misión 1 · Lucas 1",
+          "relato": "Todo empieza adentro del templo, con un sacerdote anciano al que le toca en suerte quemar el incienso. Gabriel le anuncia un hijo y él pide una garantía; se queda sin voz. Seis meses después el mismo ángel viaja a un pueblo chico de Galilea, y la respuesta que recibe ahí es exactamente la contraria.",
+          "versiculos": [
+            { "ref": "Lucas 1:13", "texto": "Zacarías, porque tu oración ha sido oída, y tu mujer Elisabet te dará a luz un hijo, y llamarás su nombre Juan." },
+            { "ref": "Lucas 1:18", "texto": "¿En qué conoceré esto? Porque yo soy viejo, y mi mujer es de edad avanzada." },
+            { "ref": "Lucas 1:20", "texto": "Y ahora quedarás mudo y no podrás hablar, hasta el día en que esto se haga, por cuanto no creíste mis palabras, las cuales se cumplirán a su tiempo." },
+            { "ref": "Lucas 1:31", "texto": "Y ahora, concebirás en tu vientre, y darás a luz un hijo, y llamarás su nombre JESÚS." },
+            { "ref": "Lucas 1:33", "texto": "y reinará sobre la casa de Jacob para siempre, y su reino no tendrá fin." },
+            { "ref": "Lucas 1:37", "texto": "porque nada hay imposible para Dios." },
+            { "ref": "Lucas 1:38", "texto": "He aquí la sierva del Señor; hágase conmigo conforme a tu palabra." }
+          ]
+        },
+        {
+          "cita": "Misión 3, primera parte · Lucas 1",
+          "relato": "Antes de seguir con el nacimiento de Jesús conviene cerrar lo del templo, porque termina nueve meses después. Nace el hijo de Zacarías y Elisabet, los parientes dan por hecho el nombre del padre, y la madre dice que no. El padre, que sigue mudo, tiene que pedir algo para escribir. En lo que escribe se le juega el desenlace.",
+          "versiculos": [
+            { "ref": "Lucas 1:60", "texto": "Y respondiendo su madre, dijo: No; se llamará Juan." },
+            { "ref": "Lucas 1:63", "texto": "Y pidiendo una tablilla, escribió, diciendo: Juan es su nombre. Y todos se maravillaron." },
+            { "ref": "Lucas 1:64", "texto": "Al momento fue abierta su boca y suelta su lengua, y habló bendiciendo a Dios." },
+            { "ref": "Lucas 1:76", "texto": "Y tú, niño, profeta del Altísimo serás llamado; porque irás delante de la presencia del Señor, para preparar sus caminos." }
+          ]
+        },
+        {
+          "cita": "Misión 2 · Lucas 2 y Mateo 2",
+          "relato": "Un censo del emperador obliga a cada uno a inscribirse en su ciudad de origen, y por eso una pareja de Nazaret termina en Belén. Esa noche el aviso no le llega a nadie importante: le llega a unos trabajadores del campo. Lo de los sabios del oriente es otro relato, escrito por otro autor, y no pasa la misma noche: prestá atención al lugar donde encuentran al niño.",
+          "versiculos": [
+            { "ref": "Lucas 2:7",  "texto": "Y dio a luz a su hijo primogénito, y lo envolvió en pañales, y lo acostó en un pesebre, porque no había lugar para ellos en el mesón." },
+            { "ref": "Lucas 2:11", "texto": "que os ha nacido hoy, en la ciudad de David, un Salvador, que es CRISTO el Señor." },
+            { "ref": "Lucas 2:12", "texto": "Esto os servirá de señal: Hallaréis al niño envuelto en pañales, acostado en un pesebre." },
+            { "ref": "Lucas 2:19", "texto": "Pero María guardaba todas estas cosas, meditándolas en su corazón." },
+            { "ref": "Mateo 2:2",  "texto": "¿Dónde está el rey de los judíos, que ha nacido? Porque su estrella hemos visto en el oriente, y venimos a adorarle." },
+            { "ref": "Mateo 2:5",  "texto": "Ellos le dijeron: En Belén de Judea; porque así está escrito por el profeta." },
+            { "ref": "Mateo 2:11", "texto": "Y al entrar en la casa, vieron al niño con su madre María, y postrándose, lo adoraron; y abriendo sus tesoros, le ofrecieron presentes: oro, incienso y mirra." }
+          ]
+        },
+        {
+          "cita": "Misión 3, segunda parte · Mateo 3, Lucas 3 y Juan 1",
+          "relato": "Pasan casi treinta años que el relato no cuenta. El bebé de la tablilla aparece de grande predicando en el desierto, y la gente sale de las ciudades a buscarlo. En el mejor momento de su fama le mandan una delegación desde Jerusalén a preguntarle quién es. Fijate qué contesta, y con qué se compara.",
+          "versiculos": [
+            { "ref": "Mateo 3:3",  "texto": "Voz del que clama en el desierto: Preparad el camino del Señor, enderezad sus sendas." },
+            { "ref": "Mateo 3:11", "texto": "Yo a la verdad os bautizo en agua para arrepentimiento; pero el que viene tras mí, cuyo calzado yo no soy digno de llevar, es más poderoso que yo." },
+            { "ref": "Lucas 3:11", "texto": "El que tiene dos túnicas, dé al que no tiene; y el que tiene qué comer, haga lo mismo." },
+            { "ref": "Juan 1:20",  "texto": "Confesó, y no negó, sino confesó: Yo no soy el Cristo." },
+            { "ref": "Juan 1:23",  "texto": "Yo soy la voz de uno que clama en el desierto: Enderezad el camino del Señor, como dijo el profeta Isaías." },
+            { "ref": "Juan 1:29",  "texto": "He aquí el Cordero de Dios, que quita el pecado del mundo." },
+            { "ref": "Juan 3:30",  "texto": "Es necesario que él crezca, pero que yo mengüe." }
+          ]
+        },
+        {
+          "cita": "Misión 4 · Mateo 3, Lucas 3 y Juan 1",
+          "relato": "El último caso del semestre pasa en el río. El que bautizaba para el arrepentimiento se encuentra en la fila al único que no tenía de qué arrepentirse, y se niega. Cuando por fin lo bautiza, pasan tres cosas seguidas en unos pocos segundos, y la cuarta —lo que viene inmediatamente después— no es la que uno esperaría.",
+          "versiculos": [
+            { "ref": "Mateo 3:14", "texto": "Mas Juan se le oponía, diciendo: Yo necesito ser bautizado por ti, ¿y tú vienes a mí?" },
+            { "ref": "Mateo 3:15", "texto": "Pero Jesús le respondió: Deja ahora, porque así conviene que cumplamos toda justicia. Entonces le dejó." },
+            { "ref": "Mateo 3:16", "texto": "Y Jesús, después que fue bautizado, subió luego del agua; y he aquí los cielos le fueron abiertos, y vio al Espíritu de Dios que descendía como paloma, y venía sobre él." },
+            { "ref": "Mateo 3:17", "texto": "Y hubo una voz de los cielos, que decía: Este es mi Hijo amado, en quien tengo complacencia." },
+            { "ref": "Lucas 3:21", "texto": "Aconteció que cuando todo el pueblo se bautizaba, también Jesús fue bautizado; y orando, el cielo se abrió." },
+            { "ref": "Mateo 4:1",  "texto": "Entonces Jesús fue llevado por el Espíritu al desierto, para ser tentado por el diablo." },
+            { "ref": "Juan 1:33",  "texto": "El que me envió a bautizar con agua, aquél me dijo: Sobre quien veas descender el Espíritu y que permanece sobre él, ése es el que bautiza con el Espíritu Santo." }
+          ]
+        },
+        {
+          "cita": "El cierre · Juan 1 y Juan 20",
+          "relato": "Juan, el que escribió el cuarto evangelio, resumió todo esto en una sola frase, y al final del libro explicó para qué se tomó el trabajo de escribirlo. Estos dos versículos no son parte de ninguna de las cuatro misiones: son el techo que las junta.",
+          "versiculos": [
+            { "ref": "Juan 1:14",  "texto": "Y aquel Verbo fue hecho carne, y habitó entre nosotros (y vimos su gloria, gloria como del unigénito del Padre), lleno de gracia y de verdad." },
+            { "ref": "Juan 20:31", "texto": "Pero éstas se han escrito para que creáis que Jesús es el Cristo, el Hijo de Dios, y para que creyendo, tengáis vida en su nombre." }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "quiz-final",
+      "tipo": "quiz",
+      "titulo": "Interrogatorio final",
+      "instruccion": "Cinco preguntas, y ninguna se contesta con una sola misión: todas cruzan de un relato a otro. Como siempre, después de acertar te voy a pedir el versículo.",
+      "digito": "1",
+      "preguntas": [
+        {
+          "enunciado": "Cuando Juan era recién nacido, Gabriel ya había anunciado que iría “delante de la presencia del Señor, para preparar sus caminos”. Treinta años después le preguntan quién es. ¿Qué contesta, y por qué encaja con aquel anuncio?",
+          "opciones": [
+            "Que es el Cristo que Israel esperaba, tal como Gabriel lo había anunciado.",
+            "Que es el profeta Elías, que volvió del cielo para anunciar el día de Jehová.",
+            "Que es una voz que clama en el desierto y manda enderezar el camino del Señor.",
+            "Que es el sacerdote que sigue a su padre Zacarías en el servicio del templo."
+          ],
+          "correcta": 2,
+          "explicacion": "Es exactamente el mismo trabajo dicho con otras palabras: preparar el camino. Juan no se inventó un papel más grande que el que le habían dado antes de nacer, ni se achicó por miedo. Se quedó justo en su lugar.",
+          "pista": "Buscá la respuesta que le dio a la delegación de Jerusalén. No se define por un cargo, sino por un sonido.",
+          "evidencia": {
+            "enunciado": "¿En qué versículo lo contesta?",
+            "opciones": ["Juan 1:20", "Juan 1:23", "Juan 1:29"],
+            "correcta": 1
+          }
+        },
+        {
+          "enunciado": "Los pastores y los sabios del oriente no llegaron en el mismo momento, aunque en todos los pesebres de adorno estén juntos. ¿Cuál de estos datos del texto lo demuestra mejor?",
+          "opciones": [
+            "Que Lucas dice que el niño estaba en un pesebre y Mateo dice que los sabios entraron en una casa.",
+            "Que los pastores eran pobres y los sabios traían oro, incienso y mirra.",
+            "Que a los pastores les habló un ángel y a los sabios los guió una estrella.",
+            "Que los pastores eran de Israel y los sabios venían de muy lejos."
+          ],
+          "correcta": 0,
+          "explicacion": "Las otras tres son verdaderas, pero no prueban nada sobre el tiempo. La que sí prueba es el lugar: entre el pesebre y la casa pasó bastante. Por eso Herodes después mandó matar niños de hasta dos años.",
+          "pista": "No mires quiénes eran ni qué traían. Mirá dónde estaba el niño en cada relato.",
+          "evidencia": {
+            "enunciado": "¿Dónde dice que entraron en una casa?",
+            "opciones": ["Lucas 2:7", "Mateo 2:5", "Mateo 2:11"],
+            "correcta": 2
+          }
+        },
+        {
+          "enunciado": "En el Jordán, Juan se negó a bautizar a Jesús: “yo necesito ser bautizado por ti”. Y sin embargo terminó bautizándolo. ¿Qué lo hizo cambiar de idea?",
+          "opciones": [
+            "Que vio descender la paloma antes de meterlo al agua.",
+            "Que Jesús le contestó que así convenía que cumplieran toda justicia.",
+            "Que la gente que estaba en la fila lo presionó para que lo hiciera.",
+            "Que se acordó de lo que su padre Zacarías le había enseñado de chico."
+          ],
+          "correcta": 1,
+          "explicacion": "Ojo con el orden: la paloma y la voz vinieron DESPUÉS del bautismo, no antes. Lo único que Juan tuvo para decidir fue una frase de Jesús, y le alcanzó.",
+          "pista": "Entre la negativa de Juan y el bautismo hay un solo versículo. Ahí está la respuesta.",
+          "evidencia": {
+            "enunciado": "¿En qué versículo le contesta?",
+            "opciones": ["Mateo 3:14", "Mateo 3:15", "Mateo 3:16"],
+            "correcta": 1
+          }
+        },
+        {
+          "enunciado": "Juan dijo más adelante: “es necesario que él crezca, pero que yo mengüe”. Pero eso ya lo venía pensando desde antes de conocerlo en persona. ¿En qué se le nota?",
+          "opciones": [
+            "En que se fue a vivir al desierto para que la gente no lo encontrara.",
+            "En que se negó a bautizar a Jesús, porque no quería compartir su fama.",
+            "En que le pidió a la gente que dejara de venir a bautizarse con él.",
+            "En que dijo que no era digno ni de llevarle el calzado al que venía detrás."
+          ],
+          "correcta": 3,
+          "explicacion": "Llevarle las sandalias al amo era el trabajo del esclavo más bajo de la casa. Juan, en el mejor momento de su fama y sin haberlo visto todavía, dice que no le da ni para ese puesto.",
+          "pista": "Está en lo que predicaba en el desierto, cuando hablaba del que venía después de él.",
+          "evidencia": {
+            "enunciado": "¿Dónde lo dice?",
+            "opciones": ["Mateo 3:3", "Mateo 3:11", "Juan 1:29"],
+            "correcta": 1
+          }
+        },
+        {
+          "enunciado": "Zacarías pidió una garantía y quedó mudo nueve meses. María preguntó cómo iba a ser y se fue caminando. Un censo del emperador terminó cumpliendo una profecía de Miqueas. Y la voz del cielo aprobó a Jesús antes de que hiciera un solo milagro. Si tuvieras que decir con una frase qué tienen en común las cuatro misiones, ¿cuál elegirías?",
+          "opciones": [
+            "Que Dios cumple lo que anuncia, aunque tarde años y aunque parezca imposible.",
+            "Que los que se portan bien reciben una recompensa rápida y los demás un castigo.",
+            "Que cada vez que alguien tiene un problema serio aparece un ángel a resolverlo.",
+            "Que los que sabían las Escrituras siempre fueron los primeros en darse cuenta."
+          ],
+          "correcta": 0,
+          "explicacion": "Fijate que ninguna de las cuatro historias sale rápido ni sale fácil. Zacarías esperó toda la vida un hijo, Israel esperó siglos al Mesías, y Juan preparó un camino que después no recorrió él. Lo que se repite no es la velocidad: es que lo prometido llegó.",
+          "pista": "Descartá las opciones que en alguna de las cuatro misiones quedaron desmentidas. Te va a quedar una sola.",
+          "evidencia": {
+            "enunciado": "¿Qué versículo lo dice más corto?",
+            "opciones": ["Lucas 1:37", "Lucas 2:19", "Juan 1:20"],
+            "correcta": 0
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "caza-error",
+      "tipo": "caza-error",
+      "titulo": "Caza del error: todo junto",
+      "instruccion": "Nueve afirmaciones, mezcladas de las cuatro misiones. Varias son las mismas que engañaron a medio grupo la primera vez. Marcá SÓLO las falsas.",
+      "digito": "9",
+      "afirmaciones": [
+        { "texto": "Gabriel se le apareció primero a Zacarías y después a María.", "falsa": false,
+          "porque": "Correcto, y pasaron seis meses entre una visita y la otra. Ese dato es el que permite hacer toda la cuenta de los tiempos del semestre." },
+        { "texto": "Gabriel le dijo a María que a su hijo lo llamara Emanuel.", "falsa": true,
+          "porque": "Le dijo que lo llamara JESÚS (Lucas 1:31). Emanuel aparece en la profecía de Isaías y en Mateo, pero no es el nombre que da Gabriel." },
+        { "texto": "A los pastores los guió hasta Belén una estrella.", "falsa": true,
+          "porque": "A los pastores les habló un ángel, en Lucas. La estrella es de los sabios del oriente, en Mateo, y es otro relato. Este cruce es el más común de todos." },
+        { "texto": "Los sabios del oriente encontraron a Jesús en el pesebre, la misma noche que nació.", "falsa": true,
+          "porque": "Mateo dice que al entrar en la CASA vieron al niño. Y Herodes mandó matar niños de hasta dos años según el tiempo que ellos le contaron: ya había pasado bastante." },
+        { "texto": "Cuando le preguntaron quién era, Juan el Bautista dijo que no era el Cristo.", "falsa": false,
+          "porque": "Correcto, y el texto lo subraya de una manera rara: “Confesó, y no negó, sino confesó”. Como diciendo: que quede claro que lo dijo él mismo." },
+        { "texto": "Juan bautizó a Jesús para que se arrepintiera de sus pecados.", "falsa": true,
+          "porque": "El bautismo de Juan era para arrepentimiento, sí, pero el propio Juan dijo que el que no necesitaba nada era Jesús: “yo necesito ser bautizado por ti”. Jesús dio otra razón: cumplir toda justicia." },
+        { "texto": "Cuando nació Juan, su padre seguía mudo y tuvo que escribir el nombre en una tablilla.", "falsa": false,
+          "porque": "Correcto, Lucas 1:63. Y apenas lo escribió se le soltó la lengua: el silencio duró exactamente lo que el ángel había dicho." },
+        { "texto": "Apenas salió del agua, Jesús empezó a elegir a sus discípulos.", "falsa": true,
+          "porque": "Lo primero que pasó después del bautismo fue que el Espíritu lo llevó al desierto para ser tentado. Los discípulos vinieron bastante más adelante." },
+        { "texto": "La voz del cielo dijo “Este es mi Hijo amado” antes de que Jesús hiciera ningún milagro.", "falsa": false,
+          "porque": "Correcto, y es de lo más importante del semestre. La aprobación del Padre no fue el premio por lo que hizo: fue el punto de partida." }
+      ]
+    },
+
+    {
+      "id": "linea-tiempo",
+      "tipo": "linea-tiempo",
+      "titulo": "Todo el semestre en orden",
+      "instruccion": "Diez hechos, de las cuatro misiones, todos mezclados. Es la línea de tiempo más larga que hicimos. Si te equivocás en una, se reinicia entera: pensá antes de tocar.",
+      "digito": "6",
+      "eventos": [
+        { "texto": "Gabriel se le aparece a Zacarías en el templo y él queda mudo",       "orden": 1 },
+        { "texto": "Seis meses después, Gabriel visita a María en Nazaret",              "orden": 2 },
+        { "texto": "María viaja a ver a Elisabet y se queda unos tres meses",            "orden": 3 },
+        { "texto": "Nace Juan, su padre escribe el nombre y vuelve a hablar",            "orden": 4 },
+        { "texto": "Augusto ordena el censo y José y María viajan a Belén",              "orden": 5 },
+        { "texto": "Nace Jesús y lo acuestan en un pesebre",                             "orden": 6 },
+        { "texto": "Un ángel avisa a los pastores, que van a Belén y lo cuentan a todos", "orden": 7 },
+        { "texto": "Los sabios del oriente entran en la casa y adoran al niño",          "orden": 8 },
+        { "texto": "Juan, ya grande, predica en el desierto y bautiza en el Jordán",     "orden": 9 },
+        { "texto": "Jesús es bautizado, y el Espíritu lo lleva al desierto",             "orden": 10 }
+      ]
+    },
+
+    {
+      "id": "versiculo",
+      "tipo": "versiculo",
+      "titulo": "Para qué se escribió todo esto",
+      "instruccion": "El último versículo del semestre, y es el que explica para qué existen los otros. Lo escribió Juan al final de su evangelio (Juan 20:31). Son ocho piezas.",
+      "piezas": ["Pero éstas", "se han escrito", "para que creáis", "que Jesús es el Cristo,", "el Hijo de Dios,", "y para que creyendo,", "tengáis vida", "en su nombre."],
+      "respuesta": "Pero éstas se han escrito para que creáis que Jesús es el Cristo, el Hijo de Dios, y para que creyendo, tengáis vida en su nombre.",
+      "pista": "Primero para qué se escribieron, después quién es Jesús (dos títulos), y al final qué pasa con el que cree.",
+      "explicacion": "O sea: no se escribieron para que sepas datos, ni para que ganes un cuestionario. Todo lo que leímos este semestre —el templo, el pesebre, el desierto, el río— está escrito para que creas, y para que creyendo tengas vida."
+    },
+
+    {
+      "id": "quien-lo-dijo",
+      "tipo": "emparejar",
+      "titulo": "¿Quién lo dijo?",
+      "instruccion": "Seis frases del semestre y seis personas. Ojo con las dos primeras: se parecen más de lo que parece, y sin embargo terminaron muy distinto.",
+      "digito": "0",
+      "izquierda": "La frase",
+      "derecha": "¿Quién la dijo?",
+      "pares": [
+        { "a": "“¿En qué conoceré esto? Porque yo soy viejo, y mi mujer es de edad avanzada.”", "b": "Zacarías, adentro del templo" },
+        { "a": "“He aquí la sierva del Señor; hágase conmigo conforme a tu palabra.”",           "b": "María, en Nazaret" },
+        { "a": "“No; se llamará Juan.”",                                                        "b": "Elisabet, discutiendo con los parientes" },
+        { "a": "“¿Dónde está el rey de los judíos, que ha nacido?”",                             "b": "Los sabios del oriente, en Jerusalén" },
+        { "a": "“Yo no soy el Cristo.”",                                                         "b": "Juan el Bautista, ante la delegación" },
+        { "a": "“Este es mi Hijo amado, en quien tengo complacencia.”",                          "b": "La voz del Padre, sobre el Jordán" }
+      ],
+      "explicacion": "Fijate quiénes hablan en todo el semestre: un sacerdote anciano, una chica de pueblo, una madre que contradice a la familia, unos extranjeros que no eran de Israel, un predicador vestido de pelo de camello. Y encima de todos ellos, una vez, el Padre. Los que tenían el cargo religioso importante casi no aparecen."
+    },
+
+    {
+      "id": "detective",
+      "tipo": "texto",
+      "titulo": "Informe final del detective",
+      "instruccion": "En las cuatro misiones hay alguien que tuvo que confiar antes de ver cómo terminaba: Zacarías, María, los pastores, los sabios, Juan el Bautista. Elegí UNO solo, contá qué era lo que todavía no podía ver cuando le tocó decidir, y explicá qué hizo con eso. Después decime en qué se parece a algo que te esté pasando a vos. Citá al menos un versículo del expediente.",
+      "minimo": 200,
+      "guia": [
+        "¿Elegiste una sola persona, en vez de hablar de todas un poquito?",
+        "¿Citaste un versículo, con la cita, y no sólo “en la Biblia dice”?",
+        "¿Contaste qué era lo que esa persona todavía no sabía en ese momento?",
+        "¿Se entiende sin que yo tenga que adivinar lo que quisiste decir?"
+      ],
+      "nota": "Tu maestro va a leer esta respuesta. Es la última del semestre: tomate el tiempo."
+    },
+
+    {
+      "id": "oracion",
+      "tipo": "oracion",
+      "titulo": "Mi oración",
+      "instruccion": "Cerramos el semestre. Escribí una oración sobre algo que hayas entendido en estos meses, o sobre algo que todavía no entendés y quieras preguntarle a Dios. Las dos cosas valen.",
+      "privado": "Esto queda sólo en tu teléfono. No se manda a ningún lado y tu maestro no lo ve."
+    }
+  ]
+}
