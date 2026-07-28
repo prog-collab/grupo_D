@@ -1218,6 +1218,23 @@ async function portada() {
     return;
   }
 
+  const porSlug = {};
+  lecciones.forEach(l => { porSlug[l.slug] = l; });
+
+  /* Misiones que el chico todavía tiene que terminar para que se le abra
+     ésta. "Terminada" es haber hecho las actividades puntuables, no haber
+     sacado las 18 estrellas: se premia llegar hasta el final, no no haberse
+     equivocado nunca. Una pista pedida en marzo no puede dejarlo afuera. */
+  function loQueFalta(l) {
+    if (!Array.isArray(l.requiere) || !l.requiere.length) return [];
+    return l.requiere.filter(slug => {
+      const req = porSlug[slug];
+      if (!req) return false;                       // requisito que ya no existe
+      const cuantas = Math.round((req.estrellas_max || 18) / 3);
+      return ((resumen[slug] || {}).estaciones || 0) < cuantas;
+    });
+  }
+
   const cont = el("div", "misiones");
   lecciones.forEach(l => {
     const mio  = resumen[l.slug] || { estrellas: 0 };
@@ -1225,20 +1242,27 @@ async function portada() {
     const pct  = Math.min(100, Math.round(mio.estrellas / max * 100));
     const listo = mio.estrellas >= max;
 
+    /* Una misión puede estar cerrada por dos motivos distintos: porque el
+       maestro todavía no la dio (l.disponible), o porque este chico en
+       particular no cumplió el requisito. Se ven parecidas pero se explican
+       distinto: la segunda depende de él y conviene que lo sepa. */
+    const falta   = DEMO ? [] : loQueFalta(l);
+    const abierta = l.disponible && !falta.length;
+
     /* En demo el maestro entra a todas, incluso a las que todavía tiene
        cerradas: justamente quiere revisarlas antes de abrirlas. */
-    const entrable = DEMO || l.disponible;
+    const entrable = DEMO || abierta;
 
     const b = el("button", "mision" + (listo ? " lista" : "") + (entrable ? "" : " trabada"));
     b.disabled = !entrable;
 
-    b.append(el("div", "orden", l.disponible ? (listo ? "✓" : String(l.orden)) : "🔒"));
+    b.append(el("div", "orden", abierta ? (listo ? "✓" : String(l.orden)) : "🔒"));
 
     const cuerpo = el("div");
     cuerpo.append(el("h3", null, l.titulo));
     cuerpo.append(el("p", "tema", l.tema || ""));
 
-    if (l.disponible && !DEMO) {
+    if (abierta && !DEMO) {
       const barra = el("div", "barra");
       const relleno = el("div");
       relleno.style.width = pct + "%";
@@ -1249,10 +1273,17 @@ async function portada() {
     const pie = el("div", "pie");
     if (DEMO) {
       pie.append(el("span", null, l.disponible ? "Abierta para los chicos" : "🔒 Cerrada para los chicos"));
+      if (Array.isArray(l.requiere) && l.requiere.length)
+        pie.append(el("span", null, "· se gana terminando " + l.requiere.length + " misiones"));
       pie.append(el("span", "accion", "Probar →"));
     } else if (!l.disponible) {
       pie.append(el("span", null, "Todavía no está lista"));
       pie.append(el("span", "accion", "Próximamente"));
+    } else if (falta.length) {
+      pie.append(el("span", null, falta.length === 1
+        ? "Te falta terminar 1 misión"
+        : "Te faltan terminar " + falta.length + " misiones"));
+      pie.append(el("span", "accion", "🔒 Se gana"));
     } else {
       pie.append(el("span", null, "⭐ " + mio.estrellas + " de " + max));
       pie.append(el("span", "accion",
@@ -1262,6 +1293,8 @@ async function portada() {
     b.append(cuerpo);
 
     if (entrable) b.onclick = () => { location.search = "?leccion=" + l.slug + (DEMO ? "&demo=1" : ""); };
+    else if (falta.length) b.title = "Se abre cuando termines: " +
+      falta.map(s => (porSlug[s] || {}).titulo || s).join(", ");
     cont.append(b);
   });
   main.append(cont);

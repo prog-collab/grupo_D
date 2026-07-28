@@ -121,8 +121,22 @@ que es el versículo que explica para qué se escribió el resto.
 Mismo formato que las otras: 6 estaciones puntuables (18 estrellas), 4 dígitos
 para el cofre. El código del cofre es **1960**, por la Reina-Valera.
 
-**Queda cerrada.** Se ve en la portada con candado hasta que la abras desde
-el panel → sección de misiones → botón "Abrir", el día que la des en clase.
+**No se abre para todos a la vez: se gana.** Está publicada, pero cada chico
+la ve con candado hasta que termina las otras cuatro; mientras tanto le dice
+cuántas le faltan. El requisito vive en la base, en `lecciones.requiere` (un
+array de slugs), y quien decide es la portada con el resumen que ya pedía:
+no hay una llamada extra.
+
+"Terminada" es **haber hecho las 6 actividades puntuables**, no haber sacado
+las 18 estrellas. Con la vara de las estrellas perfectas no la abriría nadie:
+hoy ningún chico tiene 18 en ninguna misión, y una pista pedida en marzo lo
+dejaría afuera para siempre.
+
+El candado es de la portada, no del servidor: el JSON es un archivo estático
+y cualquiera con el link entra igual. Alcanza para lo que queremos.
+
+Si querés cerrarla del todo (que no la vea nadie hasta el día que la des),
+el botón "Cerrar" del panel sigue funcionando y manda las dos cosas juntas.
 
 ---
 
