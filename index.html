@@ -1256,6 +1256,11 @@ function montarExpediente() {
    ================================================================== */
 function conDigito() { return leccion.estaciones.filter(e => e.digito); }
 function codigoCorrecto() { return conDigito().map(e => e.digito).join(""); }
+function digitoGanado(e) { return ((estado[e.id] && estado[e.id].estrellas) || 0) > 0; }
+/* Los mismos cuatro números, sin importar en qué orden los escribió. */
+function mismosNumeros(a, b) {
+  return a.split("").sort().join("") === b.split("").sort().join("");
+}
 
 function mostrarDigito(s, d) {
   if (s.querySelector(".digito")) return;
@@ -1272,7 +1277,7 @@ function actualizarCofre() {
   if (!slots) return;
   slots.innerHTML = "";
   conDigito().forEach(e => {
-    const ganado = ((estado[e.id] && estado[e.id].estrellas) || 0) > 0;
+    const ganado = digitoGanado(e);
     slots.append(el("div", "slot" + (ganado ? " on" : ""), ganado ? e.digito : "?"));
   });
 }
@@ -1288,10 +1293,14 @@ function renderCofre(main) {
   slots.id = "slots";
   s.append(slots);
 
+  const total = conDigito().length;
+
   const codigo = el("input");
   codigo.type = "text";
   codigo.placeholder = "····";
-  codigo.maxLength = conDigito().length;
+  /* Dejo escribir de más y limpio yo: si el chico separa los números con
+     espacios o guiones, el cofre igual tiene que abrirse. */
+  codigo.maxLength = total * 3;
   codigo.inputMode = "numeric";
 
   const nombre = el("input");
@@ -1306,10 +1315,41 @@ function renderCofre(main) {
   s.append(codigo, nombre, btn, fb);
   main.append(s);
 
+  /* Mientras vuelve a escribir, el error de antes no tiene que seguir
+     colgado abajo: quedaba el cartel rojo con el casillero ya vacío y
+     parecía que el cofre rechazaba lo que todavía no había escrito. */
+  codigo.oninput = () => {
+    fb.className = "feedback";
+    fb.textContent = "";
+  };
+  codigo.onkeydown = e => { if (e.key === "Enter") btn.click(); };
+
+  /* El "no abre" a secas no le dice qué hacer. Le digo qué le pasa a él:
+     si le falta ganar una estación, cuál; si escribió otros números, que
+     los copie de las casillas. */
+  function porQueNoAbre(puesto) {
+    const faltan = conDigito().filter(e => !digitoGanado(e)).length;
+    if (faltan) {
+      return faltan === 1
+        ? "Todavía te falta una estación: es la casilla de arriba que tiene “?”."
+        : "Todavía te faltan " + faltan + " estaciones: son las casillas de arriba que tienen “?”.";
+    }
+    if (!puesto) return "Escribí los " + total + " números de las casillas de arriba.";
+    if (puesto.length !== total) {
+      return "El código tiene " + total + " números y escribiste " + puesto.length + ".";
+    }
+    return "Esos no son los números. Copiá los de las casillas amarillas de arriba.";
+  }
+
   btn.onclick = () => {
-    if (codigo.value.trim() !== codigoCorrecto()) {
+    const puesto = codigo.value.replace(/\D/g, "");
+    const correcto = codigoCorrecto();
+    /* Los junta en el orden en que hace las actividades, no en el de la
+       pantalla. Si trae los cuatro números, el cofre se abre igual. */
+    const abre = puesto.length === correcto.length && mismosNumeros(puesto, correcto);
+    if (!abre) {
       fb.className = "feedback no";
-      fb.textContent = "Ese código no abre el cofre. Te falta el dígito de alguna estación.";
+      fb.textContent = porQueNoAbre(puesto);
       return;
     }
     const n = nombre.value.trim();
@@ -1321,7 +1361,8 @@ function renderCofre(main) {
     btn.disabled = true;
     codigo.disabled = true;
     fb.className = "feedback ok";
-    fb.textContent = "🎉 ¡Cofre abierto! Acá está tu diploma.";
+    fb.textContent = (puesto === correcto ? "" : "Los pusiste en otro orden, pero son los cuatro. ") +
+      "🎉 ¡Cofre abierto! Acá está tu diploma.";
     entregarDiploma(n, s);
     festejar();
   };

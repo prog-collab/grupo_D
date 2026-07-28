@@ -10,7 +10,7 @@
  * Al publicar una versión nueva conviene subir el número de CACHE: eso
  * borra la anterior y evita que queden mezclados archivos viejos y nuevos.
  */
-const CACHE = "explorador-v3";
+const CACHE = "explorador-v4";
 
 const BASICOS = [
   "./",
