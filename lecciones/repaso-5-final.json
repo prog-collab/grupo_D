@@ -185,6 +185,7 @@
       "titulo": "Caza del error: todo junto",
       "instruccion": "Nueve afirmaciones, mezcladas de las cuatro misiones. Varias son las mismas que engañaron a medio grupo la primera vez. Marcá SÓLO las falsas.",
       "digito": "9",
+      "pista": "Varias ya te las cruzaste en las misiones anteriores, con las mismas palabras. Las que más engañan son las que agregan un motivo que la Biblia nunca da: por qué Juan bautizó a Jesús, y qué hizo Jesús apenas salió del agua (Mateo 4:1). Y volvé a mirar dos cosas de la noche de Belén: quién guió a los pastores, y en qué lugar encontraron al niño los sabios (Mateo 2:11).",
       "afirmaciones": [
         { "texto": "Gabriel se le apareció primero a Zacarías y después a María.", "falsa": false,
           "porque": "Correcto, y pasaron seis meses entre una visita y la otra. Ese dato es el que permite hacer toda la cuenta de los tiempos del semestre." },
@@ -213,6 +214,7 @@
       "titulo": "Todo el semestre en orden",
       "instruccion": "Diez hechos, de las cuatro misiones, todos mezclados. Es la línea de tiempo más larga que hicimos. Si te equivocás en una, se reinicia entera: pensá antes de tocar.",
       "digito": "6",
+      "pista": "La trampa está al principio, y es que la historia de Juan arranca antes que la de Jesús, no después. Ordenalo por embarazos y nacimientos: el anuncio a Zacarías, el anuncio a María seis meses más tarde, el nacimiento de Juan, el de Jesús. Recién al final van los dos ya grandes, en el Jordán.",
       "eventos": [
         { "texto": "Gabriel se le aparece a Zacarías en el templo y él queda mudo",       "orden": 1 },
         { "texto": "Seis meses después, Gabriel visita a María en Nazaret",              "orden": 2 },
@@ -246,6 +248,7 @@
       "digito": "0",
       "izquierda": "La frase",
       "derecha": "¿Quién la dijo?",
+      "pista": "Las dos frases que más se mezclan son las dos preguntas del principio del semestre: una pide una prueba de que va a pasar y la otra pregunta de qué manera va a pasar. Leé Lucas 1:18 y Lucas 1:38 y vas a ver cuál es cuál. Las otras cuatro se resuelven por el lugar: el templo, la casa de Elisabet, Jerusalén y el Jordán.",
       "pares": [
         { "a": "“¿En qué conoceré esto? Porque yo soy viejo, y mi mujer es de edad avanzada.”", "b": "Zacarías, adentro del templo" },
         { "a": "“He aquí la sierva del Señor; hágase conmigo conforme a tu palabra.”",           "b": "María, en Nazaret" },

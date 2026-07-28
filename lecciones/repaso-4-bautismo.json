@@ -126,6 +126,7 @@
       "titulo": "Caza del error",
       "instruccion": "Siete afirmaciones. Esta vez hay pocas falsas y están muy bien escondidas: una se cuela por una sola palabra. Leé despacio.",
       "digito": "0",
+      "pista": "Dos se cuelan por una sola palabra. Leé Mateo 3:16 despacio: dice que el Espíritu bajó como paloma, y eso no es lo mismo que decir que bajó una paloma. Después leé Mateo 3:17 y fijate exactamente qué dijo la voz. Y para la otra, mirá en Mateo 4:1 qué fue lo que pasó apenas terminó el bautismo.",
       "afirmaciones": [
         { "texto": "Juan se opuso al principio a bautizar a Jesús.", "falsa": false,
           "porque": "Correcto. Y no por desconfianza: por lo contrario. Sabía quién era y le parecía que los papeles estaban invertidos." },
@@ -150,6 +151,7 @@
       "titulo": "Línea de tiempo",
       "instruccion": "Ocho momentos de la escena, desde antes de que Jesús llegara hasta lo que pasó justo después. Si te equivocás, se reinicia.",
       "digito": "3",
+      "pista": "Es una escena sola y va casi entera en el orden de Mateo 3:13 a 3:17, de corrido. Las dos que se confunden son el reparo que pone Juan (Mateo 3:14) y la respuesta de Jesús (Mateo 3:15): las dos van antes del agua. Y lo último no es la voz del cielo: Mateo 4:1 cuenta qué vino después.",
       "eventos": [
         { "texto": "Juan predica y bautiza a la gente en el Jordán",                 "orden": 1 },
         { "texto": "Jesús viene desde Galilea hasta el Jordán",                      "orden": 2 },
@@ -181,6 +183,7 @@
       "digito": "7",
       "izquierda": "En la escena del Jordán",
       "derecha": "¿Qué hizo?",
+      "pista": "En Mateo 3:16 y 3:17 tenés a tres de los cuatro en dos renglones seguidos: el que sube del agua, el que baja como paloma y el que habla desde el cielo. El que falta es el único que habla antes del bautismo, y también el que después cuenta lo que vio (Juan 1:34).",
       "pares": [
         { "a": "El Padre",           "b": "Habló desde el cielo: “Este es mi Hijo amado”" },
         { "a": "El Espíritu Santo",  "b": "Descendió como paloma y permaneció sobre él" },

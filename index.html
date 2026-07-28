@@ -48,6 +48,11 @@ button:disabled{opacity:.55;cursor:default;transform:none}
 .feedback.ok{color:#1d7a4c}.feedback.no{color:#c0392b}
 .explica{background:#eef9ff;border-left:5px solid var(--blue);border-radius:0 12px 12px 0;padding:12px 14px;margin-top:12px;line-height:1.55}
 .pista-box{background:#fff7d7;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:12px 14px;margin-top:12px;line-height:1.55}
+.pista-btn{display:block;margin-top:12px;text-align:left}
+.pista-btn small{display:block;font-weight:600;font-size:.75rem;opacity:.72;margin-top:2px}
+/* A partir del segundo error se resalta solo: el chico trabado no tiene
+   por qué acordarse de que el botón existe. */
+.pista-btn.ofrecida{background:#fff7d7;color:#7a5800;box-shadow:0 0 0 2px var(--gold)}
 .passage{background:#fff;border:2px solid #e7e2f5;border-radius:14px;padding:16px;margin:12px 0}
 .passage .ref{font-weight:800;color:var(--violet);font-size:.9rem}
 .passage .relato{margin:8px 0 12px;line-height:1.6}
@@ -59,11 +64,15 @@ button:disabled{opacity:.55;cursor:default;transform:none}
 .answer:empty:before{content:"Tocá las piezas de abajo";color:#8fa2c4;font-weight:700;padding:6px}
 .piece{background:#fff1b9;color:#574100;border:2px solid #dfae2e;padding:9px 12px;border-radius:11px;font-weight:800;cursor:pointer;font-size:.95rem}
 .piece.used{display:none}
-.check-item{display:flex;gap:11px;align-items:flex-start;background:#fff;border:2px solid #e7e2f5;padding:12px;border-radius:12px;margin:9px 0;cursor:pointer;line-height:1.5}
+.check-item{display:flex;flex-wrap:wrap;gap:11px;align-items:flex-start;background:#fff;border:2px solid #e7e2f5;padding:12px;border-radius:12px;margin:9px 0;cursor:pointer;line-height:1.5}
 .check-item input{width:21px;height:21px;margin-top:2px;flex:none;cursor:pointer}
+.check-item>span{flex:1}
 .check-item.era-falsa{background:#ffeae6;border-color:#e25c51}
 .check-item.era-cierta{background:#eefaf2;border-color:#3aaf6b}
-.check-item small{display:block;color:var(--soft);margin-top:5px}
+/* El porqué va DEBAJO de la afirmación, no al lado. Sin el flex-basis era
+   una tercera columna y en un teléfono quedaban las tres de dos palabras
+   de ancho, justo cuando el chico está leyendo por qué se equivocó. */
+.check-item small{flex-basis:100%;color:var(--soft);margin-top:-2px}
 .tarjetas{display:flex;flex-wrap:wrap;gap:9px}
 .tarjetas button{background:#e8f1ff;color:var(--ink);border:2px solid #a5c5ec;text-align:left;flex:1 1 260px;line-height:1.4}
 .tarjetas button.ok{background:#bcefd2;border-color:#38aa69}
@@ -152,6 +161,20 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
 .instalar-flotante .si{flex:1 1 160px;background:#e9f3ff;color:#1b5c9b;border:2px solid #bcd9f5;font-size:.9rem}
 .instalar-flotante .no{background:none;color:var(--soft);font-size:.86rem;text-decoration:underline;font-weight:600;padding:8px 10px}
 @keyframes subir{from{transform:translateY(120%);opacity:0}to{transform:translateY(0);opacity:1}}
+/* ---- El expediente, abierto encima de la actividad ---- */
+.abrir-expediente{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:55;
+  background:#fff;color:var(--violet);border:2px solid #ded6f5;border-radius:30px;
+  padding:11px 16px;font-size:.9rem;box-shadow:0 8px 22px #26304b33}
+.expediente{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;justify-content:flex-end}
+.expediente .fondo{position:absolute;inset:0;background:#26304bA6}
+.expediente .hoja{position:relative;display:flex;flex-direction:column;max-height:88vh;
+  background:var(--paper);border-radius:22px 22px 0 0;box-shadow:0 -8px 34px #26304b4d;animation:subir .28s ease-out}
+.expediente .barra{flex:none;display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:2px solid #efecf9}
+.expediente .barra h2{flex:1;margin:0;font-size:1.05rem}
+.expediente .cuerpo{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  padding:4px 16px calc(18px + env(safe-area-inset-bottom))}
+.expediente .cuerpo .passage:first-child{margin-top:12px}
+body.con-expediente{overflow:hidden}
 .soy-maestro{margin-top:20px;padding-top:16px;border-top:1px solid #e6e2f2;text-align:center}
 .soy-maestro a{color:var(--soft);font-size:.86rem;font-weight:700;text-decoration:none;border-bottom:1px dashed #b9b2d4;padding-bottom:2px}
 .demo-banda{position:sticky;top:0;z-index:9;background:#3a2a6b;color:#fff;padding:9px max(4%,14px);display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.86rem;font-weight:700}
@@ -758,14 +781,29 @@ function bloqueSolucion(seccion, est) {
   seccion.append(cont);
 }
 
+/* Ningún chico pidió una pista jamás: cero en 35 actividades, varias de
+   ellas trabadas en cuatro y cinco intentos. No era que el botón estuviera
+   escondido —siempre estuvo abajo de las opciones—: era que no decía lo
+   que costaba, y un precio que no conocés asusta más que uno que sí. Ahora
+   lo dice, y cuando el chico ya se equivocó dos veces se lo ofrecemos en
+   vez de esperar a que se le ocurra. */
 function botonPista(destino, texto, alUsar) {
-  if (!texto) return;
-  const b = el("button", "ghost", "💡 Necesito una pista");
+  if (!texto) return null;
+  const b = el("button", "ghost pista-btn");
+  b.append(el("span", null, "💡 Necesito una pista"));
+  b.append(el("small", null, "te cuesta una estrella"));
   b.onclick = () => {
     b.replaceWith(el("div", "pista-box", texto));
     alUsar();
   };
   destino.append(b);
+  return b;
+}
+
+/* Se llama con la cuenta de intentos: a partir del segundo error, el botón
+   se resalta solo. No se abre la pista, se ofrece — la decide él. */
+function ofrecerPista(b, intentos) {
+  if (b && intentos >= 3) b.classList.add("ofrecida");
 }
 
 /* ==================================================================
@@ -774,7 +812,10 @@ function botonPista(destino, texto, alUsar) {
 const RENDER = {};
 
 /* ---------- Pasaje bíblico ---------- */
-RENDER.pasaje = (s, est) => {
+/* Aparte del render de la estación porque el mismo texto se dibuja dos
+   veces: en el expediente de arriba y en la hoja que se abre desde
+   cualquier actividad (ver montarExpediente). */
+function pintarPasaje(destino, est) {
   est.bloques.forEach(b => {
     const caja = el("div", "passage");
     caja.append(el("div", "ref", b.cita));
@@ -785,14 +826,16 @@ RENDER.pasaje = (s, est) => {
       d.append(el("i", null, "“" + v.texto + "”"));
       caja.append(d);
     });
-    s.append(caja);
+    destino.append(caja);
   });
-  if (leccion.version) s.append(el("p", "hint", "Texto bíblico: " + leccion.version));
-};
+  if (leccion.version) destino.append(el("p", "hint", "Texto bíblico: " + leccion.version));
+}
+
+RENDER.pasaje = (s, est) => pintarPasaje(s, est);
 
 /* ---------- Quiz con evidencia obligatoria ---------- */
 RENDER.quiz = (s, est) => {
-  let indice = 0, intentos = 1, pista = false;
+  let indice = 0, intentos = 1, pista = false, bPista = null;
   const zona = el("div");
   const fb = el("p", "feedback");
   s.append(zona, fb);
@@ -829,12 +872,16 @@ RENDER.quiz = (s, est) => {
           b.disabled = true;
           intentos++;
           fb.className = "feedback no";
-          fb.textContent = "Esa no. Volvé al texto y fijate bien.";
+          /* El expediente ya no está tres pantallas más arriba: hay un
+             botón fijo que lo abre encima. Conviene nombrarlo acá, que es
+             justo cuando hace falta. */
+          fb.textContent = "Esa no. Abrí el expediente con el botón 📖 de abajo y fijate bien.";
+          ofrecerPista(bPista, intentos);
         }
       };
       zona.append(b);
     });
-    botonPista(zona, p.pista, () => { pista = true; });
+    bPista = botonPista(zona, p.pista, () => { pista = true; });
   }
 
   function evidencia(p) {
@@ -890,7 +937,7 @@ RENDER.quiz = (s, est) => {
 
 /* ---------- Caza del error ---------- */
 RENDER["caza-error"] = (s, est) => {
-  let intentos = 1;
+  let intentos = 1, pista = false;
   const lista = el("div");
   mezclar(est.afirmaciones.slice()).forEach(a => {
     const lab = el("label", "check-item");
@@ -903,7 +950,9 @@ RENDER["caza-error"] = (s, est) => {
   });
   const btn = el("button", null, "Comprobar");
   const fb = el("p", "feedback");
-  s.append(lista, btn, fb);
+  s.append(lista, btn);
+  const bPista = botonPista(s, est.pista, () => { pista = true; });
+  s.append(fb);
 
   btn.onclick = () => {
     let todoBien = true;
@@ -920,6 +969,7 @@ RENDER["caza-error"] = (s, est) => {
         const falsas = est.afirmaciones.filter(a => a.falsa).length;
         fb.textContent = "Todavía no. Te doy una mano: son exactamente " + falsas + " falsas.";
       }
+      ofrecerPista(bPista, intentos);
       return;
     }
     lista.querySelectorAll(".check-item").forEach(lab => {
@@ -928,7 +978,8 @@ RENDER["caza-error"] = (s, est) => {
       lab.append(el("small", null, lab._dato.porque));
     });
     btn.disabled = true;
-    const n = completar(est, intentos, false);
+    if (bPista) bPista.remove();
+    const n = completar(est, intentos, pista);
     pintarEstrellas(est.id);
     fb.className = "feedback ok";
     fb.textContent = "✅ Las cazaste todas. " + n + " de 3 estrellas.";
@@ -938,7 +989,7 @@ RENDER["caza-error"] = (s, est) => {
 
 /* ---------- Línea de tiempo ---------- */
 RENDER["linea-tiempo"] = (s, est) => {
-  let paso = 1, intentos = 1;
+  let paso = 1, intentos = 1, pista = false;
   const cont = el("div", "tarjetas");
   const fb = el("p", "feedback");
   mezclar(est.eventos.slice()).forEach(ev => {
@@ -950,7 +1001,8 @@ RENDER["linea-tiempo"] = (s, est) => {
         b.disabled = true;
         paso++;
         if (paso > est.eventos.length) {
-          const n = completar(est, intentos, false);
+          if (bPista) bPista.remove();
+          const n = completar(est, intentos, pista);
           pintarEstrellas(est.id);
           fb.className = "feedback ok";
           fb.textContent = "✅ Línea de tiempo correcta. " + n + " de 3 estrellas.";
@@ -961,12 +1013,17 @@ RENDER["linea-tiempo"] = (s, est) => {
         paso = 1;
         cont.querySelectorAll("button").forEach(x => { x.classList.remove("ok"); x.disabled = false; });
         fb.className = "feedback no";
+        /* Se reinicia toda la línea: es la actividad donde más caro sale
+           trabarse, así que es la que más necesita que la pista se ofrezca. */
         fb.textContent = "Ese hecho no va ahí. Se reinicia: pensá bien qué fue lo primero de todo.";
+        ofrecerPista(bPista, intentos);
       }
     };
     cont.append(b);
   });
-  s.append(cont, fb);
+  s.append(cont);
+  const bPista = botonPista(s, est.pista, () => { pista = true; });
+  s.append(fb);
 };
 
 /* ---------- Armar el versículo ---------- */
@@ -988,7 +1045,7 @@ RENDER.versiculo = (s, est) => {
   const btn = el("button", null, "Comprobar");
   const fb = el("p", "feedback");
   s.append(resp, piezas, btn);
-  botonPista(s, est.pista, () => { pista = true; });
+  const bPista = botonPista(s, est.pista, () => { pista = true; });
   s.append(fb);
 
   btn.onclick = () => {
@@ -996,6 +1053,7 @@ RENDER.versiculo = (s, est) => {
     const armado = [...resp.querySelectorAll(".piece")].map(x => x.textContent).join(" ");
     if (armado === est.respuesta) {
       btn.disabled = true;
+      if (bPista) bPista.remove();
       resp.querySelectorAll(".piece").forEach(x => x.onclick = null);
       const n = completar(est, intentos, pista);
       pintarEstrellas(est.id);
@@ -1006,13 +1064,14 @@ RENDER.versiculo = (s, est) => {
     } else {
       fb.className = "feedback no";
       fb.textContent = "Todavía no. Tocá una pieza que ya pusiste para sacarla y probá otro orden.";
+      ofrecerPista(bPista, intentos);
     }
   };
 };
 
 /* ---------- Emparejar (profecía ↔ cumplimiento) ---------- */
 RENDER.emparejar = (s, est) => {
-  let intentos = 1, resueltos = 0, elegido = null;
+  let intentos = 1, resueltos = 0, elegido = null, pista = false;
   const grid = el("div", "match");
   const colA = el("div", "col");
   const colB = el("div", "col");
@@ -1052,7 +1111,8 @@ RENDER.emparejar = (s, est) => {
       fb.className = "feedback ok";
       fb.textContent = "Par correcto.";
       if (resueltos === est.pares.length) {
-        const n = completar(est, intentos, false);
+        if (bPista) bPista.remove();
+        const n = completar(est, intentos, pista);
         pintarEstrellas(est.id);
         fb.textContent = "✅ Uniste los " + est.pares.length + ". " + n + " de 3 estrellas.";
         if (est.explicacion) s.append(el("div", "explica", est.explicacion));
@@ -1066,11 +1126,14 @@ RENDER.emparejar = (s, est) => {
       /* Genérico a propósito: esta actividad se usa para profecías y también
          para "¿quién lo dijo?" en la misión final. */
       fb.textContent = "Ese no es el par. Leé de nuevo las dos columnas y probá otra combinación.";
+      ofrecerPista(bPista, intentos);
     }
   }
 
   grid.append(colA, colB);
-  s.append(grid, fb);
+  s.append(grid);
+  const bPista = botonPista(s, est.pista, () => { pista = true; });
+  s.append(fb);
 };
 
 /* ---------- Respuesta escrita: esto sí lo lee el maestro ---------- */
@@ -1127,6 +1190,66 @@ RENDER.oracion = (s, est) => {
   s.append(ta);
   s.append(el("p", "privado", "🔒 " + (est.privado || "Esto queda sólo en tu teléfono.")));
 };
+
+/* ==================================================================
+   El expediente, a mano desde cualquier actividad.
+
+   El expediente está arriba de todo y mide más de dos mil píxeles: en un
+   teléfono son casi tres pantallas. Cuando una actividad le decía "volvé
+   al texto y fijate bien", el chico tenía que subir todo eso y después
+   encontrar dónde estaba. La mayoría no volvía: adivinaba. Y se veía en
+   los números — el interrogatorio, que es donde más hay que leer, era la
+   actividad peor puntuada de todas.
+
+   Ahora lo abre encima de lo que está haciendo, lee, cierra y sigue en la
+   misma pregunta, sin perder el scroll.
+   ================================================================== */
+function montarExpediente() {
+  const est = leccion.estaciones.find(e => e.tipo === "pasaje");
+  if (!est) return;
+
+  const fab = el("button", "abrir-expediente", "📖 El expediente");
+  fab.setAttribute("aria-label", "Abrir el expediente para releer los versículos");
+
+  const capa = el("div", "expediente oculto");
+  capa.setAttribute("role", "dialog");
+  capa.setAttribute("aria-modal", "true");
+  capa.setAttribute("aria-label", est.titulo);
+
+  const fondo = el("div", "fondo");
+  const hoja = el("div", "hoja");
+  const barra = el("div", "barra");
+  barra.append(el("h2", null, "📖 " + est.titulo));
+  const cerrar = el("button", "ghost", "Cerrar ✕");
+  barra.append(cerrar);
+
+  const cuerpo = el("div", "cuerpo");
+  pintarPasaje(cuerpo, est);
+  hoja.append(barra, cuerpo);
+  capa.append(fondo, hoja);
+
+  const abrir = () => {
+    capa.classList.remove("oculto");
+    /* El fondo no se mueve mientras lee: si no, cierra la hoja y no sabe
+       dónde quedó. */
+    document.body.classList.add("con-expediente");
+    cerrar.focus();
+  };
+  const salir = () => {
+    capa.classList.add("oculto");
+    document.body.classList.remove("con-expediente");
+    fab.focus();
+  };
+
+  fab.onclick = abrir;
+  cerrar.onclick = salir;
+  fondo.onclick = salir;
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && !capa.classList.contains("oculto")) salir();
+  });
+
+  document.body.append(fab, capa);
+}
 
 /* ==================================================================
    Candado final
@@ -1520,6 +1643,7 @@ async function arrancar() {
     if (est.digito && ((estado[est.id] && estado[est.id].estrellas) || 0) > 0) mostrarDigito(s, est.digito);
   });
   renderCofre(main);
+  montarExpediente();
   actualizarProgreso();
 }
 

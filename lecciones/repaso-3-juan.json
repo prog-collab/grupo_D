@@ -131,6 +131,7 @@
       "titulo": "Caza del error",
       "instruccion": "Siete afirmaciones sobre Juan. Algunas son falsas. Cuidado: esta vez no son la misma cantidad que la vez pasada, así que no cuentes, pensá.",
       "digito": "9",
+      "pista": "Que Juan y Jesús fueran primos lo decimos nosotros, no el texto: fijate si en el expediente aparece esa palabra en algún lado. Después mirá Lucas 1:80 para saber dónde vivía Juan de verdad, y Juan 1:20 para ver qué contestó cuando le preguntaron si era el Cristo.",
       "afirmaciones": [
         { "texto": "La Biblia dice que Juan y Jesús eran primos.", "falsa": true,
           "porque": "Dice que Elisabet era parienta de María, sin aclarar qué parentesco. Lo de “primos” lo agregamos nosotros: el texto nunca lo dice." },
@@ -155,6 +156,7 @@
       "titulo": "Línea de tiempo",
       "instruccion": "Toda la vida de Juan en ocho tarjetas, desde antes de nacer hasta el día que señaló a Jesús. Si te equivocás, se reinicia.",
       "digito": "4",
+      "pista": "Ordenala por la edad de Juan, no por el libro donde aparece cada cosa. Primero lo de Lucas 1, que es antes de nacer y el día que le ponen el nombre; después Lucas 1:80, que resume toda su crecida de un saque; y recién ahí lo de Mateo 3 y Juan 1, que es Juan ya grande. Lo último de todo es cuando señala a Jesús (Juan 1:29).",
       "eventos": [
         { "texto": "Gabriel le anuncia a Zacarías que va a tener un hijo",        "orden": 1 },
         { "texto": "Nace el bebé y discuten cómo se va a llamar",                 "orden": 2 },
@@ -186,6 +188,7 @@
       "digito": "2",
       "izquierda": "Escrito siglos antes",
       "derecha": "Lo que pasó con Juan",
+      "pista": "Tres de los cuatro textos hablan del mismo trabajo y se parecen muchísimo entre sí. Para separarlos preguntate quién lo dice y cuándo: uno es lo que Gabriel le anunció al padre en el templo, otro es lo que Juan contestó sobre sí mismo (Juan 1:23), y otro es lo que Jesús dijo de él más adelante. El que sobra no habla de un mensajero sino de un cordero.",
       "pares": [
         { "a": "“Voz que clama en el desierto: Preparad camino a Jehová” (Isaías 40:3)",                       "b": "Lo que Juan contestó cuando le preguntaron quién era" },
         { "a": "“He aquí, yo envío mi mensajero, el cual preparará el camino delante de mí” (Malaquías 3:1)",  "b": "La misión que Gabriel le anunció a Zacarías en el templo" },

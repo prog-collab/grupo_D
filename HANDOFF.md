@@ -85,10 +85,10 @@ tiene un botón **"🔎 Ver las respuestas"**.
 node validar-lecciones.js
 ```
 
-Falla si alguna opción de "evidencia" del quiz cita un versículo que el chico
-no vio antes en el expediente. **Correrlo siempre después de tocar un JSON de
-lección.** Salió de un reclamo real de una alumna: le pedían elegir Lucas 2:17
-y ese versículo no estaba en la lectura.
+Falla si alguna opción de "evidencia" del quiz —o alguna pista— cita un
+versículo que el chico no vio antes en el expediente. **Correrlo siempre
+después de tocar un JSON de lección.** Salió de un reclamo real de una alumna:
+le pedían elegir Lucas 2:17 y ese versículo no estaba en la lectura.
 
 ---
 
@@ -202,6 +202,42 @@ para tener presentes si hay que repetirlo:
 Resultado: Giovanna pasó de 14/13/13/11 a 16/16/14/14, Juan de 15 a 17.
 Nadie llegó a 18, así que el techo sigue significando algo.
 
+### 3.2 El expediente a mano y las pistas que faltaban
+
+**El expediente se abre desde cualquier actividad.** Medía más de dos mil
+píxeles y estaba arriba de todo: cuando una actividad decía "volvé al texto y
+fijate bien", el chico tenía que subir casi tres pantallas y después encontrar
+dónde estaba. La mayoría no volvía, adivinaba, y se veía en los números —el
+interrogatorio, que es donde más hay que leer, era lo peor puntuado. Ahora hay
+un botón 📖 fijo abajo a la derecha que lo abre encima de lo que está haciendo;
+cierra y sigue en la misma pregunta, sin perder el scroll. El mismo texto se
+dibuja en los dos lados con `pintarPasaje()`, así que no hay copia que se
+desincronice. Se cierra con la ✕, tocando el fondo o con Escape.
+
+**Las tres actividades que no tenían pista ahora la tienen**: caza del error,
+línea de tiempo y emparejar, en las cinco misiones. Son 15 pistas nuevas.
+
+**Y el botón de pista dice lo que cuesta.** Ningún chico pidió una pista jamás
+—cero en 35 actividades, varias trabadas en cuatro y cinco intentos—, y no era
+que estuviera escondido: siempre estuvo abajo de las opciones. Lo que faltaba
+era decir el precio, porque un precio que no conocés asusta más que uno que sí.
+Ahora dice "te cuesta una estrella", y a partir del segundo error el botón se
+resalta solo (`ofrecerPista`). No se abre sola: se ofrece.
+
+Regla al escribir una pista: **señalá dónde mirar, nunca cuántas son ni en qué
+posición está nada.** Las opciones se mezclan en pantalla, así que "la primera"
+no significa nada, y decir la cantidad de falsas le saca la gracia a la caza
+del error (la app ya la revela sola al tercer intento).
+
+**El validador ahora también revisa las pistas**: si una manda a leer un
+versículo que no está en el expediente, falla. Una pista que deja al chico
+dando vueltas es peor que ninguna, y encima le costó una estrella.
+
+De paso, un bug viejo de CSS: en la caza del error, el "porqué" de cada
+afirmación era una tercera columna del flex y en un teléfono quedaban las tres
+de dos palabras de ancho — justo cuando el chico está leyendo por qué se
+equivocó. Ahora va debajo, a todo el ancho.
+
 ---
 
 ## 4. Lo que falta: el video para los chicos
@@ -221,7 +257,7 @@ los chicos el domingo, sin infantilizar. Los tiempos son orientativos.
 | 0:38 | Lo primero que te conviene hacer es instalarla. Si tenés Android, te va a aparecer un botón que dice "Instalar la app en el teléfono": tocalo y te queda con su ícono, como cualquier otra app. Si tenés iPhone, tocá el botón de compartir en Safari y elegí "Agregar a pantalla de inicio". | **Captura 2**: el botón azul de instalar; después, el ícono en la pantalla del teléfono |
 | 0:56 | Y una vez instalada, abre aunque te quedes sin datos. Podés hacer las actividades en el colectivo. | Modo avión y la app abriendo igual |
 | 1:04 | Adentro vas a ver las misiones. Están numeradas, pero las hacés en el orden que quieras, y podés dejar una por la mitad y volver mañana: se guarda todo. | **Captura 3**: la portada con las 4 misiones y las barras de progreso |
-| 1:16 | Cuando entrás a una misión, lo primero es **el expediente**. Ahí está el relato y los versículos. No lo saltees: todas las preguntas se responden con eso. | **Captura 4**: el expediente con los versículos |
+| 1:16 | Cuando entrás a una misión, lo primero es **el expediente**. Ahí está el relato y los versículos. No lo saltees: todas las preguntas se responden con eso. Y si después, en el medio de una actividad, necesitás volver a mirarlo, no hace falta que subas: abajo a la derecha hay un botón 📖 que te lo abre encima y te deja donde estabas. | **Captura 4**: el expediente, y después el botón 📖 abriéndolo desde una pregunta |
 | 1:30 | Después vienen las actividades. Hay de todo: un interrogatorio con preguntas, una caza del error donde marcás lo que la gente repite pero no está en la Biblia, una línea de tiempo para ordenar, y un versículo para armar como rompecabezas. | **Capturas 5-8**: una de cada tipo, cortitas |
 | 1:48 | Cada actividad te da hasta **tres estrellas**. Y no hace falta que te salga perfecto: una equivocación cada tanto no te las saca. La pista también está ahí si la necesitás: te va a costar una estrella, pero es mejor entender que adivinar. | El contador de estrellas arriba; el botón 💡 |
 | 2:04 | Y ojo con esto, que es lo más importante: cuando acertás una pregunta, te voy a pedir **el versículo**. No alcanza con saber la respuesta, tenés que poder mostrar dónde dice. | **Captura 9**: el cuadro celeste "Bien. Ahora demostralo" |

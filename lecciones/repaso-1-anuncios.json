@@ -121,6 +121,7 @@
       "titulo": "Caza del error",
       "instruccion": "Seis afirmaciones sobre el relato. Algunas son falsas, pero ninguna es obvia: hay que acordarse bien del texto. Marcá SÓLO las falsas y después comprobá. No te voy a decir cuántas son… al menos no de entrada.",
       "digito": "4",
+      "pista": "Ninguna falsa dice un disparate: le cambian un dato chiquito al relato. Repasá cuatro cosas en el expediente: dónde estaba Zacarías cuando vio al ángel (Lucas 1:9), qué le pasó exactamente por no creer (Lucas 1:20), qué nombre le mandaron poner al hijo de María (Lucas 1:31) y cuánto tiempo hubo entre un anuncio y el otro (Lucas 1:36).",
       "afirmaciones": [
         { "texto": "Gabriel se le apareció a Zacarías mientras dormía en su casa.", "falsa": true,  "porque": "Fue en el templo, de pie a la derecha del altar del incienso, mientras Zacarías cumplía su turno de sacerdote. No fue un sueño." },
         { "texto": "Elisabet no podía tener hijos y además ya era anciana.",         "falsa": false, "porque": "Correcto. El texto dice que era estéril y que los dos eran de edad avanzada." },
@@ -137,6 +138,7 @@
       "titulo": "Línea de tiempo",
       "instruccion": "Ordená los hechos como pasaron. Tocá las tarjetas en orden: si te equivocás, se reinicia y perdés estrella.",
       "digito": "2",
+      "pista": "El texto trae dos relojes. Lucas 1:36 dice que cuando Gabriel habla con María, Elisabet ya va por el sexto mes: ese embarazo empezó bastante antes. Y Lucas 1:56 dice cuánto se quedó María de visita. Arrancá por lo que Zacarías estaba haciendo cuando se le apareció el ángel.",
       "eventos": [
         { "texto": "A Zacarías le toca el turno de quemar el incienso en el templo", "orden": 1 },
         { "texto": "Gabriel le anuncia que va a tener un hijo y él queda mudo",      "orden": 2 },
@@ -166,6 +168,7 @@
       "digito": "9",
       "izquierda": "Escrito siglos antes",
       "derecha": "Lo que pasó en Lucas 1",
+      "pista": "Dos de los textos antiguos hablan del mismo hombre, Juan, así que buscar palabras parecidas no alcanza: fijate en qué momento pasa cada cosa. Uno va con el anuncio de que va a nacer; el otro, con él ya grande predicando. De los otros dos, uno nombra un reino que no se termina y el otro, una virgen.",
       "pares": [
         { "a": "“He aquí, yo envío mi mensajero, el cual preparará el camino delante de mí” (Malaquías 3:1)",        "b": "El hijo que Gabriel le anuncia a Zacarías" },
         { "a": "“Será afirmada tu casa y tu reino para siempre delante de tu rostro” (2 Samuel 7:16)",              "b": "“Su reino no tendrá fin”" },

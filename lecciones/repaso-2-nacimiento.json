@@ -121,6 +121,7 @@
       "titulo": "Caza del error: el pesebre de mentira",
       "instruccion": "Estas siete afirmaciones son las que casi todo el mundo repite sobre la Navidad. Varias NO están en la Biblia. Marcá sólo las falsas. Aviso: algunas te van a doler.",
       "digito": "1",
+      "pista": "Las falsas no contradicen a la Biblia: dicen cosas que la Biblia nunca dijo y que igual repetimos todos. De cada una preguntate si eso lo leíste en el expediente o lo viste en un pesebre armado. Mirá bien Mateo 2:11 (cuántos eran y en qué lugar entraron) y fijate en Lucas 2:10-11 quién es el que les habla a los pastores.",
       "afirmaciones": [
         { "texto": "Los magos que visitaron a Jesús eran tres.", "falsa": true,
           "porque": "El texto nunca dice cuántos eran. Se supone que fueron tres porque los regalos son tres, pero eso lo agregó la tradición, no Mateo." },
@@ -145,6 +146,7 @@
       "titulo": "Línea de tiempo",
       "instruccion": "Ocho hechos de los dos relatos, mezclados. Ordenalos. Ojo: no todo pasó la misma noche, y si te equivocás se reinicia.",
       "digito": "8",
+      "pista": "Son dos relatos pegados: Lucas cuenta la noche —censo, pesebre, pastores— y Mateo cuenta a los sabios, que llegan bastante después. La prueba está en Mateo 2:11: dice que entraron en la casa, no al establo. Poné toda la parte de Lucas primero y después la de Mateo.",
       "eventos": [
         { "texto": "Augusto César ordena que todos se inscriban en un censo",         "orden": 1 },
         { "texto": "José y María viajan de Nazaret a Belén",                          "orden": 2 },
@@ -176,6 +178,7 @@
       "digito": "3",
       "izquierda": "Escrito siglos antes",
       "derecha": "Lo que pasó",
+      "pista": "Tres de los cuatro se resuelven con una palabra que aparece en las dos columnas: una ciudad, una estrella y un país. El que queda es el único que no nombra ningún lugar: habla de un niño y de los nombres que le van a poner.",
       "pares": [
         { "a": "“Pero tú, Belén Efrata… de ti me saldrá el que será Señor en Israel” (Miqueas 5:2)", "b": "La respuesta que le dan a Herodes cuando pregunta dónde nacería" },
         { "a": "“Porque un niño nos es nacido, hijo nos es dado… Príncipe de Paz” (Isaías 9:6)",     "b": "El anuncio del ángel: un Salvador, que es Cristo el Señor" },
