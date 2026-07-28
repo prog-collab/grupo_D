@@ -56,6 +56,11 @@ tr.inactivo td{opacity:.5}
 .barrita div{height:100%;background:linear-gradient(90deg,#f7bd2d,#ff785a)}
 .consulta{border:2px solid var(--linea);border-radius:14px;padding:15px;margin-bottom:13px;background:var(--paper)}
 .consulta.pendiente{border-color:#f3c98f;background:#fffaf0}
+.consulta.recien{box-shadow:0 0 0 4px #f7bd2d55;scroll-margin-top:90px}
+.avisos{display:flex;flex-wrap:wrap;align-items:center;gap:10px;border:2px solid var(--linea);border-radius:14px;padding:12px 14px;margin-bottom:16px;background:var(--paper)}
+.avisos .estado{font-weight:800;font-size:.92rem}
+.avisos .nota{font-size:.83rem;color:var(--soft);flex-basis:100%;line-height:1.45;margin:0}
+.avisos.on{border-color:#9fdcbc;background:#f2fbf6}
 .consulta .quien{font-weight:800;font-size:.95rem}
 .consulta .donde{font-size:.8rem;color:var(--soft);margin:3px 0 10px}
 .consulta .texto{line-height:1.55;background:#f6f5fb;border-radius:10px;padding:11px 13px}
@@ -132,7 +137,10 @@ const $ = s => document.querySelector(s);
 
 let token = sessionStorage.getItem("ed:maestro") || null;
 let datos = null;
-let solapa = "resumen";
+/* Si entró tocando una notificación, viene con ?pregunta=<id>: lo dejo
+   parado en la solapa de preguntas, no en el resumen. */
+const PREGUNTA_AVISADA = new URLSearchParams(location.search).get("pregunta") || "";
+let solapa = PREGUNTA_AVISADA ? "preguntas" : "resumen";
 
 async function rpc(fn, params) {
   const r = await fetch(SUPA_URL + "/rest/v1/rpc/" + fn, {
@@ -432,6 +440,8 @@ function preguntas(v) {
   const abiertas = datos.consultas.filter(c => !c.respondida_en);
   const cerradas = datos.consultas.filter(c => c.respondida_en);
 
+  v.append(cajaAvisos());
+
   if (!datos.consultas.length) {
     v.append(el("div", "vacio",
       "Todavía nadie preguntó nada. Dentro de cada actividad los chicos tienen un botón “No entiendo esta actividad”; lo que escriban aparece acá. Sólo vos lo ves."));
@@ -449,7 +459,12 @@ function preguntas(v) {
 }
 
 function tarjetaConsulta(c, abierta) {
-  const d = el("div", "consulta" + (abierta ? " pendiente" : ""));
+  /* Si llegó tocando la notificación, marco esa pregunta y le llevo la
+     pantalla hasta ahí: si no, aterriza en la lista y tiene que buscarla. */
+  const desdeAviso = String(c.id) === PREGUNTA_AVISADA;
+  const d = el("div", "consulta" + (abierta ? " pendiente" : "") + (desdeAviso ? " recien" : ""));
+  d.id = "consulta-" + c.id;
+  if (desdeAviso) setTimeout(() => d.scrollIntoView({ behavior: "smooth", block: "center" }), 60);
   d.append(el("div", "quien", CON_APELLIDO(c.alumno, c.apellido)));
   d.append(el("div", "donde",
     tituloLeccion(c.leccion) + " · actividad “" + (c.estacion || "?") + "” · " + fecha(c.cuando)));
@@ -609,6 +624,169 @@ $("#btnCsv").onclick = () => {
   a.download = "grupo-d-" + new Date().toISOString().slice(0, 10) + ".csv";
   a.click();
 };
+
+/* ==================================================================
+   Avisos: que el teléfono suene cuando un chico pregunta.
+
+   Un chico que pregunta un martes a la noche y recibe la respuesta el
+   domingo ya se olvidó de qué preguntó, y la próxima no pregunta.
+
+   Es por teléfono, no por maestro: el navegador da una suscripción por
+   aparato. Si activa en el celular y en la compu, le llega a los dos, y
+   apagarlo en uno no lo apaga en el otro.
+   ================================================================== */
+const VAPID_PUBLICA = "BAjvJby97gPSgxbMOyVWsrRgxd7OdNxQ8Fsb61YIwjaVOVDJeR7ovxqcFzf0s70YaLbTRtPzsZQCbIc2IqlgS0Q";
+
+const hayPush = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+const esIphone = /iPhone|iPad|iPod/.test(navigator.userAgent);
+const instalada = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+
+function clavePublicaEnBytes(s) {
+  const base = s.replace(/-/g, "+").replace(/_/g, "/");
+  const bin = atob(base + "=".repeat((4 - (base.length % 4)) % 4));
+  return Uint8Array.from(bin, c => c.charCodeAt(0));
+}
+
+async function registroSW() {
+  if (!hayPush) return null;
+  try {
+    await navigator.serviceWorker.register("sw.js");
+    return await navigator.serviceWorker.ready;
+  } catch { return null; }
+}
+
+async function suscripcionDeEsteAparato() {
+  const reg = await registroSW();
+  if (!reg) return null;
+  try { return await reg.pushManager.getSubscription(); } catch { return null; }
+}
+
+/* Estado que se ve en la solapa de preguntas. Lo pinto optimista y lo
+   corrijo cuando el navegador contesta, que puede tardar un segundo. */
+function cajaAvisos() {
+  const caja = el("div", "avisos");
+  const estado = el("span", "estado", "Avisos: revisando…");
+  caja.append(estado);
+  const nota = el("p", "nota");
+  caja.append(nota);
+
+  const decir = (texto, clase) => { estado.textContent = texto; caja.className = "avisos" + (clase ? " " + clase : ""); };
+
+  if (!hayPush) {
+    decir("Este navegador no puede avisarte");
+    nota.textContent = esIphone
+      ? "El iPhone sólo avisa si tenés el panel agregado a la pantalla de inicio: abrilo en Safari, tocá Compartir → “Agregar a inicio”, y volvé a entrar desde ahí."
+      : "Probá con Chrome o Firefox actualizados. Mientras tanto, las preguntas siguen apareciendo acá.";
+    return caja;
+  }
+
+  if (esIphone && !instalada) {
+    decir("Falta agregar el panel a la pantalla de inicio");
+    nota.textContent = "En iPhone los avisos sólo funcionan con la app agregada a inicio: tocá Compartir → “Agregar a inicio”, abrila desde ahí y volvé a esta solapa.";
+    return caja;
+  }
+
+  if (Notification.permission === "denied") {
+    decir("Los avisos están bloqueados");
+    nota.textContent = "Los bloqueaste en este navegador. Se destraban desde el candado de la barra de direcciones, en Notificaciones.";
+    return caja;
+  }
+
+  const boton = el("button", "ghost chico", "…");
+  caja.append(boton);
+  boton.style.marginLeft = "auto";
+
+  const pintar = (activo) => {
+    if (activo) {
+      decir("🔔 Te aviso en este aparato", "on");
+      nota.textContent = "Cuando un chico pregunte, te llega la notificación aunque tengas el panel cerrado. Tocala y se abre en esa pregunta.";
+      boton.textContent = "No avisarme más acá";
+      boton.onclick = () => apagar();
+    } else {
+      decir("Avisos apagados en este aparato");
+      nota.textContent = "Ahora mismo, para enterarte de una pregunta tenés que abrir el panel y mirar.";
+      boton.textContent = "🔔 Avisarme cuando pregunten";
+      boton.onclick = () => encender();
+    }
+  };
+
+  async function encender() {
+    boton.disabled = true;
+    decir("Pidiendo permiso…");
+    try {
+      const permiso = await Notification.requestPermission();
+      if (permiso !== "granted") {
+        decir("No me diste permiso");
+        nota.textContent = "El navegador necesita tu permiso para avisarte. Si no aparece el cartel, destrabalo desde el candado de la barra de direcciones.";
+        boton.disabled = false;
+        boton.textContent = "Probar de nuevo";
+        boton.onclick = () => encender();
+        return;
+      }
+      const reg = await registroSW();
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: clavePublicaEnBytes(VAPID_PUBLICA)
+      });
+      const j = sub.toJSON();
+      const r = await rpc("ed_maestro_push_alta", {
+        p_token: token, p_endpoint: sub.endpoint,
+        p_p256dh: j.keys.p256dh, p_auth: j.keys.auth
+      });
+      if (!r.ok) throw new Error(r.error);
+      boton.disabled = false;
+      pintar(true);
+      /* Una de muestra, para que vea cómo le va a llegar. */
+      reg.showNotification("Listo: te voy a avisar acá", {
+        body: "Así vas a ver las preguntas de los chicos.",
+        icon: "iconos/icono-192.png", tag: "aviso-prueba", lang: "es-AR"
+      }).catch(() => {});
+    } catch (e) {
+      boton.disabled = false;
+      decir("No pude activarlos");
+      nota.textContent = "Probá de nuevo en un rato. Las preguntas siguen llegando al panel igual.";
+      boton.textContent = "Probar de nuevo";
+      boton.onclick = () => encender();
+    }
+  }
+
+  async function apagar() {
+    boton.disabled = true;
+    try {
+      const sub = await suscripcionDeEsteAparato();
+      if (sub) {
+        await rpc("ed_maestro_push_baja", { p_token: token, p_endpoint: sub.endpoint }).catch(() => {});
+        await sub.unsubscribe().catch(() => {});
+      }
+    } finally {
+      boton.disabled = false;
+      pintar(false);
+    }
+  }
+
+  /* Manda el navegador: si él ya no tiene suscripción, está apagado, aunque
+     el servidor tenga guardado un endpoint viejo de este mismo teléfono. */
+  (async () => {
+    const sub = await suscripcionDeEsteAparato();
+    if (!sub) return pintar(false);
+    try {
+      const r = await rpc("ed_maestro_push_estado", { p_token: token, p_endpoint: sub.endpoint });
+      /* Quedó suscripto en el navegador pero el servidor no lo tiene (le
+         borramos la suscripción por vieja, o cambió de grupo): lo repongo
+         sin hacerle tocar nada. */
+      if (r.ok && !r.activo) {
+        const j = sub.toJSON();
+        await rpc("ed_maestro_push_alta", {
+          p_token: token, p_endpoint: sub.endpoint,
+          p_p256dh: j.keys.p256dh, p_auth: j.keys.auth
+        }).catch(() => {});
+      }
+      pintar(true);
+    } catch { pintar(true); }
+  })();
+
+  return caja;
+}
 
 /* El panel vive dentro de la misma app instalada que usan los chicos, así
    que comparte el service worker: abre igual con mala señal. */

@@ -10,7 +10,7 @@
  * Al publicar una versión nueva conviene subir el número de CACHE: eso
  * borra la anterior y evita que queden mezclados archivos viejos y nuevos.
  */
-const CACHE = "explorador-v4";
+const CACHE = "explorador-v5";
 
 const BASICOS = [
   "./",
@@ -89,5 +89,46 @@ self.addEventListener("fetch", ev => {
     const guardado = await c.match(req);
     const red = fetch(req).then(r => { if (r && r.ok) c.put(req, r.clone()); return r; }).catch(() => null);
     return guardado || (await red) || new Response("", { status: 504 });
+  })());
+});
+
+/* =====================================================================
+   Avisos al maestro.
+
+   Cuando un chico pregunta, el servidor le manda esto al navegador del
+   maestro aunque tenga la app cerrada. Al tocar la notificación se abre
+   el panel en esa pregunta: si ya lo tenía abierto en otra pestaña, uso
+   esa en vez de abrir una nueva.
+   ===================================================================== */
+self.addEventListener("push", ev => {
+  let d = {};
+  try { d = ev.data ? ev.data.json() : {}; } catch { d = {}; }
+
+  const cuerpo = [d.cuerpo, d.donde && "— " + d.donde].filter(Boolean).join("\n");
+  ev.waitUntil(self.registration.showNotification(d.titulo || "Una pregunta nueva", {
+    body: cuerpo || "Un chico te preguntó algo en la app.",
+    icon: "iconos/icono-192.png",
+    badge: "iconos/icono-192.png",
+    /* Con el mismo tag, dos avisos de la misma pregunta no se apilan. */
+    tag: d.tag || "consulta",
+    data: { url: d.url || "panel.html" },
+    lang: "es-AR"
+  }));
+});
+
+self.addEventListener("notificationclick", ev => {
+  ev.notification.close();
+  const destino = new URL((ev.notification.data && ev.notification.data.url) || "panel.html",
+                          self.registration.scope).href;
+  ev.waitUntil((async () => {
+    const abiertas = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const c of abiertas) {
+      if (c.url.includes("panel.html")) {
+        await c.focus();
+        if ("navigate" in c) await c.navigate(destino).catch(() => {});
+        return;
+      }
+    }
+    await self.clients.openWindow(destino);
   })());
 });

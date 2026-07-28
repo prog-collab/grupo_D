@@ -26,8 +26,10 @@ No hay build ni framework: es HTML + JS a mano, sin dependencias.
 index.html          la app de los chicos (motor + los 8 tipos de actividad)
 panel.html          el panel del maestro
 lecciones/*.json    el contenido: 5 lecciones, una por archivo
-sw.js               service worker (instalable + offline)
+sw.js               service worker (instalable + offline + los avisos al maestro)
 manifest.webmanifest
+supabase/migrations/*.sql   el esquema, en orden
+supabase/funciones/         las funciones de borde (se despliegan a Supabase, no a Pages)
 iconos/, apple-touch-icon.png
 validar-lecciones.js  chequeo de contenido (ver abajo)
 .claude/servidor-local.js  servidor estático para probar, no se publica
@@ -270,6 +272,76 @@ no hay forma de saber cuántas fueron.
 Igual que 0009, la migración lleva escritas a mano las decisiones de cada
 actividad: **si cambia el contenido de una lección, esos números quedan
 viejos.**
+
+### 3.4 El cofre no era tan estricto (y el aviso mentía)
+
+El cofre comparaba el texto exacto: `codigo.value.trim() !== codigoCorrecto()`.
+El chico junta los dígitos en el orden en que hace las actividades, no en el
+que están en la pantalla, y los escribe así. Encima el mensaje era siempre el
+mismo —"te falta el dígito de alguna estación"— aunque tuviera las cuatro
+casillas amarillas completas a la vista.
+
+Ahora abre con los cuatro números **en cualquier orden** (avisa que estaban
+cambiados), ignora espacios y guiones, y cuando no abre dice qué le pasa a él:
+cuántas estaciones le faltan ganar, que escribió de menos, o que esos no son
+los números. El cartel rojo se borra al volver a escribir: antes quedaba
+colgado con el casillero ya vacío y parecía que rechazaba lo que todavía no
+había escrito.
+
+Queda como estaba una cosa, por si algún día molesta: **el que escribe el
+código correcto sin haber ganado las estaciones igual abre el cofre**. Los
+dígitos sólo se ven ganando, así que para eso se lo tiene que pasar un
+compañero.
+
+### 3.5 Avisos al maestro cuando un chico pregunta (0011)
+
+Antes había que acordarse de abrir el panel. Un chico que pregunta un martes a
+la noche y recibe la respuesta el domingo ya se olvidó de qué preguntó.
+
+Ahora, apenas entra una consulta, un disparador (`consultas_avisan_al_maestro`)
+le pega con `pg_net` a la función de borde **`avisar-consulta`**, que le manda
+una notificación al teléfono del maestro. Es **Web Push**: el que avisa es el
+navegador de él, no hay servicio de terceros ni cuenta que pagar. Al tocar la
+notificación se abre `panel.html?pregunta=<id>`, que aterriza en la solapa de
+preguntas con esa pregunta resaltada.
+
+```
+chico pregunta -> insert en escuela.consultas
+                    -> trigger escuela.avisar_consulta_nueva()
+                       -> net.http_post a /functions/v1/avisar-consulta
+                          -> ed_push_aviso(id): qué decir + a qué teléfonos
+                          -> POST cifrado al navegador del maestro
+```
+
+- **Se prende desde el panel**, solapa *Preguntas*, botón "🔔 Avisarme cuando
+  pregunten". Es **por aparato**: si lo prende en el celular y en la compu, le
+  llega a los dos. En iPhone sólo funciona con el panel agregado a la pantalla
+  de inicio (el panel lo detecta y lo explica en vez de fallar).
+- Las suscripciones viven en `escuela.avisos_push`. Cuando el navegador
+  contesta 404 o 410, la función borra esa fila sola: es un teléfono que
+  desinstaló la app o apagó los avisos.
+- El cifrado (RFC 8291) y la firma VAPID (RFC 8292) están escritos a mano en
+  `supabase/funciones/avisar-consulta/push.js`, sin dependencias. Está probado
+  contra el vector de ejemplo del RFC 8291: da byte por byte lo mismo.
+
+**Los secretos no están en el repo** (es público). Viven en `vault`:
+
+| nombre en vault | qué es |
+|---|---|
+| `push_vapid_privada` | la clave privada VAPID, como JWK |
+| `push_aviso_secreto` | lo que el disparador le muestra a la función para identificarse |
+
+La **pública** VAPID sí está a la vista, en `panel.html` (`VAPID_PUBLICA`): es
+la que el navegador necesita para suscribirse, y tiene que ser el par de la
+privada. Si algún día hay que rehacerlas, se generan las dos juntas, se sube
+la privada a vault y se pega la pública en `panel.html`; todas las
+suscripciones viejas dejan de servir y hay que volver a tocar el botón en cada
+aparato.
+
+La función de borde está desplegada **sin `verify_jwt`**: se autentica sola
+con el secreto de la cabecera `x-aviso-secreto`. Si el secreto no está en
+vault, el disparador no avisa y no rompe nada: la pregunta del chico se guarda
+igual.
 
 ---
 
