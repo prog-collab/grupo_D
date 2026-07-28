@@ -343,6 +343,24 @@ con el secreto de la cabecera `x-aviso-secreto`. Si el secreto no está en
 vault, el disparador no avisa y no rompe nada: la pregunta del chico se guarda
 igual.
 
+**Ojo con los permisos de las funciones nuevas (0012).** El `revoke all ...
+from public` que usa todo el esquema **no alcanza**: Supabase le da `execute` a
+`anon` y `authenticated` sobre las funciones nuevas de `public` por privilegios
+por defecto. Como 0011 no lo sabía, `ed_push_aviso` —que devuelve la clave
+privada VAPID— quedó un rato al alcance de cualquiera con la clave publicable,
+que está a la vista en `index.html`. 0012 lo cierra por dos lados: revoca
+`execute` a `anon` y `authenticated` **por nombre**, y además `ed_push_aviso`
+ahora exige el secreto como argumento y ya no lo devuelve.
+
+Si mañana agregás una función que no tiene que ver el chico, revocásela a
+`anon` y `authenticated` explícitamente, y comprobalo:
+
+```sql
+select p.proname, has_function_privilege('anon', p.oid, 'execute')
+  from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+ where n.nspname = 'public' and p.proname like 'ed_%';
+```
+
 ---
 
 ## 4. Lo que falta: el video para los chicos

@@ -32,16 +32,13 @@ async function rpc(fn: string, params: Record<string, unknown>) {
   return r.json();
 }
 
-/* Comparación que no delata el secreto por el tiempo que tarda. */
-function igual(a: string, b: string) {
-  if (a.length !== b.length) return false;
-  let d = 0;
-  for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return d === 0;
-}
-
 Deno.serve(async (req) => {
   if (req.method !== "POST") return new Response("Solo POST", { status: 405 });
+
+  /* El secreto se lo doy a la base y ella decide: así, el que no lo sabe
+     no consigue ni los datos de la pregunta ni la clave para firmar. */
+  const secreto = req.headers.get("x-aviso-secreto") || "";
+  if (!secreto) return new Response("No autorizado", { status: 403 });
 
   let consulta: number;
   try {
@@ -51,12 +48,10 @@ Deno.serve(async (req) => {
     return new Response("Cuerpo invalido", { status: 400 });
   }
 
-  const datos = await rpc("ed_push_aviso", { p_consulta: consulta });
-  if (!datos.ok) return new Response(datos.error || "No se pudo", { status: 404 });
-
-  const traido = req.headers.get("x-aviso-secreto") || "";
-  if (!datos.secreto || !igual(traido, datos.secreto)) {
-    return new Response("No autorizado", { status: 403 });
+  const datos = await rpc("ed_push_aviso", { p_consulta: consulta, p_secreto: secreto });
+  if (!datos.ok) {
+    const noAutorizado = String(datos.error || "").startsWith("No autorizado");
+    return new Response(datos.error || "No se pudo", { status: noAutorizado ? 403 : 404 });
   }
   if (!datos.vapid) return new Response("Falta la clave VAPID", { status: 500 });
 
