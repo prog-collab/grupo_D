@@ -10,7 +10,7 @@
  * Al publicar una versión nueva conviene subir el número de CACHE: eso
  * borra la anterior y evita que queden mezclados archivos viejos y nuevos.
  */
-const CACHE = "explorador-v5";
+const CACHE = "explorador-v6";
 
 const BASICOS = [
   "./",
@@ -119,16 +119,20 @@ self.addEventListener("push", ev => {
 self.addEventListener("notificationclick", ev => {
   ev.notification.close();
   const destino = new URL((ev.notification.data && ev.notification.data.url) || "panel.html",
-                          self.registration.scope).href;
+                          self.registration.scope);
   ev.waitUntil((async () => {
     const abiertas = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    /* Reuso la ventana que ya está en ese archivo — el panel para el
+       maestro, la app para el chico — y no la del otro: si el maestro
+       tiene las dos abiertas, un aviso de la app no le tiene que pisar
+       el panel donde está contestando. */
     for (const c of abiertas) {
-      if (c.url.includes("panel.html")) {
+      if (new URL(c.url).pathname === destino.pathname) {
         await c.focus();
-        if ("navigate" in c) await c.navigate(destino).catch(() => {});
+        if ("navigate" in c) await c.navigate(destino.href).catch(() => {});
         return;
       }
     }
-    await self.clients.openWindow(destino);
+    await self.clients.openWindow(destino.href);
   })());
 });

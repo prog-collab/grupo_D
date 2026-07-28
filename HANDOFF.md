@@ -361,6 +361,50 @@ select p.proname, has_function_privilege('anon', p.oid, 'execute')
  where n.nspname = 'public' and p.proname like 'ed_%';
 ```
 
+### 3.6 Avisarle al chico cuando le contestan, con horario (0013)
+
+La otra mitad del canal. La respuesta le quedaba esperando adentro de la
+actividad: si el chico no volvía a entrar, no se enteraba nunca y el maestro
+había contestado al pedo.
+
+La diferencia con el aviso al maestro es que **acá hay horario**: son chicos de
+10 y 11 años y el teléfono duerme al lado de la cama. Se avisa **entre las 9 y
+las 22** (hora de Argentina); lo que se contesta fuera de esa franja espera
+hasta **las 9 de la mañana siguiente**. Eso obliga a una cola: el aviso ya no
+sale con el disparador y listo, puede quedar guardado ocho horas.
+
+```
+maestro contesta -> update de escuela.consultas
+                      -> trigger respuestas_avisan_al_chico
+                         -> escuela.hora_de_avisar(now()): ¿ya, o a las 9?
+                         -> fila en escuela.avisos_respuesta
+                         -> si es hora, despacha al toque
+pg_cron cada 5 min -> escuela.despachar_avisos_respuesta()
+                      -> /functions/v1/avisar-respuesta
+                         -> ed_push_respuestas: saca lo vencido y lo reclama
+                         -> POST cifrado a cada teléfono del chico
+```
+
+- **`escuela.hora_de_avisar(timestamptz)`** es toda la regla de horario, en un
+  solo lugar. Si algún día hay que correr la franja, se toca ahí y nada más.
+  Usa `America/Argentina/Buenos_Aires`, no la hora del servidor, que es UTC.
+- **La cola se reclama, no se lee**: `ed_push_respuestas` hace `update ...
+  returning` con `for update skip locked`, así dos corridas simultáneas no
+  avisan dos veces. Si un envío falla, en 5 minutos vuelve a estar disponible;
+  después de 5 intentos se deja de insistir.
+- **Sólo avisa la primera respuesta.** Si el maestro después la corrige, no
+  vuelve a sonar: ya le avisamos una vez y la respuesta está abierta en la
+  actividad.
+- Al chico se le ofrece el aviso **en el momento en que manda la pregunta** —
+  que es cuando le importa— y también si ya tenía una esperando. Si dice "no
+  hace falta", no se le vuelve a ofrecer en esa lección (`ed:<dueño>:<lección>:
+  aviso-no` en localStorage).
+- La suscripción del chico es por **(chico, aparato)**, no por aparato: en un
+  teléfono entran dos hermanos y cada uno recibe lo suyo. Por eso el título
+  lleva el nombre: *"Tu maestro te contestó, Ana"*.
+- El cron (`cron.job`, nombre `avisos-respuesta`) corre cada 5 minutos. Esa es
+  la demora máxima de un aviso diferido: los de las 9 llegan entre 9:00 y 9:05.
+
 ---
 
 ## 4. Lo que falta: el video para los chicos

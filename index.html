@@ -266,6 +266,9 @@ body.con-expediente{overflow:hidden}
    ================================================================== */
 const SUPA_URL = "https://grswqigekcopfrozcxqj.supabase.co";
 const SUPA_KEY = "sb_publishable_AGlBHQBCR12TzPnCjuLeKQ_jEwi42TF";
+/* La mitad pública de la clave de los avisos. La privada vive en el
+   servidor: con esta sola no se puede mandar ninguna notificación. */
+const VAPID_PUBLICA = "BAjvJby97gPSgxbMOyVWsrRgxd7OdNxQ8Fsb61YIwjaVOVDJeR7ovxqcFzf0s70YaLbTRtPzsZQCbIc2IqlgS0Q";
 /* Sin ?leccion= en la URL, la app muestra la portada con el selector. */
 const PARAMS   = new URLSearchParams(location.search);
 const LECCION  = PARAMS.get("leccion");
@@ -637,6 +640,8 @@ function cabecera(seccion, i, est) {
    Es chico -> maestro nada más; nadie ve lo que preguntó otro.
    ------------------------------------------------------------------ */
 let consultas = {};
+/* Para no repetirle el "avisame cuando conteste" en cada actividad. */
+let avisoOfrecido = false;
 
 async function cargarConsultas() {
   try {
@@ -672,6 +677,15 @@ function bloqueConsulta(seccion, est) {
     caja.append(h);
   });
 
+  /* El que ya dejó una pregunta esperando también quiere que le avisen,
+     aunque la haya mandado la semana pasada. Se lo ofrezco una sola vez
+     por lección, en la primera actividad donde tenga algo pendiente: si
+     no, le aparece el mismo botón cuatro veces. */
+  if (!avisoOfrecido && (consultas[est.id] || []).some(c => !c.respuesta)) {
+    avisoOfrecido = true;
+    ofrecerAvisoRespuesta(caja);
+  }
+
   const b = el("button", "preguntar", "🙋 No entiendo esta actividad");
   b.onclick = () => {
     b.remove();
@@ -704,6 +718,9 @@ function bloqueConsulta(seccion, est) {
         ta.remove(); enviarBtn.remove();
         fb.className = "feedback ok";
         fb.textContent = "✅ Pregunta enviada. Tu maestro te va a contestar acá mismo.";
+        /* El mejor momento para ofrecerle el aviso es este: acaba de
+           preguntar y quiere la respuesta. Después no vuelve a entrar. */
+        ofrecerAvisoRespuesta(caja);
       } catch {
         fb.className = "feedback no";
         fb.textContent = "No pude enviarla ahora. Probá de nuevo cuando tengas señal.";
@@ -713,6 +730,97 @@ function bloqueConsulta(seccion, est) {
   };
   caja.append(b);
   seccion.append(caja);
+}
+
+/* ------------------------------------------------------------------
+   "Avisame cuando conteste".
+
+   Sin esto, la respuesta le queda esperando adentro de la actividad: si
+   el chico no vuelve a entrar, no se entera nunca, y el maestro contestó
+   al pedo. El aviso lo manda el servidor entre las 9 y las 22; lo que
+   se contesta de noche le llega a las 9 de la mañana.
+
+   Se lo ofrezco una sola vez y sin insistir: si dice que no, no vuelvo
+   a preguntarle en toda la lección.
+   ------------------------------------------------------------------ */
+const puedeAvisos = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+const iOSSinInstalar = /iPhone|iPad|iPod/.test(navigator.userAgent) &&
+  !(matchMedia("(display-mode: standalone)").matches || navigator.standalone === true);
+
+function clavePushEnBytes(s) {
+  const base = s.replace(/-/g, "+").replace(/_/g, "/");
+  const bin = atob(base + "=".repeat((4 - (base.length % 4)) % 4));
+  return Uint8Array.from(bin, c => c.charCodeAt(0));
+}
+
+async function miSuscripcion() {
+  if (!puedeAvisos) return null;
+  try {
+    await navigator.serviceWorker.register("sw.js");
+    const reg = await navigator.serviceWorker.ready;
+    return { reg, sub: await reg.pushManager.getSubscription() };
+  } catch { return null; }
+}
+
+async function ofrecerAvisoRespuesta(caja) {
+  if (DEMO || !puedeAvisos || iOSSinInstalar) return;
+  if (Notification.permission === "denied") return;
+  if (guardado.getItem(LS("aviso-no")) === "1") return;
+
+  const yo = await miSuscripcion();
+  if (!yo) return;
+
+  /* Si ya está suscripto en este teléfono, sólo se lo recuerdo. */
+  if (yo.sub && Notification.permission === "granted") {
+    const r = await rpc("ed_alumno_push_estado", { p_token: sesion.token, p_endpoint: yo.sub.endpoint })
+      .catch(() => null);
+    if (r && r.ok && r.activo) {
+      caja.append(el("p", "esperando", "🔔 Te voy a avisar al teléfono cuando conteste."));
+      return;
+    }
+  }
+
+  const fila = el("div");
+  fila.style.marginTop = "10px";
+  const si = el("button", "preguntar", "🔔 Avisame cuando conteste");
+  const no = el("button", "ghost", "No hace falta");
+  no.style.marginLeft = "8px";
+  const dice = el("p", "esperando");
+  fila.append(si, no, dice);
+  caja.append(fila);
+
+  no.onclick = () => {
+    guardado.setItem(LS("aviso-no"), "1");
+    fila.remove();
+  };
+
+  si.onclick = async () => {
+    si.disabled = true;
+    dice.textContent = "Pidiéndole permiso a tu teléfono…";
+    try {
+      const permiso = await Notification.requestPermission();
+      if (permiso !== "granted") {
+        dice.textContent = "Tu teléfono no me dejó avisarte. Igual la respuesta te va a aparecer acá.";
+        si.disabled = false;
+        return;
+      }
+      const sub = yo.sub || await yo.reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: clavePushEnBytes(VAPID_PUBLICA)
+      });
+      const j = sub.toJSON();
+      const r = await rpc("ed_alumno_push_alta", {
+        p_token: sesion.token, p_endpoint: sub.endpoint,
+        p_p256dh: j.keys.p256dh, p_auth: j.keys.auth
+      });
+      if (!r.ok) throw new Error(r.error);
+      si.remove(); no.remove();
+      dice.textContent = "🔔 Listo. Te aviso apenas conteste (de noche, a la mañana siguiente).";
+    } catch {
+      si.disabled = false;
+      dice.textContent = "No pude prender el aviso. Igual la respuesta te va a aparecer acá.";
+    }
+  };
 }
 
 /* ------------------------------------------------------------------
@@ -1686,6 +1794,14 @@ async function arrancar() {
   renderCofre(main);
   montarExpediente();
   actualizarProgreso();
+
+  /* Si llegó tocando la notificación de "te contestaron", viene con
+     #est-<actividad>: las estaciones recién existen ahora, así que el
+     salto lo tengo que hacer yo, el navegador ya pasó de largo. */
+  if (location.hash.startsWith("#est-")) {
+    const destino = document.getElementById(location.hash.slice(1));
+    if (destino) setTimeout(() => destino.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+  }
 }
 
 /* ==================================================================
