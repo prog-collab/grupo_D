@@ -1225,22 +1225,39 @@ async function portada() {
      ésta. "Terminada" es haber hecho las actividades puntuables, no haber
      sacado las 18 estrellas: se premia llegar hasta el final, no no haberse
      equivocado nunca. Una pista pedida en marzo no puede dejarlo afuera. */
+  /* Cuántas actividades puntuables tiene una misión. La base guarda el total
+     de estrellas, y cada actividad da 3. */
+  const cuantasActividades = l => Math.round((l.estrellas_max || 18) / 3);
+
+  /* Terminó = las hizo todas. Una sola definición para las dos cosas que
+     dependen de ella —el ✓ de la tarjeta y el candado de la misión 5—, que
+     antes no coincidían: la tarjeta pedía las 18 estrellas y el candado no.
+     El chico terminaba una misión, la veía sin ✓, y tenía razón en quejarse. */
+  function termino(slug) {
+    const l = porSlug[slug];
+    if (!l) return false;
+    return ((resumen[slug] || {}).estaciones || 0) >= cuantasActividades(l);
+  }
+
   function loQueFalta(l) {
     if (!Array.isArray(l.requiere) || !l.requiere.length) return [];
-    return l.requiere.filter(slug => {
-      const req = porSlug[slug];
-      if (!req) return false;                       // requisito que ya no existe
-      const cuantas = Math.round((req.estrellas_max || 18) / 3);
-      return ((resumen[slug] || {}).estaciones || 0) < cuantas;
-    });
+    return l.requiere.filter(slug => porSlug[slug] && !termino(slug));
   }
 
   const cont = el("div", "misiones");
   lecciones.forEach(l => {
-    const mio  = resumen[l.slug] || { estrellas: 0 };
+    const mio  = resumen[l.slug] || { estrellas: 0, estaciones: 0 };
     const max  = l.estrellas_max || 18;
     const pct  = Math.min(100, Math.round(mio.estrellas / max * 100));
-    const listo = mio.estrellas >= max;
+
+    /* Dos cosas distintas, y hasta ahora las mezclábamos en una sola: haber
+       hecho todas las actividades, y haber sacado todas las estrellas. La
+       primera es terminar la misión; la segunda es hacerlo sin un error ni
+       una pista, que es otra cosa y mucho más difícil. */
+    const cuantas  = cuantasActividades(l);
+    const hechas   = Math.min(mio.estaciones || 0, cuantas);
+    const listo    = termino(l.slug);
+    const perfecta = mio.estrellas >= max;
 
     /* Una misión puede estar cerrada por dos motivos distintos: porque el
        maestro todavía no la dio (l.disponible), o porque este chico en
@@ -1285,9 +1302,19 @@ async function portada() {
         : "Te faltan terminar " + falta.length + " misiones"));
       pie.append(el("span", "accion", "🔒 Se gana"));
     } else {
-      pie.append(el("span", null, "⭐ " + mio.estrellas + " de " + max));
+      /* Si empezó y le falta algo, le digo cuánto. "12 de 18 estrellas" no
+         dice si terminó: se pueden tener 12 con todo hecho o con una
+         actividad sin entregar, que es justo el caso que confunde. */
+      const cuenta = "⭐ " + mio.estrellas + " de " + max;
+      pie.append(el("span", null, hechas > 0 && !listo
+        ? cuenta + " · " + (cuantas - hechas === 1
+            ? "te falta 1 actividad"
+            : "te faltan " + (cuantas - hechas) + " actividades")
+        : cuenta));
       pie.append(el("span", "accion",
-        listo ? "¡Completada!" : (mio.estrellas > 0 ? "Seguir →" : "Empezar →")));
+        perfecta ? "¡Todas las estrellas!"
+                 : listo ? "✓ Terminada · mejorar →"
+                         : (hechas > 0 ? "Seguir →" : "Empezar →")));
     }
     cuerpo.append(pie);
     b.append(cuerpo);
