@@ -87,6 +87,11 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
 .cofre input{max-width:360px;display:block;margin:14px auto;border:0;text-align:center;font-size:1.3rem;letter-spacing:6px;font-weight:900}
 .cofre input.nombre{letter-spacing:normal;font-size:1rem;font-weight:600}
 .cofre button{background:#ffd152;color:#3b2c00}
+.diploma{margin-top:18px}
+.diploma img{display:block;width:100%;max-width:520px;margin:0 auto;border-radius:12px;box-shadow:0 8px 22px #0000003d}
+.diploma .acciones{margin-top:14px}
+.diploma .button{display:inline-block;text-decoration:none;background:#ffd152;color:#3b2c00}
+.diploma .comoGuardar{margin:12px auto 0;max-width:420px;font-size:.84rem;line-height:1.45;color:#e4dbff}
 .gate{max-width:440px;margin:60px auto;background:var(--paper);border-radius:22px;padding:28px;box-shadow:0 10px 30px #26304b26}
 .gate h2{margin-top:0}
 .gate label{display:block;font-weight:700;margin:14px 0 6px;font-size:.92rem}
@@ -126,6 +131,9 @@ textarea,input[type=text]{width:100%;border:2px solid #cbd3e7;border-radius:12px
 .mision .tema{margin:0 0 12px;color:var(--soft);font-size:.92rem;line-height:1.45}
 .mision .barra{height:9px;background:#e4e6ef;border-radius:30px;overflow:hidden;margin-bottom:7px}
 .mision .barra div{height:100%;background:linear-gradient(90deg,#f7bd2d,#ff785a);border-radius:30px}
+.mision .faltan-tit{margin:0 0 5px;font-size:.84rem;font-weight:800;color:var(--soft)}
+.mision .faltan{margin:0 0 12px;padding-left:18px;font-size:.88rem;line-height:1.5;color:var(--ink)}
+.mision .faltan li{margin:2px 0}
 .mision .pie{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.86rem;font-weight:700;color:var(--soft);flex-wrap:wrap}
 .mision .accion{color:var(--violet);font-weight:800}
 .mision.lista .accion{color:#1d7a4c}
@@ -485,19 +493,48 @@ const estado = JSON.parse(guardado.getItem(LS("estado")) || "{}");
 
 function guardarEstado() { guardado.setItem(LS("estado"), JSON.stringify(estado)); }
 
-/* Sin errores y sin pista, tres estrellas. Cada tropiezo cuesta. */
-function estrellasDe(intentos, usoPista) {
-  if (intentos <= 1 && !usoPista) return 3;
-  if (intentos <= 3) return 2;
-  return 1;
+/* Cuántas decisiones toma el chico en una actividad. No es lo mismo
+   equivocarse una vez en un interrogatorio de cuatro preguntas con
+   versículo (ocho decisiones) que en un emparejar de cuatro pares: la
+   exigencia tiene que ir con el tamaño, si no la actividad larga es
+   siempre la más castigada. */
+function decisionesDe(est) {
+  switch (est.tipo) {
+    case "quiz":         return est.preguntas.reduce((a, p) => a + 1 + (p.evidencia ? 1 : 0), 0);
+    case "caza-error":   return est.afirmaciones.length;
+    case "linea-tiempo": return est.eventos.length;
+    case "emparejar":    return est.pares.length;
+    case "versiculo":    return est.piezas.length;
+    default:             return 1;
+  }
+}
+
+/* La regla, dicha como se la contamos a los chicos: una equivocación cada
+   seis decisiones no te saca las tres estrellas.
+
+   Antes eran tres estrellas sólo con CERO errores, midiera lo que midiera
+   la actividad. Con eso, un interrogatorio de cuatro preguntas pedía
+   acertar ocho veces seguidas, y los números lo mostraban: los quiz
+   promediaban 1 a 1,5 estrellas y el informe escrito 3. Ningún chico tenía
+   las 18 de ninguna misión. */
+function estrellasDe(intentos, usoPista, decisiones) {
+  const errores   = Math.max(0, intentos - 1);
+  const d         = decisiones || 1;
+  const perfecto  = Math.max(1, Math.round(d / 6));
+  const aceptable = Math.max(3, Math.round(d / 2));
+  const n = errores <= perfecto ? 3 : errores <= aceptable ? 2 : 1;
+  /* La pista cuesta una estrella, ni más ni menos: es lo que les
+     prometimos, y es mejor entender que adivinar. */
+  return usoPista ? Math.max(1, n - 1) : n;
 }
 
 function conPuntaje() {
   return leccion.estaciones.filter(e => e.tipo !== "pasaje" && e.tipo !== "oracion");
 }
 
-function completar(id, intentos, usoPista) {
-  const nueva = estrellasDe(intentos, usoPista);
+function completar(est, intentos, usoPista) {
+  const id = est.id;
+  const nueva = estrellasDe(intentos, usoPista, decisionesDe(est));
   const previo = (estado[id] && estado[id].estrellas) || 0;
   estado[id] = { estrellas: Math.max(previo, nueva), intentos: intentos, pista: !!usoPista };
   guardarEstado();
@@ -763,7 +800,7 @@ RENDER.quiz = (s, est) => {
   function pregunta() {
     zona.innerHTML = "";
     if (indice >= est.preguntas.length) {
-      const n = completar(est.id, intentos, pista);
+      const n = completar(est, intentos, pista);
       pintarEstrellas(est.id);
       fb.className = "feedback ok";
       fb.textContent = "✅ Terminaste el interrogatorio con " + n + " de 3 estrellas.";
@@ -804,16 +841,23 @@ RENDER.quiz = (s, est) => {
     if (!p.evidencia) { avanzar(p); return; }
     const caja = el("div", "explica");
     caja.append(el("p", null, "Bien. Ahora demostralo: " + p.evidencia.enunciado));
-    p.evidencia.opciones.forEach((t, i) => {
-      const b = el("button", "choice", t);
+    /* Mezcladas, igual que las opciones de arriba. Sin mezclar salían
+       siempre en el orden del JSON, y ahí la correcta es la segunda en 13
+       de las 21 preguntas del semestre: el que se avivaba tocaba la
+       segunda y acertaba el 62% de las veces sin abrir el expediente.
+       Justo acá, que es donde les pedimos que muestren dónde dice. */
+    mezclar(p.evidencia.opciones.map((t, i) => ({ t: t, i: i }))).forEach(o => {
+      const b = el("button", "choice", o.t);
+      b._opcion = o.i;
       b.onclick = () => {
         const todas = caja.querySelectorAll(".choice");
         todas.forEach(x => x.disabled = true);
-        if (i === p.evidencia.correcta) {
+        if (o.i === p.evidencia.correcta) {
           b.classList.add("correct");
         } else {
           b.classList.add("wrong");
-          todas[p.evidencia.correcta].classList.add("correct");
+          /* Ya no alcanza con el índice: en pantalla están en otro orden. */
+          [...todas].find(x => x._opcion === p.evidencia.correcta).classList.add("correct");
           intentos++;
           fb.className = "feedback no";
           fb.textContent = "Acertaste la respuesta pero no el versículo. Era " +
@@ -884,7 +928,7 @@ RENDER["caza-error"] = (s, est) => {
       lab.append(el("small", null, lab._dato.porque));
     });
     btn.disabled = true;
-    const n = completar(est.id, intentos, false);
+    const n = completar(est, intentos, false);
     pintarEstrellas(est.id);
     fb.className = "feedback ok";
     fb.textContent = "✅ Las cazaste todas. " + n + " de 3 estrellas.";
@@ -906,7 +950,7 @@ RENDER["linea-tiempo"] = (s, est) => {
         b.disabled = true;
         paso++;
         if (paso > est.eventos.length) {
-          const n = completar(est.id, intentos, false);
+          const n = completar(est, intentos, false);
           pintarEstrellas(est.id);
           fb.className = "feedback ok";
           fb.textContent = "✅ Línea de tiempo correcta. " + n + " de 3 estrellas.";
@@ -953,7 +997,7 @@ RENDER.versiculo = (s, est) => {
     if (armado === est.respuesta) {
       btn.disabled = true;
       resp.querySelectorAll(".piece").forEach(x => x.onclick = null);
-      const n = completar(est.id, intentos, pista);
+      const n = completar(est, intentos, pista);
       pintarEstrellas(est.id);
       fb.className = "feedback ok";
       fb.textContent = "✅ ¡Exacto! " + n + " de 3 estrellas.";
@@ -1008,7 +1052,7 @@ RENDER.emparejar = (s, est) => {
       fb.className = "feedback ok";
       fb.textContent = "Par correcto.";
       if (resueltos === est.pares.length) {
-        const n = completar(est.id, intentos, false);
+        const n = completar(est, intentos, false);
         pintarEstrellas(est.id);
         fb.textContent = "✅ Uniste los " + est.pares.length + ". " + n + " de 3 estrellas.";
         if (est.explicacion) s.append(el("div", "explica", est.explicacion));
@@ -1066,7 +1110,7 @@ RENDER.texto = (s, est) => {
       p_token: sesion.token, p_leccion: LECCION,
       p_estacion: est.id, p_texto: ta.value.trim()
     });
-    const n = completar(est.id, 1, false);
+    const n = completar(est, 1, false);
     pintarEstrellas(est.id);
     fb.className = "feedback ok";
     fb.textContent = "✅ Entregado. " + n + " de 3 estrellas. Si lo mejorás, podés volver a entregarlo.";
@@ -1151,15 +1195,24 @@ function renderCofre(main) {
       fb.textContent = "Escribí tu nombre para el diploma.";
       return;
     }
-    diploma(n);
+    btn.disabled = true;
+    codigo.disabled = true;
     fb.className = "feedback ok";
-    fb.textContent = "🎉 ¡Cofre abierto! Tu diploma se está descargando.";
+    fb.textContent = "🎉 ¡Cofre abierto! Acá está tu diploma.";
+    entregarDiploma(n, s);
     festejar();
   };
   actualizarCofre();
 }
 
-function diploma(nombre) {
+/* El diploma se dibuja en un canvas y después hay que sacarlo de ahí. Esa
+   segunda parte era el problema: `<a download>` sobre un data URL no anda
+   en Safari de iPhone, y menos con la app instalada. El chico ponía el
+   código, veía el confeti, leía "se está descargando"… y no le llegaba
+   nada. Ahora el diploma se muestra en pantalla (con el dedo apretado se
+   guarda en Fotos, que es como se hace en iPhone) y arriba va el botón que
+   corresponda: la hoja de compartir donde existe, la descarga donde anda. */
+function dibujarDiploma(nombre) {
   const suma = conPuntaje().reduce((a, e) => a + ((estado[e.id] && estado[e.id].estrellas) || 0), 0);
   const c = document.createElement("canvas");
   c.width = 1400; c.height = 900;
@@ -1183,10 +1236,43 @@ function diploma(nombre) {
   x.fillText("¡Que sigas creciendo en fe, amor y esperanza!", 700, 730);
   x.fillStyle = "#5a6480"; x.font = "22px system-ui";
   x.fillText("Escuela Dominical · Asamblea Cristiana · Grupo D", 700, 792);
-  const a = document.createElement("a");
-  a.href = c.toDataURL("image/png");
-  a.download = "diploma-" + LECCION + ".png";
-  a.click();
+  return c;
+}
+
+async function entregarDiploma(nombre, destino) {
+  const url = dibujarDiploma(nombre).toDataURL("image/png");
+  const archivo = "diploma-" + LECCION + ".png";
+
+  const caja = el("div", "diploma");
+  const img = el("img");
+  img.src = url;
+  img.alt = "Diploma del explorador bíblico a nombre de " + nombre;
+  caja.append(img);
+  const acciones = el("div", "acciones");
+  caja.append(acciones);
+  destino.append(caja);
+
+  /* Armo el archivo antes de mostrar el botón: navigator.share tiene que
+     salir del toque del chico, sin nada esperando en el medio. */
+  let file = null;
+  try {
+    const blob = await (await fetch(url)).blob();
+    file = new File([blob], archivo, { type: "image/png" });
+  } catch { /* si no se pudo, queda la imagen en pantalla igual */ }
+
+  if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+    const b = el("button", null, "📤 Guardar el diploma");
+    b.onclick = () => navigator.share({ files: [file], title: "Mi diploma" }).catch(() => {});
+    acciones.append(b);
+  } else {
+    const a = el("a", "button");
+    a.textContent = "⬇ Descargar el diploma";
+    a.href = url;
+    a.download = archivo;
+    acciones.append(a);
+  }
+  caja.append(el("p", "comoGuardar",
+    "Si el botón no hace nada, mantené el dedo apretado sobre el diploma y elegí “Guardar imagen”."));
 }
 
 /* ==================================================================
@@ -1287,6 +1373,21 @@ async function portada() {
       cuerpo.append(barra);
     }
 
+    /* Qué misiones le faltan, con número y nombre. Antes decía nada más
+       "te faltan 2 misiones" y el detalle vivía en el title del botón, que
+       en un teléfono no se ve nunca: el chico veía el candado, no sabía
+       qué hacer para abrirlo, y una misión que no sabés cómo ganarte no
+       se siente ganada, se siente arbitraria. */
+    if (falta.length) {
+      cuerpo.append(el("p", "faltan-tit", "Se abre cuando termines:"));
+      const lista = el("ul", "faltan");
+      falta.forEach(slug => {
+        const otra = porSlug[slug];
+        lista.append(el("li", null, otra.orden + " · " + otra.titulo));
+      });
+      cuerpo.append(lista);
+    }
+
     const pie = el("div", "pie");
     if (DEMO) {
       pie.append(el("span", null, l.disponible ? "Abierta para los chicos" : "🔒 Cerrada para los chicos"));
@@ -1298,8 +1399,8 @@ async function portada() {
       pie.append(el("span", "accion", "Próximamente"));
     } else if (falta.length) {
       pie.append(el("span", null, falta.length === 1
-        ? "Te falta terminar 1 misión"
-        : "Te faltan terminar " + falta.length + " misiones"));
+        ? "Te falta esa y es tuya"
+        : "Te faltan " + falta.length));
       pie.append(el("span", "accion", "🔒 Se gana"));
     } else {
       /* Si empezó y le falta algo, le digo cuánto. "12 de 18 estrellas" no
@@ -1320,8 +1421,6 @@ async function portada() {
     b.append(cuerpo);
 
     if (entrable) b.onclick = () => { location.search = "?leccion=" + l.slug + (DEMO ? "&demo=1" : ""); };
-    else if (falta.length) b.title = "Se abre cuando termines: " +
-      falta.map(s => (porSlug[s] || {}).titulo || s).join(", ");
     cont.append(b);
   });
   main.append(cont);

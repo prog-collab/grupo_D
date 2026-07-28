@@ -64,6 +64,9 @@ Queda en http://localhost:8899. En Claude Code alcanza con pedir el preview
   para que dos hermanos con el mismo teléfono no se pisen el progreso.
 - **`Mi oración` nunca sale del teléfono.** No la toca ninguna RPC. Es una
   promesa que le hicimos a los chicos: no romperla.
+- **Las estrellas van con el tamaño de la actividad**: una equivocación cada
+  seis decisiones no te saca las tres. La cuenta la hace `estrellasDe()` en
+  `index.html`; el servidor sólo guarda lo que la app manda. Ver §3.1.
 - **El panel del maestro** entra con código + clave (sesión de 8 horas,
   `sessionStorage` bajo `ed:maestro`).
 
@@ -140,6 +143,67 @@ el botón "Cerrar" del panel sigue funcionando y manda las dos cosas juntas.
 
 ---
 
+### 3.1 Sesión del 28/07 — tres errores y la escala de estrellas
+
+Salió de mirar los datos reales de la tabla `progreso` (35 registros, 4 chicos).
+
+**Las opciones del versículo no se mezclaban.** El quiz mezclaba las opciones
+de la pregunta pero no las de "Bien, ahora demostralo", que salían en el orden
+del JSON. Y ahí la correcta es la segunda en 13 de las 21 preguntas del
+semestre: el que se avivaba tocaba la segunda y acertaba el 62% sin abrir el
+expediente. Justo en la parte que más nos importa. Ahora se mezclan, y como el
+índice ya no sirve para encontrar el botón correcto, cada botón lleva su
+`_opcion`.
+
+**La misión 5 no decía cuáles le faltaban.** El detalle vivía en el `title`
+del botón, que en un teléfono no aparece nunca: el chico veía "te faltan 2
+misiones" y no tenía forma de saber cuáles. Ahora las lista con número y
+nombre en la propia tarjeta.
+
+**El diploma no se bajaba en iPhone.** Era `<a download>` sobre un data URL,
+que Safari ignora (y más con la app instalada). Ponían el código, veían el
+confeti, leían "se está descargando" y no les llegaba nada. Ahora el diploma
+se muestra en pantalla —con el dedo apretado se guarda en Fotos, que es como
+se hace en iPhone— y arriba va la hoja de compartir donde existe
+(`navigator.canShare`) o la descarga donde anda.
+
+**La escala de estrellas ahora va con el tamaño de la actividad.** Antes eran
+tres estrellas sólo con cero errores, midiera lo que midiera: un
+interrogatorio de cuatro preguntas con versículo pide acertar ocho veces
+seguidas, y el informe escrito es una sola cosa que no se puede errar. Los
+promedios lo mostraban:
+
+| estación | ⭐ antes | intentos |
+|---|---|---|
+| quiz-bautismo | 1,0 | 5 |
+| quiz-nacimiento / anuncios | 1,5 | 3 |
+| caza-error | 1,9 | 3 |
+| detective (texto) | 3,0 | 1 |
+
+La regla nueva, dicha como se la contamos a ellos: **una equivocación cada
+seis decisiones no te saca las tres estrellas.** En números, con
+`d` = decisiones de la actividad (`decisionesDe()`): 3 ⭐ hasta
+`max(1, d/6)` errores, 2 ⭐ hasta `max(3, d/2)`, 1 ⭐ el resto. La pista sigue
+costando una estrella, ni más ni menos.
+
+El progreso viejo se recalculó con `0009_estrellas_por_tamano.sql`. Dos cosas
+para tener presentes si hay que repetirlo:
+
+- `progreso.intentos` **se acumula** entre repeticiones (`intentos +
+  excluded.intentos` en `ed_progreso_guardar`), así que el número guardado no
+  es el de una corrida: el que rehízo una misión figura con más errores de los
+  que tuvo. Por eso el update va con `greatest()` — puede subir estrellas,
+  nunca bajarlas. (Sin ese recaudo, Giovanna perdía una estrella en
+  `quiz-juan`.)
+- Las decisiones de cada actividad están escritas a mano en la migración,
+  contadas desde los `lecciones/*.json`. **Si cambia el contenido de una
+  lección, esos números quedan viejos.**
+
+Resultado: Giovanna pasó de 14/13/13/11 a 16/16/14/14, Juan de 15 a 17.
+Nadie llegó a 18, así que el techo sigue significando algo.
+
+---
+
 ## 4. Lo que falta: el video para los chicos
 
 Juan quiere un video de ~3 minutos contándoles de la app y cómo usarla.
@@ -159,11 +223,11 @@ los chicos el domingo, sin infantilizar. Los tiempos son orientativos.
 | 1:04 | Adentro vas a ver las misiones. Están numeradas, pero las hacés en el orden que quieras, y podés dejar una por la mitad y volver mañana: se guarda todo. | **Captura 3**: la portada con las 4 misiones y las barras de progreso |
 | 1:16 | Cuando entrás a una misión, lo primero es **el expediente**. Ahí está el relato y los versículos. No lo saltees: todas las preguntas se responden con eso. | **Captura 4**: el expediente con los versículos |
 | 1:30 | Después vienen las actividades. Hay de todo: un interrogatorio con preguntas, una caza del error donde marcás lo que la gente repite pero no está en la Biblia, una línea de tiempo para ordenar, y un versículo para armar como rompecabezas. | **Capturas 5-8**: una de cada tipo, cortitas |
-| 1:48 | Cada actividad te da hasta **tres estrellas**. Tres si te sale sin equivocarte y sin pedir pista. Igual la pista está ahí si la necesitás: te va a costar una estrella, pero es mejor entender que adivinar. | El contador de estrellas arriba; el botón 💡 |
+| 1:48 | Cada actividad te da hasta **tres estrellas**. Y no hace falta que te salga perfecto: una equivocación cada tanto no te las saca. La pista también está ahí si la necesitás: te va a costar una estrella, pero es mejor entender que adivinar. | El contador de estrellas arriba; el botón 💡 |
 | 2:04 | Y ojo con esto, que es lo más importante: cuando acertás una pregunta, te voy a pedir **el versículo**. No alcanza con saber la respuesta, tenés que poder mostrar dónde dice. | **Captura 9**: el cuadro celeste "Bien. Ahora demostralo" |
 | 2:18 | Si algo no se entiende, no te quedes trabado. Abajo de cada actividad hay un botón que dice **"No entiendo esta actividad"**. Escribís tu duda y me llega a mí. Te contesto ahí mismo, y sólo lo vemos vos y yo. | **Captura 10**: el botón 🙋 y la cajita para escribir |
 | 2:34 | Hay una parte que se llama **Mi oración**. Eso no me llega. Queda en tu teléfono y no lo lee nadie más. Es entre vos y Dios. | **Captura 11**: la sección con el candado 🔒 |
-| 2:44 | Y cuando terminás las actividades, cada una te da un dígito. Los cuatro juntos abren **el cofre**, y el cofre te da tu diploma con tu nombre. | **Captura 12**: el cofre y el diploma |
+| 2:44 | Y cuando terminás las actividades, cada una te da un dígito. Los cuatro juntos abren **el cofre**, y el cofre te da tu diploma con tu nombre. Te aparece ahí mismo: tocá el botón para guardarlo, o mantené el dedo apretado sobre el diploma. | **Captura 12**: el cofre y el diploma |
 | 2:56 | Así que ya sabés: entrá, instalala y empezá por la misión que quieras. Nos vemos el domingo. | Vos a cámara |
 
 **Cosas que el guion dice y conviene no cambiar**, porque son promesas que la
