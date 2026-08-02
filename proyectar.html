@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#6c4cc9">
+<link rel="icon" href="iconos/icono-192.png" sizes="192x192" type="image/png">
+<title>Caminando con Jesús — para proyectar en clase</title>
+<style>
+:root{
+  --violet:#6949c6;--blue:#2479c9;--gold:#ffc83d;--ink:#26304b;--paper:#fffdf8;
+  --mint:#e6faf0;--soft:#5a6480;
+  --eqA:#2479c9;--eqB:#e2603f;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);
+  background:linear-gradient(160deg,#e9e1ff,#dff4ff 55%,#fff4ce);
+  overflow:hidden;                 /* proyectado no se scrollea: todo tiene que entrar */
+}
+button{font:inherit;font-weight:800;border:0;border-radius:14px;padding:.6em 1.1em;cursor:pointer;
+  background:var(--violet);color:#fff;transition:transform .12s,filter .12s}
+button:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.08)}
+button:disabled{opacity:.5;cursor:default;transform:none}
+.ghost{background:#ffffffcc;color:var(--violet);box-shadow:inset 0 0 0 2px #d8cff2}
+
+/* ================= PANTALLA DE ARRANQUE ================= */
+#setup{height:100%;overflow:auto;display:grid;place-items:center;padding:24px}
+.tarjeta{background:var(--paper);border-radius:26px;padding:clamp(20px,3vmin,34px);
+  box-shadow:0 14px 40px #26304b26;border:2px solid #fff;max-width:820px;width:100%}
+.tarjeta h1{margin:0;font-size:clamp(1.6rem,4.4vmin,2.6rem);line-height:1.1}
+.tarjeta .sub{color:var(--soft);margin:.4em 0 1.4em;font-size:clamp(.95rem,1.9vmin,1.15rem)}
+.equipos{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.eq-set{border:3px solid var(--c);border-radius:18px;padding:14px;background:#fff}
+.eq-set label{display:block;font-weight:800;font-size:.85rem;color:var(--soft);margin-bottom:6px}
+.eq-set input{width:100%;font:inherit;font-weight:800;font-size:1.15rem;padding:10px 12px;
+  border:2px solid #e3ddf4;border-radius:12px;color:var(--ink)}
+.peones{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.peones button{background:#f2eefc;color:inherit;font-size:1.5rem;padding:.15em .3em;border-radius:12px}
+.peones button[aria-pressed="true"]{background:var(--c);box-shadow:0 0 0 3px #ffffff,0 0 0 6px var(--c)}
+fieldset{border:2px solid #e3ddf4;border-radius:16px;margin:18px 0 0;padding:12px 16px 16px}
+legend{font-weight:800;padding:0 8px;color:var(--soft);font-size:.9rem}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips button{background:#f2eefc;color:var(--ink);font-size:.92rem;padding:.5em .9em;font-weight:700}
+.chips button[aria-pressed="true"]{background:var(--violet);color:#fff;font-weight:800}
+.reglas{background:var(--mint);border-radius:16px;padding:14px 18px;margin-top:18px;line-height:1.55;font-size:.95rem}
+.reglas ul{margin:.5em 0 0;padding-left:1.2em}
+.reglas li{margin:.25em 0}
+.arranque{display:flex;gap:12px;align-items:center;margin-top:20px;flex-wrap:wrap}
+.arranque .grande{font-size:1.25rem;padding:.7em 1.6em}
+.pie{margin-top:16px;font-size:.82rem;color:var(--soft)}
+.pie a{color:var(--violet)}
+
+/* ================= JUEGO ================= */
+#juego{height:100%;display:none;grid-template-rows:auto 1fr;gap:0}
+#juego.on{display:grid}
+
+.barra{display:flex;gap:clamp(10px,1.6vmin,20px);align-items:stretch;padding:clamp(8px,1.4vmin,16px) clamp(12px,2vmin,26px);
+  background:#ffffffdd;box-shadow:0 2px 16px #26304b1f;z-index:3}
+.marcador{flex:1;display:flex;gap:clamp(8px,1.4vmin,18px)}
+.eq{flex:1;display:flex;align-items:center;gap:.6em;background:#fff;border-radius:16px;
+  padding:clamp(6px,1.1vmin,12px) clamp(10px,1.6vmin,18px);border:3px solid transparent;transition:.2s}
+.eq.turno{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,#fff);transform:scale(1.02)}
+.eq .peon{font-size:clamp(1.4rem,3.4vmin,2.4rem);line-height:1}
+.eq .nom{font-weight:900;font-size:clamp(.95rem,2.1vmin,1.5rem);line-height:1.1;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.eq .dato{margin-left:auto;text-align:right;font-size:clamp(.65rem,1.3vmin,.85rem);color:var(--soft);font-weight:700;line-height:1.3}
+.eq .dato b{display:block;font-size:clamp(1.1rem,2.6vmin,1.8rem);color:var(--c);line-height:1}
+.ajuste{display:flex;flex-direction:column;gap:3px;margin-left:.5em}
+.ajuste button{background:#efecf9;color:var(--soft);padding:.05em .45em;border-radius:8px;font-size:.75rem;line-height:1.3}
+.barra .util{display:flex;gap:8px;align-items:center}
+.barra .util button{font-size:clamp(.75rem,1.5vmin,.95rem);padding:.5em .9em}
+
+.mesa{display:grid;grid-template-columns:1fr clamp(180px,20vw,300px);gap:clamp(10px,1.8vmin,24px);
+  padding:clamp(10px,1.8vmin,24px);min-height:0}
+
+/* ---- tablero ---- */
+.tablero{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);
+  gap:clamp(5px,.9vmin,12px);min-height:0}
+.casilla{position:relative;border-radius:clamp(10px,1.4vmin,18px);padding:clamp(4px,.7vmin,9px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  background:var(--bg);box-shadow:inset 0 0 0 2px #ffffffcc,0 3px 10px #26304b18;
+  text-align:center;overflow:hidden;transition:.25s}
+.casilla .n{position:absolute;top:3px;left:7px;font-weight:900;opacity:.5;
+  font-size:clamp(.6rem,1.3vmin,.95rem)}
+.casilla .ico{font-size:clamp(1rem,2.6vmin,2rem);line-height:1}
+.casilla .et{font-size:clamp(.5rem,1.05vmin,.78rem);font-weight:800;line-height:1.15;opacity:.72;
+  padding:0 2px}
+.casilla.destacada{box-shadow:inset 0 0 0 3px var(--gold),0 0 0 4px #ffc83d66,0 6px 18px #26304b30;
+  transform:scale(1.06);z-index:2}
+.peones-cas{display:flex;gap:2px;margin-top:2px;min-height:1.2em}
+.peones-cas span{font-size:clamp(1.1rem,2.7vmin,2.1rem);line-height:1;
+  filter:drop-shadow(0 2px 3px #26304b55);animation:brinco .35s}
+@keyframes brinco{from{transform:translateY(-40%) scale(.6)}to{transform:none}}
+
+/* ---- panel del dado ---- */
+.panel{display:flex;flex-direction:column;gap:clamp(8px,1.4vmin,16px);min-height:0}
+.turno-card{background:var(--paper);border-radius:20px;padding:clamp(10px,1.6vmin,18px);text-align:center;
+  box-shadow:0 8px 22px #26304b1f;border:3px solid var(--c)}
+.turno-card .quien{font-size:clamp(.65rem,1.3vmin,.85rem);font-weight:800;color:var(--soft);letter-spacing:.06em}
+.turno-card .nom{font-size:clamp(1rem,2.4vmin,1.7rem);font-weight:900;line-height:1.15;margin-top:.15em}
+.dado{width:100%;aspect-ratio:1;max-height:26vh;margin:0 auto;background:#fff;border-radius:22px;
+  box-shadow:0 10px 26px #26304b2e,inset 0 0 0 3px #efeaff;
+  display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:14%;gap:6%}
+.dado i{border-radius:50%;background:var(--ink);opacity:0;transition:opacity .06s}
+.dado i.on{opacity:1}
+.dado.rodando{animation:tiembla .28s infinite}
+@keyframes tiembla{0%,100%{transform:rotate(-5deg) scale(.97)}50%{transform:rotate(5deg) scale(1.03)}}
+#btnDado{font-size:clamp(.95rem,2.1vmin,1.4rem);padding:.75em 1em;width:100%}
+.aviso-panel{background:#fff7d7;border-left:5px solid var(--gold);border-radius:0 14px 14px 0;
+  padding:10px 12px;font-size:clamp(.7rem,1.4vmin,.92rem);line-height:1.45;font-weight:700}
+.atajos{margin-top:auto;font-size:clamp(.6rem,1.15vmin,.78rem);color:var(--soft);line-height:1.6}
+.atajos kbd{background:#fff;border-radius:6px;padding:1px 6px;box-shadow:0 1px 3px #26304b33;font-weight:800}
+
+/* ================= CARTEL / PREGUNTA ================= */
+.velo{position:fixed;inset:0;background:#26304bdd;display:none;place-items:center;padding:clamp(14px,3vmin,40px);z-index:20}
+.velo.on{display:grid;animation:aparece .18s}
+@keyframes aparece{from{opacity:0}to{opacity:1}}
+.cartel{background:var(--paper);border-radius:26px;padding:clamp(18px,3vmin,40px);width:min(1200px,96vw);
+  max-height:94vh;overflow:auto;box-shadow:0 20px 60px #00000055;border:3px solid #fff}
+.cartel .cinta{display:inline-flex;align-items:center;gap:.5em;background:var(--violet);color:#fff;
+  border-radius:30px;padding:.35em 1.1em;font-weight:900;font-size:clamp(.7rem,1.5vmin,1rem);letter-spacing:.04em}
+.cartel .cinta.eq{background:var(--c)}
+.cartel h2{margin:.6em 0 .2em;font-size:clamp(1.2rem,3.2vmin,2.4rem);line-height:1.22}
+.cartel .grande{font-size:clamp(1.3rem,3.6vmin,2.7rem);font-weight:900;line-height:1.25;margin:.5em 0}
+.cartel .cita{display:inline-block;background:#eef9ff;border-left:5px solid var(--blue);border-radius:0 12px 12px 0;
+  padding:.4em .9em;font-weight:900;color:var(--blue);font-size:clamp(.9rem,2vmin,1.3rem);margin-top:.6em}
+.cartel .porque{background:#eef9ff;border-left:5px solid var(--blue);border-radius:0 14px 14px 0;
+  padding:clamp(10px,1.6vmin,18px);margin-top:.8em;line-height:1.5;font-size:clamp(.9rem,2vmin,1.3rem)}
+
+.opciones{display:grid;gap:clamp(8px,1.3vmin,14px);margin-top:clamp(10px,1.8vmin,22px)}
+.opciones.dos{grid-template-columns:1fr 1fr}
+.op{display:flex;gap:.7em;align-items:flex-start;text-align:left;background:#f0ebff;color:var(--ink);
+  border:3px solid transparent;line-height:1.35;font-size:clamp(.9rem,2vmin,1.45rem);padding:.7em .9em;font-weight:700}
+.op:hover:not(:disabled){border-color:#ad98eb}
+.op .letra{flex:none;display:grid;place-items:center;width:1.7em;height:1.7em;border-radius:10px;
+  background:#fff;font-weight:900;font-size:.85em;box-shadow:0 2px 6px #26304b22}
+.op.bien{background:#bcefd2!important;border-color:#3aaf6b!important}
+.op.mal{background:#ffd2cb!important;border-color:#e25c51!important}
+.op.apagada{opacity:.42}
+.vf-botones{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.8vmin,22px);margin-top:clamp(12px,2vmin,24px)}
+.vf-botones button{font-size:clamp(1.1rem,3vmin,2.1rem);padding:.8em .5em;border:4px solid transparent}
+#btnV{background:#bcefd2;color:#14603a}
+#btnF{background:#ffd2cb;color:#8e2b21}
+.vf-botones button.bien{box-shadow:0 0 0 5px #3aaf6b}
+.vf-botones button.mal{box-shadow:0 0 0 5px #e25c51}
+.veredicto{font-size:clamp(1.2rem,3.4vmin,2.4rem);font-weight:900;margin:.5em 0 0}
+.veredicto.ok{color:#1d7a4c}.veredicto.no{color:#c0392b}
+.cierre{display:flex;gap:12px;justify-content:flex-end;margin-top:clamp(12px,2vmin,22px);flex-wrap:wrap}
+.cierre button{font-size:clamp(.95rem,2.1vmin,1.35rem);padding:.65em 1.4em}
+.reloj{float:right;font-weight:900;font-size:clamp(1rem,2.6vmin,1.8rem);color:var(--soft)}
+.reloj.poco{color:#c0392b}
+
+.confeti{position:fixed;inset:0;pointer-events:none;z-index:30}
+.confeti i{position:absolute;width:12px;height:18px;border-radius:3px;animation:caer linear forwards}
+@keyframes caer{to{transform:translateY(105vh) rotate(720deg);opacity:.15}}
+
+@media (max-width:820px){
+  .mesa{grid-template-columns:1fr;grid-template-rows:1fr auto}
+  .dado{max-height:14vh}
+  .atajos{display:none}
+  .equipos{grid-template-columns:1fr}
+  .opciones.dos{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== ARRANQUE ==================== -->
+<div id="setup">
+  <div class="tarjeta">
+    <h1>🎲 Caminando con Jesús</h1>
+    <p class="sub">Tablero de repaso del semestre, para proyectar en clase. Los chicos juegan en equipos y contestan en voz alta; vos manejás la pantalla.</p>
+
+    <div class="equipos" id="setEquipos"></div>
+
+    <fieldset>
+      <legend>¿De qué misiones salen las preguntas?</legend>
+      <div class="chips" id="setMisiones"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Reloj para contestar</legend>
+      <div class="chips" id="setReloj">
+        <button data-seg="0" aria-pressed="true">Sin reloj</button>
+        <button data-seg="30" aria-pressed="false">30 segundos</button>
+        <button data-seg="45" aria-pressed="false">45 segundos</button>
+      </div>
+    </fieldset>
+
+    <div class="reglas">
+      <b>Cómo se juega</b>
+      <ul>
+        <li>Por turnos: tiran el dado y avanzan. La casilla donde caen dice qué les toca.</li>
+        <li><b>Si aciertan la pregunta, avanzan 1 más.</b> Si erran, se quedan donde están: no retroceden.</li>
+        <li>Hay casillas de premio, de castigo y dos de descanso para leer un versículo en voz alta.</li>
+        <li>La casilla <b>25</b> vale doble y la <b>30</b> es la última pregunta: hay que acertarla para ganar.</li>
+        <li>Las preguntas se sortean y no se repiten en la misma partida.</li>
+      </ul>
+    </div>
+
+    <div class="arranque">
+      <button class="grande" id="btnEmpezar">Empezar la partida</button>
+      <button class="ghost" id="btnPantalla">⛶ Pantalla completa</button>
+      <a class="ghost" href="panel.html" style="text-decoration:none;display:inline-block;padding:.6em 1.1em;border-radius:14px;font-weight:800">← Volver al panel</a>
+    </div>
+    <p class="pie" id="pieEstado">Cargando el tablero…</p>
+  </div>
+</div>
+
+<!-- ==================== JUEGO ==================== -->
+<div id="juego">
+  <div class="barra">
+    <div class="marcador" id="marcador"></div>
+    <div class="util">
+      <button class="ghost" id="btnPantalla2" title="Pantalla completa">⛶</button>
+      <button class="ghost" id="btnSalir" title="Terminar la partida">Terminar</button>
+    </div>
+  </div>
+
+  <div class="mesa">
+    <div class="tablero" id="tablero"></div>
+    <div class="panel">
+      <div class="turno-card" id="turnoCard">
+        <div class="quien">LE TOCA A</div>
+        <div class="nom" id="turnoNom">—</div>
+      </div>
+      <div class="dado" id="dado" aria-label="Dado"></div>
+      <button id="btnDado">🎲 Tirar el dado</button>
+      <div class="aviso-panel" id="avisoPanel" hidden></div>
+      <div class="atajos">
+        <b>Atajos del teclado</b><br>
+        <kbd>espacio</kbd> tirar / continuar<br>
+        <kbd>1</kbd>–<kbd>4</kbd> elegir opción<br>
+        <kbd>V</kbd> verdadero · <kbd>F</kbd> falso<br>
+        <kbd>P</kbd> pantalla completa
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CARTEL ==================== -->
+<div class="velo" id="velo"><div class="cartel" id="cartel"></div></div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   Caminando con Jesús — módulo "para proyectar en clase".
+   Una sola pantalla, la del proyector: el maestro tira el dado y
+   toca la respuesta que grita el equipo. No hay red, no hay cuentas,
+   no se guarda nada. Si se corta la luz se vuelve a empezar y listo.
+   ============================================================ */
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+const PEONES = ["🦁","🦉","🐢","🦅","🐑","🐝","⭐","🔥"];
+const COLORES = ["#2479c9","#e2603f"];
+
+let TAB = null;                                   // el JSON del tablero
+const cfg = {
+  equipos: [
+    { nombre: "Equipo 1", peon: "🦁", color: COLORES[0] },
+    { nombre: "Equipo 2", peon: "🦉", color: COLORES[1] }
+  ],
+  misiones: new Set([1,2,3,4,5]),
+  segundos: 0
+};
+
+let J = null;                                     // estado de la partida
+
+/* ---------- carga ---------- */
+fetch("juegos/camino-con-jesus.json")
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(d => {
+    TAB = d;
+    $("#pieEstado").textContent =
+      TAB.preguntas.length + " preguntas y " + TAB.vf.length +
+      " afirmaciones para verdadero o falso, sacadas de las misiones del semestre · " + TAB.version;
+    pintarSetup();
+  })
+  .catch(e => {
+    $("#pieEstado").textContent = "No pude cargar juegos/camino-con-jesus.json (" + e.message + ").";
+    $("#btnEmpezar").disabled = true;
+  });
+
+/* ============================================================
+   PANTALLA DE ARRANQUE
+   ============================================================ */
+function pintarSetup() {
+  $("#setEquipos").innerHTML = cfg.equipos.map((e, i) => `
+    <div class="eq-set" style="--c:${e.color}">
+      <label for="nom${i}">Nombre del equipo ${i + 1}</label>
+      <input id="nom${i}" value="${e.nombre}" maxlength="24" autocomplete="off">
+      <div class="peones" data-eq="${i}">
+        ${PEONES.map(p => `<button data-peon="${p}" aria-pressed="${p === e.peon}">${p}</button>`).join("")}
+      </div>
+    </div>`).join("");
+
+  $$("#setEquipos input").forEach((inp, i) => {
+    inp.oninput = () => { cfg.equipos[i].nombre = inp.value.trim() || ("Equipo " + (i + 1)); };
+  });
+  $$(".peones").forEach(cont => {
+    const i = +cont.dataset.eq;
+    cont.onclick = ev => {
+      const b = ev.target.closest("button"); if (!b) return;
+      /* Dos equipos con el mismo peón en el tablero serían indistinguibles:
+         si el otro ya lo tiene, se lo cambio al que quedó libre. */
+      const otro = cfg.equipos[1 - i];
+      if (otro.peon === b.dataset.peon) otro.peon = cfg.equipos[i].peon;
+      cfg.equipos[i].peon = b.dataset.peon;
+      pintarSetup();
+    };
+  });
+
+  $("#setMisiones").innerHTML = TAB.misiones.map(m =>
+    `<button data-m="${m.n}" aria-pressed="${cfg.misiones.has(m.n)}">${m.n}. ${m.nombre}</button>`).join("");
+  $("#setMisiones").onclick = ev => {
+    const b = ev.target.closest("button"); if (!b) return;
+    const n = +b.dataset.m;
+    if (cfg.misiones.has(n)) cfg.misiones.delete(n); else cfg.misiones.add(n);
+    if (!cfg.misiones.size) cfg.misiones.add(n);      // al menos una, si no no hay juego
+    pintarSetup();
+  };
+}
+
+$("#setReloj").onclick = ev => {
+  const b = ev.target.closest("button"); if (!b) return;
+  cfg.segundos = +b.dataset.seg;
+  $$("#setReloj button").forEach(x => x.setAttribute("aria-pressed", x === b));
+};
+
+const pantallaCompleta = () => {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen?.().catch(() => {});
+};
+$("#btnPantalla").onclick = pantallaCompleta;
+$("#btnPantalla2").onclick = pantallaCompleta;
+
+$("#btnEmpezar").onclick = empezar;
+$("#btnSalir").onclick = () => {
+  if (!confirm("¿Terminar la partida y volver al arranque?")) return;
+  $("#juego").classList.remove("on");
+  $("#setup").style.display = "";
+  J = null;
+};
+
+/* ============================================================
+   PARTIDA
+   ============================================================ */
+function empezar() {
+  J = {
+    equipos: cfg.equipos.map(e => ({ ...e, pos: 0, aciertos: 0, errores: 0, pierde: false })),
+    turno: 0,
+    /* Las preguntas se sortean y se van tachando: caer dos veces en la
+       misma casilla no puede regalar la respuesta. */
+    usadas: { preguntas: new Set(), vf: new Set() },
+    bloqueado: false,
+    terminada: false
+  };
+  $("#setup").style.display = "none";
+  $("#juego").classList.add("on");
+  pintarTablero();
+  refrescar();
+  dibujarDado(0);
+}
+
+const casilla = n => TAB.casillas.find(c => c.n === n) || null;
+
+/* El tablero es una serpentina de 6 columnas: las filas impares van al
+   revés, como el juego de papel. Se calcula acá y no se escribe en el
+   JSON para que el contenido no dependa de cómo se ve. */
+function lugar(n) {
+  const fila = Math.floor((n - 1) / 6);
+  let col = (n - 1) % 6;
+  if (fila % 2 === 1) col = 5 - col;
+  return { fila: fila + 1, col: col + 1 };
+}
+
+const PINTA = {
+  pregunta:  { bg: "#e7f0ff", ico: "❓", et: c => "Misión " + c.mision },
+  bonus:     { bg: "#ffe9c9", ico: "⭐", et: () => "Vale doble" },
+  meta:      { bg: "#fff0b8", ico: "🏁", et: () => "¡Llegada!" },
+  vf:        { bg: "#eaf7ee", ico: "⚖️", et: c => c.mision ? "V o F · misión " + c.mision : "V o F" },
+  avanza:    { bg: "#d7f5e4", ico: "➕", et: c => "Avanzan " + c.pasos },
+  retrocede: { bg: "#ffdcd5", ico: "➖", et: c => "Vuelven " + c.pasos },
+  pierde:    { bg: "#e6e2f2", ico: "🤐", et: () => "Pierden turno" },
+  descanso:  { bg: "#f3ecff", ico: "📖", et: c => c.cita }
+};
+
+function pintarTablero() {
+  $("#tablero").innerHTML = TAB.casillas.map(c => {
+    const p = PINTA[c.tipo], l = lugar(c.n);
+    return `<div class="casilla" id="cas${c.n}" style="--bg:${p.bg};grid-row:${l.fila};grid-column:${l.col}">
+      <span class="n">${c.n}</span>
+      <span class="ico">${p.ico}</span>
+      <span class="et">${p.et(c)}</span>
+      <span class="peones-cas" id="peo${c.n}"></span>
+    </div>`;
+  }).join("");
+}
+
+function refrescar() {
+  /* peones: la casilla 0 es la salida, que no está dibujada */
+  TAB.casillas.forEach(c => { $("#peo" + c.n).innerHTML = ""; });
+  J.equipos.forEach(e => {
+    if (e.pos >= 1) $("#peo" + e.pos).insertAdjacentHTML("beforeend", `<span>${e.peon}</span>`);
+  });
+  $$(".casilla").forEach(c => c.classList.remove("destacada"));
+  const act = J.equipos[J.turno];
+  if (act.pos >= 1) $("#cas" + act.pos).classList.add("destacada");
+
+  $("#marcador").innerHTML = J.equipos.map((e, i) => `
+    <div class="eq ${i === J.turno ? "turno" : ""}" style="--c:${e.color}">
+      <span class="peon">${e.peon}</span>
+      <span class="nom">${esc(e.nombre)}</span>
+      <span class="dato"><b>${e.pos}</b>de 30</span>
+      <span class="ajuste">
+        <button data-eq="${i}" data-d="1" title="Corregir: adelantar una casilla">▲</button>
+        <button data-eq="${i}" data-d="-1" title="Corregir: atrasar una casilla">▼</button>
+      </span>
+    </div>`).join("");
+  /* Los ▲▼ son para el maestro: si en el lío del aula se movió mal un peón,
+     se corrige a mano sin reiniciar la partida. No disparan la casilla. */
+  $("#marcador").onclick = ev => {
+    const b = ev.target.closest("button[data-eq]"); if (!b || J.bloqueado) return;
+    const e = J.equipos[+b.dataset.eq];
+    e.pos = Math.max(0, Math.min(30, e.pos + (+b.dataset.d)));
+    refrescar();
+  };
+
+  $("#turnoCard").style.setProperty("--c", act.color);
+  $("#turnoNom").textContent = act.nombre;
+  $("#btnDado").style.background = act.color;
+  $("#btnDado").disabled = J.bloqueado || J.terminada;
+  $("#btnDado").textContent = act.pierde ? "⏭ Pasar el turno" : "🎲 Tirar el dado";
+
+  const av = $("#avisoPanel");
+  if (act.pierde) { av.hidden = false; av.textContent = "🤐 " + act.nombre + " pierde este turno."; }
+  else av.hidden = true;
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ---------- dado ---------- */
+const CARAS = { 1:[4], 2:[0,8], 3:[0,4,8], 4:[0,2,6,8], 5:[0,2,4,6,8], 6:[0,2,3,5,6,8] };
+function dibujarDado(v) {
+  const on = CARAS[v] || [];
+  $("#dado").innerHTML = Array.from({ length: 9 }, (_, i) =>
+    `<i class="${on.includes(i) ? "on" : ""}"></i>`).join("");
+}
+
+$("#btnDado").onclick = tirar;
+
+function tirar() {
+  if (J.bloqueado || J.terminada) return;
+  const eq = J.equipos[J.turno];
+  if (eq.pierde) { eq.pierde = false; pasarTurno(); return; }
+
+  J.bloqueado = true; refrescar();
+  $("#dado").classList.add("rodando");
+  let n = 0;
+  const rodar = setInterval(() => dibujarDado(1 + Math.floor(Math.random() * 6)), 70);
+  setTimeout(() => {
+    clearInterval(rodar);
+    $("#dado").classList.remove("rodando");
+    n = 1 + Math.floor(Math.random() * 6);
+    dibujarDado(n);
+    setTimeout(() => mover(eq, n, resolver), 420);
+  }, 900);
+}
+
+/* Mueve casilla por casilla para que se vea el recorrido desde el fondo
+   del aula. Nunca pasa de 30 ni baja de 0. */
+function mover(eq, pasos, luego) {
+  const dir = pasos >= 0 ? 1 : -1;
+  let quedan = Math.abs(pasos);
+  (function paso() {
+    if (!quedan) { refrescar(); return luego && luego(); }
+    const destino = eq.pos + dir;
+    if (destino > 30 || destino < 0) { quedan = 0; return paso(); }
+    eq.pos = destino; quedan--;
+    refrescar();
+    setTimeout(paso, 190);
+  })();
+}
+
+/* ---------- qué pasa al caer ---------- */
+function resolver() {
+  const eq = J.equipos[J.turno];
+  const c = casilla(eq.pos);
+  if (!c) return pasarTurno();
+
+  switch (c.tipo) {
+    case "pregunta": case "bonus": case "meta":
+      return abrirPregunta(c, eq);
+    case "vf":
+      return abrirVF(c, eq);
+    case "avanza":
+      return cartelEfecto(c, eq, "🎉", "¡Premio!", c.texto, () => mover(eq, c.pasos, pasarTurno));
+    case "retrocede":
+      return cartelEfecto(c, eq, "😬", "Uy…", c.texto, () => mover(eq, -c.pasos, pasarTurno));
+    case "pierde":
+      eq.pierde = true;
+      return cartelEfecto(c, eq, "🤐", "Se quedan callados", c.texto, pasarTurno);
+    case "descanso":
+      return cartelDescanso(c, eq);
+  }
+  pasarTurno();
+}
+
+/* Los efectos de casilla no encadenan: si un premio te deja en otra casilla
+   de premio, ahí te quedás. Si no, el turno no se termina más y los chicos
+   pierden el hilo. */
+
+function pasarTurno() {
+  if (J.terminada) return;
+  J.turno = 1 - J.turno;
+  J.bloqueado = false;
+  dibujarDado(0);
+  refrescar();
+}
+
+/* ============================================================
+   CARTELES
+   ============================================================ */
+function abrirCartel(html, alCerrar) {
+  $("#cartel").innerHTML = html;
+  $("#velo").classList.add("on");
+  velo._cerrar = alCerrar || null;
+  /* Los atajos del cartel anterior tienen que morir con él: si no, la tecla
+     V durante una pregunta de opción múltiple llamaba al responder del
+     verdadero/falso que ya se había cerrado. */
+  velo._responder = null;
+  velo._vf = null;
+}
+function cerrarCartel() {
+  const f = velo._cerrar;
+  velo._cerrar = null; velo._responder = null; velo._vf = null;
+  $("#velo").classList.remove("on");
+  $("#cartel").innerHTML = "";
+  pararReloj();
+  if (f) f();
+}
+const velo = $("#velo");
+
+function cintaEquipo(eq) {
+  return `<span class="cinta eq" style="--c:${eq.color}">${eq.peon} ${esc(eq.nombre)}</span>`;
+}
+
+function cartelEfecto(c, eq, ico, titulo, texto, luego) {
+  abrirCartel(`
+    ${cintaEquipo(eq)}
+    <h2>${ico} ${titulo}</h2>
+    <p class="grande">${esc(texto)}</p>
+    <div class="cierre"><button id="btnSeguir">Seguir</button></div>`, luego);
+  $("#btnSeguir").onclick = cerrarCartel;
+  $("#btnSeguir").focus();
+}
+
+function cartelDescanso(c, eq) {
+  abrirCartel(`
+    ${cintaEquipo(eq)}
+    <h2>📖 Un respiro</h2>
+    <p class="grande">“${esc(c.texto)}”</p>
+    <span class="cita">${esc(c.cita)}</span>
+    <p class="porque">${esc(c.consigna)}</p>
+    <div class="cierre"><button id="btnSeguir">Seguir</button></div>`, pasarTurno);
+  $("#btnSeguir").onclick = cerrarCartel;
+  $("#btnSeguir").focus();
+}
+
+/* ---------- sorteo sin repetir ---------- */
+function sacar(tipo, misionPedida) {
+  const banco = TAB[tipo];
+  const usadas = J.usadas[tipo];
+  const permitidas = cfg.misiones;
+
+  const filtra = f => banco.map((x, i) => i).filter(i => !usadas.has(i) && f(banco[i]));
+  /* Primero la misión que pide la casilla; si el maestro la desactivó o ya
+     se usaron todas sus preguntas, cae en cualquier misión habilitada. */
+  let libres = [];
+  if (misionPedida && permitidas.has(misionPedida)) libres = filtra(x => x.mision === misionPedida);
+  if (!libres.length) libres = filtra(x => permitidas.has(x.mision));
+  if (!libres.length) { usadas.clear(); libres = filtra(x => permitidas.has(x.mision)); }
+  if (!libres.length) libres = banco.map((_, i) => i);   // red de seguridad
+
+  const i = libres[Math.floor(Math.random() * libres.length)];
+  usadas.add(i);
+  return banco[i];
+}
+
+/* Las opciones se mezclan: el que se aviva no puede aprenderse la posición.
+   Es la misma decisión que se tomó en la app de los chicos. */
+function mezclar(a) {
+  const b = a.slice();
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
+}
+
+/* ---------- pregunta de opción múltiple ---------- */
+function abrirPregunta(c, eq) {
+  const p = sacar("preguntas", c.mision);
+  const ops = mezclar(p.opciones.map((t, i) => ({ t, ok: i === p.correcta })));
+  const esMeta = c.tipo === "meta", esBonus = c.tipo === "bonus";
+  const premio = esBonus ? c.pasos : 1;
+  const titulo = esMeta ? "🏁 Última pregunta" : esBonus ? "⭐ Casilla doble" : "❓ Pregunta";
+  const bajada = esMeta ? "Si la aciertan, ganaron la partida."
+               : esBonus ? "Si aciertan, avanzan " + premio + " de una."
+               : "Si aciertan, avanzan 1 más.";
+
+  abrirCartel(`
+    ${cintaEquipo(eq)} <span class="reloj" id="reloj"></span>
+    <h2>${titulo} <span style="font-size:.6em;color:var(--soft)">· casilla ${c.n} · ${bajada}</span></h2>
+    <p class="grande">${esc(p.enunciado)}</p>
+    <div class="opciones ${ops.every(o => o.t.length < 62) ? "dos" : ""}" id="ops">
+      ${ops.map((o, i) => `<button class="op" data-i="${i}">
+          <span class="letra">${i + 1}</span><span>${esc(o.t)}</span></button>`).join("")}
+    </div>
+    <div id="resu"></div>`);
+
+  const responder = i => {
+    if ($("#resu").innerHTML) return;
+    pararReloj();
+    const acerto = i >= 0 && ops[i].ok;
+    $$("#ops .op").forEach((b, k) => {
+      b.disabled = true;
+      if (ops[k].ok) b.classList.add("bien");
+      else if (k === i) b.classList.add("mal");
+      else b.classList.add("apagada");
+    });
+    cerrarPregunta(acerto, p, eq, esMeta, premio, i < 0);
+  };
+  $("#ops").onclick = ev => {
+    const b = ev.target.closest(".op"); if (b) responder(+b.dataset.i);
+  };
+  velo._responder = responder;
+  arrancarReloj(() => responder(-1));
+}
+
+/* ---------- verdadero o falso ---------- */
+function abrirVF(c, eq) {
+  const v = sacar("vf", c.mision);
+  abrirCartel(`
+    ${cintaEquipo(eq)} <span class="reloj" id="reloj"></span>
+    <h2>⚖️ ¿Verdadero o falso? <span style="font-size:.6em;color:var(--soft)">· casilla ${c.n} · si aciertan, avanzan 1 más</span></h2>
+    <p class="grande">${esc(v.afirmacion)}</p>
+    <div class="vf-botones" id="vfbot">
+      <button id="btnV" data-v="1">✓ VERDADERO</button>
+      <button id="btnF" data-v="0">✗ FALSO</button>
+    </div>
+    <div id="resu"></div>`);
+
+  const responder = dijoV => {
+    if ($("#resu").innerHTML) return;
+    pararReloj();
+    const acerto = dijoV !== null && dijoV === v.verdadero;
+    const bueno = v.verdadero ? $("#btnV") : $("#btnF");
+    $$("#vfbot button").forEach(b => b.disabled = true);
+    bueno.classList.add("bien");
+    if (!acerto && dijoV !== null) (dijoV ? $("#btnV") : $("#btnF")).classList.add("mal");
+    cerrarPregunta(acerto, v, eq, false, 1, dijoV === null);
+  };
+  $("#vfbot").onclick = ev => {
+    const b = ev.target.closest("button"); if (b) responder(b.dataset.v === "1");
+  };
+  velo._vf = responder;
+  arrancarReloj(() => responder(null));
+}
+
+/* ---------- desenlace común ---------- */
+function cerrarPregunta(acerto, item, eq, esMeta, premio, seAcaboElTiempo) {
+  if (acerto) eq.aciertos++; else eq.errores++;
+
+  const veredicto = acerto ? "✅ ¡Correcto!"
+    : seAcaboElTiempo ? "⏱ Se acabó el tiempo" : "❌ No era esa";
+  const consecuencia = acerto
+    ? (esMeta ? "¡Ganaron la partida!" : "Avanzan " + premio + ".")
+    : (esMeta ? "Vuelven a la casilla 27 y siguen jugando." : "Se quedan donde están.");
+
+  $("#resu").innerHTML = `
+    <p class="veredicto ${acerto ? "ok" : "no"}">${veredicto} <span style="font-weight:800;font-size:.7em;color:var(--soft)">${consecuencia}</span></p>
+    <div class="porque">${esc(item.porque)}</div>
+    <span class="cita">📖 ${esc(item.cita)}</span>
+    <div class="cierre"><button id="btnSeguir">Seguir</button></div>`;
+  $("#btnSeguir").onclick = cerrarCartel;
+  $("#btnSeguir").focus();
+
+  velo._cerrar = () => {
+    if (acerto && esMeta) return ganar(eq);
+    if (acerto) return mover(eq, premio, () => {
+      /* Avanzar por acertar puede dejarlos justo en la llegada: ahí no se
+         pasa el turno, se dispara la última pregunta. */
+      if (eq.pos === 30) return resolver();
+      pasarTurno();
+    });
+    if (esMeta) return mover(eq, -3, pasarTurno);
+    pasarTurno();
+  };
+}
+
+/* ---------- reloj ---------- */
+let relojId = null;
+function arrancarReloj(alVencer) {
+  if (!cfg.segundos) { const r = $("#reloj"); if (r) r.textContent = ""; return; }
+  let q = cfg.segundos;
+  const pinta = () => {
+    const r = $("#reloj"); if (!r) return;
+    r.textContent = "⏱ " + q + "s";
+    r.classList.toggle("poco", q <= 10);
+  };
+  pinta();
+  relojId = setInterval(() => {
+    q--; pinta();
+    if (q <= 0) { pararReloj(); alVencer(); }
+  }, 1000);
+}
+function pararReloj() { if (relojId) { clearInterval(relojId); relojId = null; } }
+
+/* ---------- final ---------- */
+function ganar(eq) {
+  J.terminada = true;
+  const otro = J.equipos[1 - J.equipos.indexOf(eq)];
+  confeti();
+  abrirCartel(`
+    <h2 style="font-size:clamp(1.6rem,5vmin,3.4rem)">🏆 ¡Ganó ${esc(eq.nombre)}!</h2>
+    <p class="grande">${eq.peon} llegó primero al final del camino.</p>
+    <p class="porque">
+      <b>${esc(eq.nombre)}</b>: ${eq.aciertos} respuestas bien, ${eq.errores} erradas.<br>
+      <b>${esc(otro.nombre)}</b>: ${otro.aciertos} bien, ${otro.errores} erradas · llegó a la casilla ${otro.pos}.
+    </p>
+    <p class="porque" style="border-color:var(--gold);background:#fff7d7">
+      “Dejad a los niños venir a mí, y no se lo impidáis; porque de los tales es el reino de Dios.”
+      <b>Marcos 10:14</b>
+    </p>
+    <div class="cierre">
+      <button class="ghost" id="btnRevancha">Revancha</button>
+      <button id="btnFin">Volver al arranque</button>
+    </div>`);
+  const bajarCartel = () => { $("#velo").classList.remove("on"); $("#cartel").innerHTML = ""; };
+  $("#btnRevancha").onclick = () => { bajarCartel(); empezar(); };
+  $("#btnFin").onclick = () => {
+    bajarCartel();
+    $("#juego").classList.remove("on");
+    $("#setup").style.display = "";
+    J = null;
+  };
+}
+
+function confeti() {
+  const d = document.createElement("div");
+  d.className = "confeti";
+  const cols = ["#ffc83d","#6949c6","#2479c9","#e2603f","#3aaf6b"];
+  d.innerHTML = Array.from({ length: 90 }, () =>
+    `<i style="left:${Math.random() * 100}%;top:-8vh;background:${cols[Math.floor(Math.random() * cols.length)]};
+      animation-duration:${2.4 + Math.random() * 2.4}s;animation-delay:${Math.random() * .8}s"></i>`).join("");
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 6000);
+}
+
+/* ============================================================
+   TECLADO — el maestro puede manejar todo con un control remoto
+   de presentaciones, sin volver a la computadora.
+   ============================================================ */
+document.addEventListener("keydown", ev => {
+  if (ev.target.tagName === "INPUT") return;
+  const k = ev.key.toLowerCase();
+
+  if (k === "p") { ev.preventDefault(); return pantallaCompleta(); }
+  if (!J || J.terminada && !$("#velo").classList.contains("on")) return;
+
+  const abierto = $("#velo").classList.contains("on");
+
+  if (k === " " || k === "enter" || k === "pagedown") {
+    ev.preventDefault();
+    if (abierto) { const b = $("#btnSeguir"); if (b) b.click(); }
+    else tirar();
+    return;
+  }
+  if (!abierto) return;
+  if (["1","2","3","4"].includes(k) && velo._responder) { ev.preventDefault(); velo._responder(+k - 1); }
+  if (k === "v" && velo._vf) { ev.preventDefault(); velo._vf(true); }
+  if (k === "f" && velo._vf) { ev.preventDefault(); velo._vf(false); }
+});
+
+/* Que el cartel no se cierre tocando el fondo: en el aula un toque perdido
+   en la pantalla táctil salteaba la pregunta y nadie entendía qué pasó. */
+</script>
+</body>
+</html>

@@ -116,6 +116,7 @@ textarea{resize:vertical}
         <div class="meta" id="metaGrupo"></div>
       </div>
       <div class="der">
+        <button class="ghost chico" id="btnProyectar">📽️ Para proyectar en clase</button>
         <button class="ghost chico" id="btnDemo">🧪 Probar las actividades</button>
         <button class="ghost chico" id="btnRefrescar">Actualizar</button>
         <button class="ghost chico" id="btnCsv">Exportar CSV</button>
@@ -199,6 +200,7 @@ $("#btnRefrescar").onclick = () => cargar();
 /* Abrir la demo en esta misma pestaña: así la app encuentra la sesión de
    maestro en sessionStorage y sabe que no es un chico curioso. */
 $("#btnDemo").onclick = () => { location.href = "index.html?demo=1"; };
+$("#btnProyectar").onclick = () => { location.href = "proyectar.html"; };
 
 /* ==================================================================
    Carga

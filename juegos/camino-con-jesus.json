@@ -1,0 +1,365 @@
+{
+  "titulo": "Caminando con Jesús",
+  "subtitulo": "Tablero de repaso del semestre · Grupo D",
+  "version": "Reina-Valera 1960",
+  "misiones": [
+    { "n": 1, "nombre": "Los anuncios que cambiaron el mundo" },
+    { "n": 2, "nombre": "La noche del nacimiento" },
+    { "n": 3, "nombre": "El que preparó el camino" },
+    { "n": 4, "nombre": "El bautismo de Jesús" },
+    { "n": 5, "nombre": "Todo el semestre junto" }
+  ],
+
+  "_comentario_casillas": "El tablero fija el TIPO de casilla y de qué misión sale la pregunta, no la pregunta misma: se sortea del banco y no se repite en la misma partida. Así el mismo tablero sirve varios domingos y caer dos veces en la 4 no regala la respuesta.",
+
+  "casillas": [
+    { "n": 1,  "tipo": "vf",        "mision": 1 },
+    { "n": 2,  "tipo": "pregunta",  "mision": 1 },
+    { "n": 3,  "tipo": "avanza",    "pasos": 1, "texto": "¿Ayudaron a alguien esta semana? Cuenten una cosa y avancen 1." },
+    { "n": 4,  "tipo": "pregunta",  "mision": 1 },
+    { "n": 5,  "tipo": "vf",        "mision": 2 },
+    { "n": 6,  "tipo": "retrocede", "pasos": 1, "texto": "Se les fue el burro para Egipto. Vuelvan 1 casilla." },
+    { "n": 7,  "tipo": "pregunta",  "mision": 2 },
+    { "n": 8,  "tipo": "vf",        "mision": 1 },
+    { "n": 9,  "tipo": "avanza",    "pasos": 2, "texto": "Los pastores salieron corriendo a contarlo. Avancen 2." },
+    { "n": 10, "tipo": "pregunta",  "mision": 2 },
+    { "n": 11, "tipo": "vf",        "mision": 2 },
+    { "n": 12, "tipo": "descanso",  "cita": "Lucas 2:19", "texto": "Pero María guardaba todas estas cosas, meditándolas en su corazón.", "consigna": "Que lo lea en voz alta un integrante del equipo. Después siguen." },
+    { "n": 13, "tipo": "pregunta",  "mision": 3 },
+    { "n": 14, "tipo": "vf",        "mision": 3 },
+    { "n": 15, "tipo": "retrocede", "pasos": 2, "texto": "Se fueron a buscarlo al palacio, como los sabios. Vuelvan 2." },
+    { "n": 16, "tipo": "pregunta",  "mision": 3 },
+    { "n": 17, "tipo": "vf",        "mision": 3 },
+    { "n": 18, "tipo": "avanza",    "pasos": 2, "texto": "Enderezaron el camino del Señor. Avancen 2." },
+    { "n": 19, "tipo": "pregunta",  "mision": 4 },
+    { "n": 20, "tipo": "vf",        "mision": 4 },
+    { "n": 21, "tipo": "pierde",    "texto": "Pidieron una garantía, como Zacarías. Se quedan callados un turno." },
+    { "n": 22, "tipo": "pregunta",  "mision": 4 },
+    { "n": 23, "tipo": "vf",        "mision": 4 },
+    { "n": 24, "tipo": "descanso",  "cita": "Juan 1:29", "texto": "He aquí el Cordero de Dios, que quita el pecado del mundo.", "consigna": "Léanlo en voz alta y expliquen con sus palabras por qué Juan lo llamó así." },
+    { "n": 25, "tipo": "bonus",     "mision": 5, "pasos": 3, "texto": "Casilla doble: si aciertan, avanzan 3 de una." },
+    { "n": 26, "tipo": "vf",        "mision": 5 },
+    { "n": 27, "tipo": "avanza",    "pasos": 1, "texto": "¿Oraron esta semana? Avancen 1." },
+    { "n": 28, "tipo": "pregunta",  "mision": 5 },
+    { "n": 29, "tipo": "vf",        "mision": 0 },
+    { "n": 30, "tipo": "meta",      "mision": 5, "texto": "Última pregunta. Si la aciertan, ganaron." }
+  ],
+
+  "preguntas": [
+    {
+      "mision": 1,
+      "enunciado": "Zacarías preguntó “¿En qué conoceré esto?” y María preguntó “¿Cómo será esto?”. Casi la misma pregunta, pero él quedó mudo y ella no. ¿Cuál es la diferencia?",
+      "opciones": [
+        "Zacarías pidió una prueba de que iba a pasar; María preguntó de qué manera iba a pasar.",
+        "Zacarías le habló fuerte y le faltó el respeto al ángel.",
+        "Zacarías era sacerdote, así que Dios le exigía más.",
+        "María en realidad no preguntó nada: lo pensó en silencio."
+      ],
+      "correcta": 0,
+      "cita": "Lucas 1:20",
+      "porque": "El ángel mismo lo dice: “por cuanto no creíste mis palabras”. María no dudaba de que iba a pasar, quería entender cómo."
+    },
+    {
+      "mision": 1,
+      "enunciado": "¿Qué anunció Gabriel sobre el reino de Jesús?",
+      "opciones": [
+        "Que sería el reino más grande de toda la tierra.",
+        "Que no tendría fin.",
+        "Que duraría hasta que Jesús volviera al cielo.",
+        "Que reinaría después de derrotar a los romanos."
+      ],
+      "correcta": 1,
+      "cita": "Lucas 1:33",
+      "porque": "Todas suenan grandes, pero el texto dice algo más fuerte que “grande”: dice que no se termina nunca."
+    },
+    {
+      "mision": 1,
+      "enunciado": "¿Dónde estaba Zacarías cuando se le apareció Gabriel?",
+      "opciones": [
+        "En su casa, orando de noche.",
+        "En el camino de vuelta de Jerusalén.",
+        "En el templo, junto al altar del incienso.",
+        "En la sinagoga de su pueblo, leyendo el rollo."
+      ],
+      "correcta": 2,
+      "cita": "Lucas 1:9",
+      "porque": "Estaba cumpliendo su turno de sacerdote, quemando el incienso. Afuera la gente se extrañaba de que tardara tanto."
+    },
+    {
+      "mision": 1,
+      "enunciado": "Gabriel visita a María “al sexto mes” del embarazo de Elisabet, y María se queda con ella como tres meses. ¿Qué estaba por pasar cuando María volvió a su casa?",
+      "opciones": [
+        "Elisabet recién se enteraba de que iba a tener un hijo.",
+        "Elisabet estaba por dar a luz a Juan.",
+        "Faltaban todavía seis meses para que naciera Juan.",
+        "Jesús ya había nacido en Belén."
+      ],
+      "correcta": 1,
+      "cita": "Lucas 1:56",
+      "porque": "Seis más tres da nueve. María se quedó justo hasta el final: se fue cuando Juan estaba por nacer."
+    },
+
+    {
+      "mision": 2,
+      "enunciado": "El ángel les da a los pastores una señal: un niño en pañales, acostado en un pesebre. Los pañales los usaban todos los bebés. ¿Qué parte de la señal servía para encontrarlo?",
+      "opciones": [
+        "El pesebre: ningún otro recién nacido de Belén iba a estar acostado ahí.",
+        "Los pañales, que eran de un color especial.",
+        "Ninguna: el ángel además les dio la dirección exacta.",
+        "Las dos, porque casi nadie usaba pañales."
+      ],
+      "correcta": 0,
+      "cita": "Lucas 2:12",
+      "porque": "Los pañales eran lo normal; el pesebre no. Un pesebre es donde come el animal. Esa rareza era la pista."
+    },
+    {
+      "mision": 2,
+      "enunciado": "Los sabios vieron la estrella y llegaron a Jerusalén, al palacio. Pero Jesús no estaba ahí. ¿Cómo se enteraron de que tenían que ir a Belén?",
+      "opciones": [
+        "La estrella los llevó directo a Belén desde su tierra.",
+        "Un ángel se les apareció en Jerusalén.",
+        "Por lo que estaba escrito en el profeta, que le leyeron a Herodes.",
+        "Herodes lo dedujo estudiando las estrellas con ellos."
+      ],
+      "correcta": 2,
+      "cita": "Mateo 2:5",
+      "porque": "La estrella los llevó hasta Jerusalén, pero el último tramo se lo dio la Escritura: buscaban en un palacio y el texto los mandó a un pueblo chico."
+    },
+    {
+      "mision": 2,
+      "enunciado": "Herodes mandó matar a los niños menores de dos años “conforme al tiempo que había inquirido de los magos”. ¿Qué se deduce de ese dato?",
+      "opciones": [
+        "Que los magos llegaron esa misma noche, con los pastores.",
+        "Que los magos llegaron bastante tiempo después del nacimiento.",
+        "Que Herodes se equivocó en la cuenta por miedo.",
+        "Que el viaje de los magos duró exactamente dos años."
+      ],
+      "correcta": 1,
+      "cita": "Mateo 2:11",
+      "porque": "Si dio una orden hasta los dos años es porque el nacimiento ya quedaba lejos. Por eso Mateo dice que entraron en una casa, no en un establo."
+    },
+    {
+      "mision": 2,
+      "enunciado": "¿Qué hicieron los pastores después de ver al niño?",
+      "opciones": [
+        "Le dejaron un cordero de regalo y se volvieron al campo.",
+        "Se quedaron a vivir en Belén para cuidar a la familia.",
+        "Volvieron en silencio, porque el ángel les pidió que no contaran nada.",
+        "Contaron a todos lo que se les había dicho acerca del niño."
+      ],
+      "correcta": 3,
+      "cita": "Lucas 2:17",
+      "porque": "Los primeros en contar la noticia no fueron sacerdotes ni gente importante: fueron unos trabajadores del campo."
+    },
+
+    {
+      "mision": 3,
+      "enunciado": "Cuando nació el bebé, los parientes discutían el nombre. Zacarías no lo dijo en voz alta: pidió una tablilla y lo escribió. ¿Por qué?",
+      "opciones": [
+        "Porque quería que quedara por escrito delante de los testigos.",
+        "Porque todavía estaba mudo desde que Gabriel se le apareció.",
+        "Porque no se animaba a contradecir a sus parientes.",
+        "Porque en esa época los nombres se anotaban siempre por escrito."
+      ],
+      "correcta": 1,
+      "cita": "Lucas 1:64",
+      "porque": "Gabriel le había dicho que quedaría mudo hasta que todo se cumpliera. Recién cuando escribió “Juan es su nombre” se le soltó la lengua."
+    },
+    {
+      "mision": 3,
+      "enunciado": "Juan tenía multitudes yendo a escucharlo. En pleno éxito, ¿qué dijo del que venía detrás de él?",
+      "opciones": [
+        "Que iban a trabajar juntos, cada uno a su manera.",
+        "Que la gente debía seguir viniendo a escucharlo a él primero.",
+        "Que no era digno ni de llevarle el calzado.",
+        "Que él le iba a enseñar lo que aprendió en el desierto."
+      ],
+      "correcta": 2,
+      "cita": "Mateo 3:11",
+      "porque": "Llevarle las sandalias al amo era tarea del esclavo más bajo de la casa. Juan dice que no llega ni a ese puesto."
+    },
+    {
+      "mision": 3,
+      "enunciado": "La gente le preguntaba a Juan qué tenían que hacer para arrepentirse de verdad. ¿Qué les contestó?",
+      "opciones": [
+        "Que ayunaran y dejaran de comer carne.",
+        "Que se fueran a vivir al desierto como él.",
+        "Que fueran al templo a ofrecer más sacrificios.",
+        "Que el que tuviera dos túnicas le diera una al que no tenía."
+      ],
+      "correcta": 3,
+      "cita": "Lucas 3:11",
+      "porque": "No les pidió nada religioso ni espectacular: les pidió que compartieran lo que tenían."
+    },
+    {
+      "mision": 3,
+      "enunciado": "Zacarías quedó mudo el día que Gabriel se le apareció, y volvió a hablar el día que nació Juan. ¿Cuánto tiempo estuvo sin poder hablar?",
+      "opciones": [
+        "Unos pocos días, hasta que se le pasó el susto.",
+        "Unos nueve meses, todo el embarazo de Elisabet.",
+        "Seis meses, hasta que Gabriel visitó a María.",
+        "Casi dos años, hasta que Juan aprendió a caminar."
+      ],
+      "correcta": 1,
+      "cita": "Lucas 1:20",
+      "porque": "El silencio duró exactamente lo que el ángel había dicho: hasta el día en que esto se haga."
+    },
+
+    {
+      "mision": 4,
+      "enunciado": "Cuando Jesús llegó al Jordán a pedirle que lo bautizara, Juan se opuso. ¿Qué le dijo?",
+      "opciones": [
+        "“Espera a que termine con la gente que está en la fila.”",
+        "“Primero tienes que arrepentirte, como todos los demás.”",
+        "“Yo necesito ser bautizado por ti, ¿y tú vienes a mí?”",
+        "“No puedo bautizarte, porque no eres del desierto.”"
+      ],
+      "correcta": 2,
+      "cita": "Mateo 3:14",
+      "porque": "No se opuso por desconfianza: por lo contrario. Sabía quién era y le parecía que los papeles estaban invertidos."
+    },
+    {
+      "mision": 4,
+      "enunciado": "La voz del cielo dice “en quien tengo complacencia”. Pero Jesús todavía no había hecho ningún milagro ni predicado nada. ¿Qué tiene eso de llamativo?",
+      "opciones": [
+        "Que el Padre lo aprueba antes de que hiciera nada, no como premio por lo que logró.",
+        "Que el Padre ya sabía todos los milagros que iba a hacer después.",
+        "Que era una manera de presentarlo ante la gente del río.",
+        "Que el Padre estaba contento porque se dejó bautizar por Juan."
+      ],
+      "correcta": 0,
+      "cita": "Mateo 3:17",
+      "porque": "La aprobación del Padre no fue el premio por lo que hizo: fue el punto de partida."
+    },
+    {
+      "mision": 4,
+      "enunciado": "Lucas cuenta un detalle de esta escena que Mateo no menciona. ¿Cuál es?",
+      "opciones": [
+        "Que era de noche cuando pasó todo.",
+        "Que Juan lloró al ver descender la paloma.",
+        "Que había una multitud enorme mirando desde la orilla.",
+        "Que Jesús estaba orando cuando el cielo se abrió."
+      ],
+      "correcta": 3,
+      "cita": "Lucas 3:21",
+      "porque": "Es el detalle que sólo aporta Lucas: el cielo se abre mientras Jesús ora."
+    },
+    {
+      "mision": 4,
+      "enunciado": "¿Cómo hizo Juan para estar seguro de que Jesús era el que estaba esperando?",
+      "opciones": [
+        "Porque eran parientes y lo conocía desde chico.",
+        "Porque Dios le había dado la señal de antemano: aquel sobre quien viera descender el Espíritu y permanecer.",
+        "Porque Jesús se lo dijo al llegar al río.",
+        "Porque la gente que estaba ahí lo reconoció y se lo señaló."
+      ],
+      "correcta": 1,
+      "cita": "Juan 1:33",
+      "porque": "Él mismo lo explica: no lo reconoció por la cara ni por el parentesco, sino por la señal que le habían anunciado."
+    },
+
+    {
+      "mision": 5,
+      "enunciado": "De recién nacido, Gabriel anunció que Juan iría “delante de la presencia del Señor”. Treinta años después le preguntan quién es. ¿Qué contesta?",
+      "opciones": [
+        "Que es el Cristo que Israel esperaba.",
+        "Que es el profeta Elías, que volvió del cielo.",
+        "Que es una voz que clama en el desierto: enderezad el camino del Señor.",
+        "Que es el sacerdote que sigue a su padre Zacarías."
+      ],
+      "correcta": 2,
+      "cita": "Juan 1:23",
+      "porque": "Se define por el trabajo que le habían dado, no por un título. Encaja exactamente con lo que Gabriel había anunciado."
+    },
+    {
+      "mision": 5,
+      "enunciado": "Los pastores y los sabios del oriente no llegaron en el mismo momento, aunque en los pesebres de adorno estén juntos. ¿Qué dato del texto lo demuestra mejor?",
+      "opciones": [
+        "Que Lucas dice que el niño estaba en un pesebre y Mateo dice que los sabios entraron en una casa.",
+        "Que los pastores eran pobres y los sabios traían oro, incienso y mirra.",
+        "Que a los pastores les habló un ángel y a los sabios los guió una estrella.",
+        "Que los pastores eran de Israel y los sabios venían de lejos."
+      ],
+      "correcta": 0,
+      "cita": "Mateo 2:11",
+      "porque": "Las otras tres son diferencias reales, pero ninguna prueba que pasó tiempo. El cambio de lugar sí."
+    },
+    {
+      "mision": 5,
+      "enunciado": "En el Jordán, Juan se negó a bautizar a Jesús. Y sin embargo terminó bautizándolo. ¿Qué lo hizo cambiar de idea?",
+      "opciones": [
+        "Que vio descender la paloma antes de meterlo al agua.",
+        "Que Jesús le contestó que así convenía que cumplieran toda justicia.",
+        "Que la gente de la fila lo presionó.",
+        "Que se acordó de lo que su padre Zacarías le había enseñado."
+      ],
+      "correcta": 1,
+      "cita": "Mateo 3:15",
+      "porque": "No cambió de idea sobre quién era Jesús. Obedeció una razón que Jesús le dio."
+    },
+    {
+      "mision": 5,
+      "enunciado": "Juan dijo “es necesario que él crezca, pero que yo mengüe”. Eso ya lo venía pensando desde antes. ¿En qué se le nota?",
+      "opciones": [
+        "En que se fue al desierto para que no lo encontraran.",
+        "En que se negó a bautizar a Jesús para no compartir su fama.",
+        "En que le pidió a la gente que dejara de venir a bautizarse.",
+        "En que dijo que no era digno ni de llevarle el calzado al que venía detrás."
+      ],
+      "correcta": 3,
+      "cita": "Mateo 3:11",
+      "porque": "Lo dijo en el mejor momento de su fama, cuando nadie lo obligaba a achicarse."
+    },
+    {
+      "mision": 5,
+      "enunciado": "Si tuvieran que decir con una frase qué tienen en común las cuatro misiones del semestre, ¿cuál elegirían?",
+      "opciones": [
+        "Que Dios cumple lo que anuncia, aunque tarde años y aunque parezca imposible.",
+        "Que los que se portan bien reciben premio rápido y los demás castigo.",
+        "Que cada vez que alguien tiene un problema aparece un ángel a resolverlo.",
+        "Que los que sabían las Escrituras siempre fueron los primeros en darse cuenta."
+      ],
+      "correcta": 0,
+      "cita": "Lucas 1:37",
+      "porque": "Zacarías esperó nueve meses, la profecía de Miqueas esperó siglos y se cumplió con un censo del emperador. Nada de lo anunciado quedó sin cumplirse."
+    }
+  ],
+
+  "vf": [
+    { "mision": 1, "afirmacion": "Gabriel se le apareció a Zacarías mientras dormía en su casa.", "verdadero": false, "cita": "Lucas 1:9", "porque": "Fue en el templo, de pie a la derecha del altar del incienso, mientras cumplía su turno de sacerdote. No fue un sueño." },
+    { "mision": 1, "afirmacion": "Elisabet no podía tener hijos y además ya era anciana.", "verdadero": true, "cita": "Lucas 1:7", "porque": "El texto dice que era estéril y que los dos eran de edad avanzada." },
+    { "mision": 1, "afirmacion": "Zacarías quedó ciego por no creerle al ángel.", "verdadero": false, "cita": "Lucas 1:20", "porque": "Quedó mudo, no ciego. Es un detalle que mucha gente cambia de memoria." },
+    { "mision": 1, "afirmacion": "Gabriel le dijo a María que al niño lo llamara Emanuel.", "verdadero": false, "cita": "Lucas 1:31", "porque": "Le dijo que lo llamara JESÚS. Emanuel aparece en la profecía de Isaías, pero no es el nombre que da Gabriel." },
+    { "mision": 1, "afirmacion": "María era parienta de Elisabet.", "verdadero": true, "cita": "Lucas 1:36", "porque": "El propio Gabriel se lo dice para mostrarle que Dios ya estaba obrando." },
+    { "mision": 1, "afirmacion": "Gabriel visitó a María y a Zacarías el mismo día.", "verdadero": false, "cita": "Lucas 1:26", "porque": "Pasaron seis meses entre una visita y la otra. Ese dato permite hacer la cuenta de los tiempos." },
+
+    { "mision": 2, "afirmacion": "Los magos que visitaron a Jesús eran tres.", "verdadero": false, "cita": "Mateo 2:11", "porque": "El texto nunca dice cuántos eran. Se supone que tres porque los regalos son tres: eso lo agregó la tradición." },
+    { "mision": 2, "afirmacion": "Los magos eran reyes.", "verdadero": false, "cita": "Mateo 2:1", "porque": "Mateo los llama magos del oriente: hombres que estudiaban los astros. Nunca los llama reyes." },
+    { "mision": 2, "afirmacion": "Un mesonero les dijo a José y a María que no había lugar.", "verdadero": false, "cita": "Lucas 2:7", "porque": "No aparece ningún mesonero. Lucas sólo dice que no había lugar en el mesón. El mesonero enojado es un personaje inventado." },
+    { "mision": 2, "afirmacion": "Los magos encontraron a Jesús en el pesebre, la misma noche que nació.", "verdadero": false, "cita": "Mateo 2:11", "porque": "Mateo dice que al entrar en la CASA vieron al niño. Ya había pasado bastante tiempo." },
+    { "mision": 2, "afirmacion": "A los pastores los guió un ángel, no la estrella.", "verdadero": true, "cita": "Lucas 2:10", "porque": "La estrella es de los magos, en Mateo. A los pastores, en Lucas, se les aparece un ángel. Es el cruce más común de todos." },
+    { "mision": 2, "afirmacion": "José y María fueron a Belén por un censo que ordenó Augusto César.", "verdadero": true, "cita": "Lucas 2:1", "porque": "Cada uno tenía que inscribirse en su ciudad, y José era de la familia de David." },
+    { "mision": 2, "afirmacion": "María guardaba todas estas cosas y las meditaba en su corazón.", "verdadero": true, "cita": "Lucas 2:19", "porque": "En medio de todo el alboroto, ella se quedaba pensando." },
+
+    { "mision": 3, "afirmacion": "La Biblia dice que Juan y Jesús eran primos.", "verdadero": false, "cita": "Lucas 1:36", "porque": "Dice que Elisabet era parienta de María, sin aclarar el parentesco. Lo de “primos” lo agregamos nosotros." },
+    { "mision": 3, "afirmacion": "Juan comía langostas y miel silvestre, y se vestía con pelo de camello.", "verdadero": true, "cita": "Mateo 3:4", "porque": "No era un disfraz: así vivía." },
+    { "mision": 3, "afirmacion": "Juan vivía en el templo de Jerusalén y desde ahí predicaba.", "verdadero": false, "cita": "Lucas 1:80", "porque": "Al revés: vivía en lugares desiertos. La gente tenía que salir de la ciudad para escucharlo." },
+    { "mision": 3, "afirmacion": "Cuando nació Juan, su padre seguía mudo y tuvo que escribir el nombre en una tablilla.", "verdadero": true, "cita": "Lucas 1:63", "porque": "Y justo después se le soltó la lengua." },
+    { "mision": 3, "afirmacion": "Cuando le preguntaron quién era, Juan dijo que él era el Cristo.", "verdadero": false, "cita": "Juan 1:20", "porque": "Dijo lo contrario, y el texto lo subraya: “Confesó, y no negó, sino confesó: Yo no soy el Cristo”." },
+    { "mision": 3, "afirmacion": "Juan bautizaba a la gente en el río Jordán.", "verdadero": true, "cita": "Mateo 3:6", "porque": "Por eso le quedó el sobrenombre de “el Bautista”." },
+    { "mision": 3, "afirmacion": "Al ver a Jesús, Juan lo llamó “el Cordero de Dios”.", "verdadero": true, "cita": "Juan 1:29", "porque": "Un cordero era lo que se ofrecía en sacrificio: no era un elogio cualquiera." },
+
+    { "mision": 4, "afirmacion": "Juan se opuso al principio a bautizar a Jesús.", "verdadero": true, "cita": "Mateo 3:14", "porque": "Y no por desconfianza: sabía quién era y le parecía que los papeles estaban invertidos." },
+    { "mision": 4, "afirmacion": "Una paloma de verdad bajó y se posó sobre la cabeza de Jesús.", "verdadero": false, "cita": "Mateo 3:16", "porque": "Trampa de una sola palabra: el texto dice que el Espíritu descendía COMO paloma. Es una comparación." },
+    { "mision": 4, "afirmacion": "La voz del cielo dijo: “Este es mi siervo fiel”.", "verdadero": false, "cita": "Mateo 3:17", "porque": "Dijo “Este es mi Hijo amado, en quien tengo complacencia”. La diferencia entre siervo e hijo cambia toda la escena." },
+    { "mision": 4, "afirmacion": "Jesús fue bautizado en el río Jordán.", "verdadero": true, "cita": "Mateo 3:13", "porque": "Es donde Juan venía bautizando a todo el que se acercaba." },
+    { "mision": 4, "afirmacion": "Apenas terminó el bautismo, Jesús empezó a hacer milagros en Galilea.", "verdadero": false, "cita": "Mateo 4:1", "porque": "Lo primero que pasó fue que el Espíritu lo llevó al desierto para ser tentado. Los milagros vinieron mucho después." },
+    { "mision": 4, "afirmacion": "Lucas cuenta que Jesús estaba orando cuando el cielo se abrió.", "verdadero": true, "cita": "Lucas 3:21", "porque": "Es el detalle que sólo él aporta." },
+    { "mision": 4, "afirmacion": "Juan sabía de antemano cuál iba a ser la señal para reconocerlo.", "verdadero": true, "cita": "Juan 1:33", "porque": "Le habían dicho que sería aquel sobre quien el Espíritu descendiera y permaneciera." },
+
+    { "mision": 5, "afirmacion": "Gabriel se le apareció primero a Zacarías y después a María.", "verdadero": true, "cita": "Lucas 1:26", "porque": "Y pasaron seis meses entre una visita y la otra: ese dato permite toda la cuenta de los tiempos del semestre." },
+    { "mision": 5, "afirmacion": "Juan bautizó a Jesús para que se arrepintiera de sus pecados.", "verdadero": false, "cita": "Mateo 3:15", "porque": "El propio Juan dijo que el que no necesitaba nada era Jesús. Jesús dio otra razón: cumplir toda justicia." },
+    { "mision": 5, "afirmacion": "Apenas salió del agua, Jesús empezó a elegir a sus discípulos.", "verdadero": false, "cita": "Mateo 4:1", "porque": "Lo primero fue el desierto y la tentación. Los discípulos vinieron bastante más adelante." },
+    { "mision": 5, "afirmacion": "La voz del cielo dijo “Este es mi Hijo amado” antes de que Jesús hiciera ningún milagro.", "verdadero": true, "cita": "Mateo 3:17", "porque": "De lo más importante del semestre: la aprobación del Padre no fue el premio, fue el punto de partida." }
+  ]
+}

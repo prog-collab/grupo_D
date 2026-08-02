@@ -25,7 +25,9 @@ No hay build ni framework: es HTML + JS a mano, sin dependencias.
 ```
 index.html          la app de los chicos (motor + los 8 tipos de actividad)
 panel.html          el panel del maestro
+proyectar.html      el juego de tablero para proyectar en clase (ver §3.4)
 lecciones/*.json    el contenido: 5 lecciones, una por archivo
+juegos/*.json       el tablero y el banco de preguntas de proyectar.html
 sw.js               service worker (instalable + offline + los avisos al maestro)
 manifest.webmanifest
 supabase/migrations/*.sql   el esquema, en orden
@@ -404,6 +406,53 @@ pg_cron cada 5 min -> escuela.despachar_avisos_respuesta()
   lleva el nombre: *"Tu maestro te contestó, Ana"*.
 - El cron (`cron.job`, nombre `avisos-respuesta`) corre cada 5 minutos. Esa es
   la demora máxima de un aviso diferido: los de las 9 llegan entre 9:00 y 9:05.
+
+### 3.7 "Para proyectar en clase" — Caminando con Jesús
+
+Módulo nuevo y aparte: `proyectar.html`, que se abre desde el panel con
+**"📽️ Para proyectar en clase"**. Es del maestro, no de los chicos, y no
+aparece en ningún lado de `index.html`.
+
+Es un tablero de 30 casillas en serpentina para **dos equipos**, sacado del
+juego de papel que circula por ahí. Una sola pantalla —la del proyector—: el
+maestro tira el dado y toca la respuesta que grita el equipo. **No toca la red
+ni Supabase ni `localStorage`**: no hay sesión, no hay nada que guardar y no
+ensucia los datos de los chicos. Si se corta la luz se vuelve a empezar.
+
+Lo que el papel no puede hacer, y por eso vale la pena que sea interactivo:
+
+- **Las preguntas se sortean del banco y no se repiten en la partida.** El
+  tablero fija el *tipo* de casilla y de qué misión sale la pregunta, no la
+  pregunta misma. Así el mismo tablero sirve varios domingos y caer dos veces
+  en la 4 no regala la respuesta.
+- **Las opciones se mezclan**, por lo mismo que en la app de los chicos (§3.1).
+- Cada respuesta muestra el **porqué y la cita**. Es la misma idea de todo el
+  proyecto: no alcanza con saber, hay que poder mostrar dónde dice.
+- El maestro puede apagar las misiones que el grupo todavía no vio, y poner un
+  reloj de 30 o 45 segundos (por defecto no hay reloj).
+
+El contenido sale entero de `lecciones/*.json`: 21 preguntas (los
+interrogatorios) y 31 afirmaciones de verdadero o falso (las cazas del error,
+sin las que la misión 5 repite textual de las anteriores). Está en
+`juegos/camino-con-jesus.json`. **Si se corrige el contenido de una lección,
+esa copia queda vieja**: hoy no hay validador que las cruce.
+
+Reglas, para no tener que leer el código: acertar avanza 1 más; errar no
+retrocede, se quedan. La 25 vale doble (avanza 3), la 30 es la última pregunta
+y hay que acertarla para ganar —si la erran vuelven a 27 y siguen—. Los
+efectos de casilla (premio, castigo) **no encadenan**: si un premio te deja en
+otro premio, ahí te quedás, porque si no el turno no se termina más.
+
+Dos cosas pensadas para el aula de verdad: el marcador tiene **▲▼ por equipo**
+para corregir a mano un peón que se movió mal, sin reiniciar la partida; y
+todo se maneja con el **teclado** (espacio = tirar/continuar, 1-4 = opción,
+V/F, P = pantalla completa), así que sirve un control remoto de
+presentaciones. El cartel **no se cierra tocando el fondo**: en una pantalla
+táctil un toque perdido salteaba la pregunta.
+
+Probado con un robot que juega partidas enteras dentro de la página y con los
+caminos de borde a mano (meta fallada, casilla doble, pierde turno, y acertar
+en la 29 encadenando a la llegada). Cero errores de JS.
 
 ---
 
