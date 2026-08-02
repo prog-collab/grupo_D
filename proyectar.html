@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#6c4cc9">
 <link rel="icon" href="iconos/icono-192.png" sizes="192x192" type="image/png">
-<title>Caminando con Jesús — para proyectar en clase</title>
+<title>Para proyectar en clase — Grupo D</title>
 <style>
 :root{
   --violet:#6949c6;--blue:#2479c9;--gold:#ffc83d;--ink:#26304b;--paper:#fffdf8;
@@ -124,9 +124,11 @@ legend{font-weight:800;padding:0 8px;color:var(--soft);font-size:.9rem}
 .cartel .cinta.eq{background:var(--c)}
 .cartel h2{margin:.6em 0 .2em;font-size:clamp(1.2rem,3.2vmin,2.4rem);line-height:1.22}
 .cartel .grande{font-size:clamp(1.3rem,3.6vmin,2.7rem);font-weight:900;line-height:1.25;margin:.5em 0}
-.cartel .cita{display:inline-block;background:#eef9ff;border-left:5px solid var(--blue);border-radius:0 12px 12px 0;
+/* La cita y el "porqué" también se usan fuera del cartel, en el lienzo de
+   los juegos de puntos: por eso no cuelgan de .cartel. */
+.cita{display:inline-block;background:#eef9ff;border-left:5px solid var(--blue);border-radius:0 12px 12px 0;
   padding:.4em .9em;font-weight:900;color:var(--blue);font-size:clamp(.9rem,2vmin,1.3rem);margin-top:.6em}
-.cartel .porque{background:#eef9ff;border-left:5px solid var(--blue);border-radius:0 14px 14px 0;
+.porque{background:#eef9ff;border-left:5px solid var(--blue);border-radius:0 14px 14px 0;
   padding:clamp(10px,1.6vmin,18px);margin-top:.8em;line-height:1.5;font-size:clamp(.9rem,2vmin,1.3rem)}
 
 .opciones{display:grid;gap:clamp(8px,1.3vmin,14px);margin-top:clamp(10px,1.8vmin,22px)}
@@ -156,7 +158,73 @@ legend{font-weight:800;padding:0 8px;color:var(--soft);font-size:.9rem}
 .confeti i{position:absolute;width:12px;height:18px;border-radius:3px;animation:caer linear forwards}
 @keyframes caer{to{transform:translateY(105vh) rotate(720deg);opacity:.15}}
 
+/* ================= MENÚ DE JUEGOS ================= */
+#menu{height:100%;overflow:auto;display:grid;place-items:center;padding:24px}
+.juegos{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:18px}
+.juego-card{background:#fff;border:3px solid #e9e2fb;border-radius:20px;padding:16px 18px;text-align:left;
+  color:var(--ink);display:flex;flex-direction:column;gap:.35em;align-items:flex-start;font-weight:700}
+.juego-card:hover:not(:disabled){border-color:var(--violet)}
+.juego-card .ico{font-size:2.2rem;line-height:1}
+.juego-card .tit{font-size:1.15rem;font-weight:900;line-height:1.15}
+.juego-card .des{font-size:.86rem;color:var(--soft);font-weight:600;line-height:1.4}
+.juego-card .dur{font-size:.75rem;font-weight:900;color:var(--violet);letter-spacing:.04em;margin-top:.2em}
+
+/* ================= JUEGOS DE PUNTOS (los tres nuevos) ================= */
+#setup2{height:100%;overflow:auto;display:grid;place-items:center;padding:24px}
+#jugar{height:100%;display:none;grid-template-rows:auto 1fr}
+#jugar.on{display:grid}
+.escena{display:grid;grid-template-columns:1fr clamp(200px,23vw,330px);gap:clamp(10px,1.8vmin,24px);
+  padding:clamp(10px,1.8vmin,24px);min-height:0}
+.lienzo{background:var(--paper);border-radius:24px;padding:clamp(16px,2.6vmin,34px);
+  box-shadow:0 10px 30px #26304b22;border:3px solid #fff;overflow:auto;min-height:0;display:flex;
+  flex-direction:column}
+.lado{display:flex;flex-direction:column;gap:clamp(8px,1.4vmin,16px);min-height:0}
+.lado .atajos{margin-top:auto}
+.valor{background:var(--paper);border-radius:20px;padding:clamp(10px,1.8vmin,20px);text-align:center;
+  box-shadow:0 8px 22px #26304b1f;border:3px solid var(--gold)}
+.valor .n{font-size:clamp(2rem,7vmin,4.4rem);font-weight:900;line-height:1;color:var(--violet)}
+.valor .q{font-size:clamp(.65rem,1.35vmin,.9rem);font-weight:800;color:var(--soft);letter-spacing:.06em}
+.timbres{display:grid;gap:10px}
+.timbres button{font-size:clamp(.85rem,1.9vmin,1.2rem);padding:.7em .6em;text-align:left;
+  display:flex;align-items:center;gap:.5em;background:var(--c)}
+.timbres button .k{margin-left:auto;background:#ffffff33;border-radius:8px;padding:0 .5em;font-size:.8em}
+.timbres button.fuera{opacity:.35}
+
+/* ¿Quién soy? */
+/* Las pistas se centran a lo alto: con dos a la vista, en un proyector
+   ancho, arriba de todo quedaban perdidas. */
+.pistas{list-style:none;margin:auto 0;padding:0;display:grid;gap:clamp(8px,1.3vmin,14px);counter-reset:p;width:100%}
+.pistas li{counter-increment:p;background:#f2eefc;border-radius:16px;padding:clamp(10px,1.6vmin,18px) clamp(12px,2vmin,22px);
+  font-size:clamp(1rem,2.5vmin,1.9rem);font-weight:800;line-height:1.35;display:flex;gap:.7em;
+  animation:entra .3s}
+.pistas li::before{content:counter(p);flex:none;display:grid;place-items:center;width:1.6em;height:1.6em;
+  border-radius:12px;background:#fff;color:var(--violet);font-size:.8em;box-shadow:0 2px 6px #26304b22}
+.pistas li:last-child{background:#fff4d0;box-shadow:0 0 0 3px var(--gold)}
+@keyframes entra{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.revelado{text-align:center;margin:auto 0}
+.revelado .nom{font-size:clamp(1.8rem,6.5vmin,4.2rem);font-weight:900;line-height:1.1;color:var(--violet)}
+
+/* Tabú */
+.palabrota{font-size:clamp(2.2rem,9vmin,6rem);font-weight:900;line-height:1.05;text-align:center;
+  color:var(--violet);margin:.1em 0 .35em;word-break:break-word}
+.prohibidas{list-style:none;margin:0 auto;padding:0;display:grid;gap:clamp(5px,.9vmin,10px);max-width:26ch;width:100%}
+.prohibidas li{background:#ffd2cb;color:#8e2b21;border-radius:12px;text-align:center;font-weight:900;
+  font-size:clamp(.95rem,2.6vmin,1.8rem);padding:.25em .5em;text-decoration:line-through}
+.crono{font-size:clamp(2.4rem,9vmin,5.5rem);font-weight:900;line-height:1;text-align:center;color:var(--ink)}
+.crono.poco{color:#c0392b;animation:tiembla .4s infinite}
+.centrado{text-align:center;margin:auto 0}
+.centrado h2{font-size:clamp(1.4rem,4.4vmin,3rem);margin:.2em 0}
+.centrado p{font-size:clamp(.95rem,2.2vmin,1.5rem);line-height:1.5;max-width:60ch;margin:.5em auto}
+.marcas{display:flex;gap:.35em;justify-content:center;flex-wrap:wrap;margin-top:.6em;font-size:clamp(1.2rem,3vmin,2.2rem)}
+
+/* Carrera al versículo */
+.refgrande{font-size:clamp(2rem,8vmin,5.4rem);font-weight:900;line-height:1.1;text-align:center;
+  color:var(--blue);margin:auto 0}
+.textogrande{font-size:clamp(1.1rem,3.2vmin,2.4rem);font-weight:800;line-height:1.4;text-align:center;
+  margin:auto 0;max-width:44ch;margin-inline:auto}
+
 @media (max-width:820px){
+  .escena{grid-template-columns:1fr;grid-template-rows:1fr auto}
   .mesa{grid-template-columns:1fr;grid-template-rows:1fr auto}
   .dado{max-height:14vh}
   .atajos{display:none}
@@ -167,7 +235,21 @@ legend{font-weight:800;padding:0 8px;color:var(--soft);font-size:.9rem}
 </head>
 <body>
 
-<!-- ==================== ARRANQUE ==================== -->
+<!-- ==================== MENÚ ==================== -->
+<div id="menu">
+  <div class="tarjeta">
+    <h1>📽️ Para proyectar en clase</h1>
+    <p class="sub">Cuatro juegos para el aula. Todos son de dos equipos, se juegan en una sola pantalla —la del proyector— y los maneja el maestro. Ninguno guarda nada ni necesita internet.</p>
+    <div class="juegos" id="juegos"></div>
+    <div class="arranque">
+      <button class="ghost" id="btnPantalla">⛶ Pantalla completa</button>
+      <a class="ghost" href="panel.html" style="text-decoration:none;display:inline-block;padding:.6em 1.1em;border-radius:14px;font-weight:800">← Volver al panel</a>
+    </div>
+    <p class="pie" id="pieMenu">Cargando…</p>
+  </div>
+</div>
+
+<!-- ==================== ARRANQUE DEL TABLERO ==================== -->
 <div id="setup">
   <div class="tarjeta">
     <h1>🎲 Caminando con Jesús</h1>
@@ -203,7 +285,7 @@ legend{font-weight:800;padding:0 8px;color:var(--soft);font-size:.9rem}
     <div class="arranque">
       <button class="grande" id="btnEmpezar">Empezar la partida</button>
       <button class="ghost" id="btnPantalla">⛶ Pantalla completa</button>
-      <a class="ghost" href="panel.html" style="text-decoration:none;display:inline-block;padding:.6em 1.1em;border-radius:14px;font-weight:800">← Volver al panel</a>
+      <button class="ghost" id="btnOtroJuego">← Elegir otro juego</button>
     </div>
     <p class="pie" id="pieEstado">Cargando el tablero…</p>
   </div>
@@ -240,6 +322,24 @@ legend{font-weight:800;padding:0 8px;color:var(--soft);font-size:.9rem}
   </div>
 </div>
 
+<!-- ============ ARRANQUE DE LOS JUEGOS DE PUNTOS ============ -->
+<div id="setup2"><div class="tarjeta" id="tarjeta2"></div></div>
+
+<!-- ============ JUEGOS DE PUNTOS ============ -->
+<div id="jugar">
+  <div class="barra">
+    <div class="marcador" id="marcador2"></div>
+    <div class="util">
+      <button class="ghost" id="btnPantalla3" title="Pantalla completa">⛶</button>
+      <button class="ghost" id="btnSalir2" title="Terminar la partida">Terminar</button>
+    </div>
+  </div>
+  <div class="escena">
+    <div class="lienzo" id="lienzo"></div>
+    <div class="lado" id="lado"></div>
+  </div>
+</div>
+
 <!-- ==================== CARTEL ==================== -->
 <div class="velo" id="velo"><div class="cartel" id="cartel"></div></div>
 
@@ -247,19 +347,40 @@ legend{font-weight:800;padding:0 8px;color:var(--soft);font-size:.9rem}
 "use strict";
 
 /* ============================================================
-   Caminando con Jesús — módulo "para proyectar en clase".
-   Una sola pantalla, la del proyector: el maestro tira el dado y
-   toca la respuesta que grita el equipo. No hay red, no hay cuentas,
-   no se guarda nada. Si se corta la luz se vuelve a empezar y listo.
+   "Para proyectar en clase" — cuatro juegos de aula.
+
+   Una sola pantalla, la del proyector: el maestro maneja todo y los
+   chicos contestan en voz alta. No hay red, no hay cuentas, no se
+   guarda nada. Si se corta la luz se vuelve a empezar y listo.
+
+     1. Caminando con Jesús  — tablero de dados (§ PARTIDA)
+     2. ¿Quién soy?          — pistas que valen menos cada vez
+     3. Tabú bíblico         — describir sin las palabras prohibidas
+     4. Carrera al versículo — encontrarlo en la Biblia de papel
+
+   Los tres últimos son "juegos de puntos" y comparten pantalla,
+   marcador y final (§ JUEGOS DE PUNTOS).
    ============================================================ */
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 
+/* Todas las pantallas se prenden y apagan por acá: si dos quedan
+   visibles a la vez, el proyector muestra un sándwich. */
+const PANTALLAS = ["#menu", "#setup", "#juego", "#setup2", "#jugar"];
+function mostrar(cual) {
+  PANTALLAS.forEach(s => {
+    const el = $(s);
+    if (s === "#juego" || s === "#jugar") el.classList.toggle("on", s === cual);
+    else el.style.display = (s === cual) ? "" : "none";
+  });
+}
+
 const PEONES = ["🦁","🦉","🐢","🦅","🐑","🐝","⭐","🔥"];
 const COLORES = ["#2479c9","#e2603f"];
 
 let TAB = null;                                   // el JSON del tablero
+let MAS = null;                                   // el JSON de los otros tres juegos
 const cfg = {
   equipos: [
     { nombre: "Equipo 1", peon: "🦁", color: COLORES[0] },
@@ -271,49 +392,102 @@ const cfg = {
 
 let J = null;                                     // estado de la partida
 
+mostrar("#menu");
+
 /* ---------- carga ---------- */
-fetch("juegos/camino-con-jesus.json")
-  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(d => {
-    TAB = d;
-    $("#pieEstado").textContent =
-      TAB.preguntas.length + " preguntas y " + TAB.vf.length +
-      " afirmaciones para verdadero o falso, sacadas de las misiones del semestre · " + TAB.version;
-    pintarSetup();
-  })
-  .catch(e => {
-    $("#pieEstado").textContent = "No pude cargar juegos/camino-con-jesus.json (" + e.message + ").";
-    $("#btnEmpezar").disabled = true;
+/* Los dos archivos se piden juntos, pero cada juego se habilita por su
+   cuenta: si falta uno, los otros tres tienen que andar igual. */
+const bajar = url => fetch(url)
+  .then(r => { if (!r.ok) throw new Error(url + " (" + r.status + ")"); return r.json(); });
+
+Promise.allSettled([bajar("juegos/camino-con-jesus.json"), bajar("juegos/mas-juegos.json")])
+  .then(([a, b]) => {
+    const fallas = [];
+    if (a.status === "fulfilled") {
+      TAB = a.value;
+      $("#pieEstado").textContent =
+        TAB.preguntas.length + " preguntas y " + TAB.vf.length +
+        " afirmaciones para verdadero o falso, sacadas de las misiones del semestre · " + TAB.version;
+      pintarSetup();
+    } else fallas.push(a.reason.message);
+    if (b.status === "fulfilled") MAS = b.value; else fallas.push(b.reason.message);
+
+    pintarMenu();
+    $("#pieMenu").textContent = fallas.length
+      ? "No pude cargar " + fallas.join(" ni ") + ". Esos juegos quedan apagados."
+      : "Contenido: " + (TAB.preguntas.length + TAB.vf.length) + " preguntas del semestre, " +
+        MAS.personajes.length + " personajes, " + MAS.tabu.length + " palabras y " +
+        MAS.versiculos.length + " versículos · " + TAB.version;
   });
+
+/* ============================================================
+   MENÚ
+   ============================================================ */
+const JUEGOS = [
+  { id: "tablero", ico: "🎲", tit: "Caminando con Jesús", dur: "30-45 MIN",
+    des: "El tablero de 30 casillas. Tiran el dado, caen en una casilla y contestan. El clásico.",
+    hay: () => !!TAB, ir: () => mostrar("#setup") },
+  { id: "quien", ico: "🕵️", tit: "¿Quién soy?", dur: "15-25 MIN",
+    des: "Se revelan pistas de un personaje y cada pista vale menos. El que arriesga primero se lleva más.",
+    hay: () => !!MAS, ir: () => setupPuntos("quien") },
+  { id: "tabu", ico: "🤐", tit: "Tabú bíblico", dur: "15-20 MIN",
+    des: "Uno se sienta de espaldas a la pantalla y su equipo le describe la palabra sin usar las prohibidas.",
+    hay: () => !!MAS, ir: () => setupPuntos("tabu") },
+  { id: "carrera", ico: "📖", tit: "Carrera al versículo", dur: "15-20 MIN",
+    des: "Con la Biblia de papel en la mano: gana el equipo que lo encuentra y lo lee primero.",
+    hay: () => !!MAS, ir: () => setupPuntos("carrera") }
+];
+
+function pintarMenu() {
+  $("#juegos").innerHTML = JUEGOS.map(j => `
+    <button class="juego-card" data-j="${j.id}" ${j.hay() ? "" : "disabled"}>
+      <span class="ico">${j.ico}</span>
+      <span class="tit">${j.tit}</span>
+      <span class="des">${esc(j.des)}</span>
+      <span class="dur">${j.dur}</span>
+    </button>`).join("");
+  $("#juegos").onclick = ev => {
+    const b = ev.target.closest("button[data-j]"); if (!b) return;
+    JUEGOS.find(j => j.id === b.dataset.j).ir();
+  };
+}
 
 /* ============================================================
    PANTALLA DE ARRANQUE
    ============================================================ */
-function pintarSetup() {
-  $("#setEquipos").innerHTML = cfg.equipos.map((e, i) => `
+/* El editor de equipos es el mismo para los cuatro juegos: los nombres y
+   los peones se eligen una vez y valen para toda la tarde. */
+function pintarEquipos(sel, volverAPintar) {
+  const cont = $(sel);
+  cont.className = "equipos";
+  cont.innerHTML = cfg.equipos.map((e, i) => `
     <div class="eq-set" style="--c:${e.color}">
-      <label for="nom${i}">Nombre del equipo ${i + 1}</label>
-      <input id="nom${i}" value="${e.nombre}" maxlength="24" autocomplete="off">
+      <label for="${sel.slice(1)}nom${i}">Nombre del equipo ${i + 1}</label>
+      <input id="${sel.slice(1)}nom${i}" value="${esc(e.nombre)}" maxlength="24" autocomplete="off">
       <div class="peones" data-eq="${i}">
         ${PEONES.map(p => `<button data-peon="${p}" aria-pressed="${p === e.peon}">${p}</button>`).join("")}
       </div>
     </div>`).join("");
 
-  $$("#setEquipos input").forEach((inp, i) => {
+  cont.querySelectorAll("input").forEach((inp, i) => {
     inp.oninput = () => { cfg.equipos[i].nombre = inp.value.trim() || ("Equipo " + (i + 1)); };
   });
-  $$(".peones").forEach(cont => {
-    const i = +cont.dataset.eq;
-    cont.onclick = ev => {
+  cont.querySelectorAll(".peones").forEach(caja => {
+    const i = +caja.dataset.eq;
+    caja.onclick = ev => {
       const b = ev.target.closest("button"); if (!b) return;
       /* Dos equipos con el mismo peón en el tablero serían indistinguibles:
          si el otro ya lo tiene, se lo cambio al que quedó libre. */
       const otro = cfg.equipos[1 - i];
       if (otro.peon === b.dataset.peon) otro.peon = cfg.equipos[i].peon;
       cfg.equipos[i].peon = b.dataset.peon;
-      pintarSetup();
+      volverAPintar();
     };
   });
+}
+
+function pintarSetup() {
+  pintarEquipos("#setEquipos", pintarSetup);
 
   $("#setMisiones").innerHTML = TAB.misiones.map(m =>
     `<button data-m="${m.n}" aria-pressed="${cfg.misiones.has(m.n)}">${m.n}. ${m.nombre}</button>`).join("");
@@ -338,13 +512,14 @@ const pantallaCompleta = () => {
 };
 $("#btnPantalla").onclick = pantallaCompleta;
 $("#btnPantalla2").onclick = pantallaCompleta;
+$("#btnPantalla3").onclick = pantallaCompleta;
 
 $("#btnEmpezar").onclick = empezar;
+$("#btnOtroJuego").onclick = () => mostrar("#menu");
 $("#btnSalir").onclick = () => {
   if (!confirm("¿Terminar la partida y volver al arranque?")) return;
-  $("#juego").classList.remove("on");
-  $("#setup").style.display = "";
   J = null;
+  mostrar("#setup");
 };
 
 /* ============================================================
@@ -360,8 +535,7 @@ function empezar() {
     bloqueado: false,
     terminada: false
   };
-  $("#setup").style.display = "none";
-  $("#juego").classList.add("on");
+  mostrar("#juego");
   pintarTablero();
   refrescar();
   dibujarDado(0);
@@ -746,9 +920,8 @@ function ganar(eq) {
   $("#btnRevancha").onclick = () => { bajarCartel(); empezar(); };
   $("#btnFin").onclick = () => {
     bajarCartel();
-    $("#juego").classList.remove("on");
-    $("#setup").style.display = "";
     J = null;
+    mostrar("#menu");
   };
 }
 
@@ -764,6 +937,540 @@ function confeti() {
 }
 
 /* ============================================================
+   JUEGOS DE PUNTOS
+   Los tres juegos nuevos comparten pantalla (#jugar), marcador y
+   final. Cada uno pinta el lienzo de la izquierda y el panel de la
+   derecha, y deja escritos sus atajos de teclado en P.atajos: así el
+   control remoto sirve para los cuatro juegos sin casos especiales.
+   ============================================================ */
+
+const cfg2 = {
+  quien:   { rondas: 8, origen: "todo" },
+  tabu:    { segundos: 60, vueltas: 3, origen: "todo" },
+  carrera: { rondas: 8, modo: "cita", origen: "todo" }
+};
+
+const ORIGENES = { campo: "origen", leyenda: "¿De dónde sale el contenido?", ops: [
+  ["todo", "Todo mezclado"], ["semestre", "Solo el semestre"], ["biblia", "Solo Biblia general"] ] };
+
+const SETUP = {
+  quien: {
+    ico: "🕵️", tit: "¿Quién soy?",
+    sub: "Aparecen pistas de un personaje, de la más difícil a la más obvia, y cada pista que se revela vale un punto menos. Cualquiera de los dos equipos puede arriesgar en cualquier momento: el que se anima antes se lleva más.",
+    campos: [
+      { campo: "rondas", leyenda: "¿Cuántos personajes?", ops: [[6, "6 personajes"], [8, "8"], [10, "10"], [12, "12"]] },
+      ORIGENES
+    ],
+    reglas: [
+      "La primera pista vale <b>5 puntos</b>, la segunda 4, y así hasta 1.",
+      "Cuando un equipo grita, tocás su botón y decidís si acertó. <b>Si erra, queda afuera de ese personaje</b> y el otro sigue jugando solo.",
+      "Errar no resta: lo que se pierde es el turno de ese personaje.",
+      "Al final se muestra dónde está en la Biblia."
+    ]
+  },
+  tabu: {
+    ico: "🤐", tit: "Tabú bíblico",
+    sub: "Un chico del equipo se sienta <b>de espaldas al proyector</b>. Sus compañeros ven la palabra y se la describen sin decir ninguna de las palabras prohibidas. Contra reloj.",
+    campos: [
+      { campo: "segundos", leyenda: "¿Cuánto dura cada turno?", ops: [[45, "45 segundos"], [60, "1 minuto"], [90, "1 minuto y medio"]] },
+      { campo: "vueltas", leyenda: "¿Cuántos turnos por equipo?", ops: [[2, "2 turnos"], [3, "3"], [4, "4"]] },
+      ORIGENES
+    ],
+    reglas: [
+      "Cada palabra adivinada vale <b>1 punto</b>. Se juega hasta que suene el tiempo.",
+      "Si dicen una prohibida —o parte de la palabra— esa palabra no cuenta: tocás <b>Paso</b> y sigue la próxima.",
+      "Pasar no resta. Lo que cuesta es el tiempo.",
+      "El que adivina no puede darse vuelta. Sentalo mirando al fondo del salón."
+    ]
+  },
+  carrera: {
+    ico: "📖", tit: "Carrera al versículo",
+    sub: "Con la Biblia de papel en la mano. Aparece la cita en la pantalla y los equipos corren a encontrarla; gana el que la encuentra y la lee en voz alta primero.",
+    campos: [
+      { campo: "modo", leyenda: "¿Cómo se juega?", ops: [
+        ["cita", "Muestro la cita → la buscan y la leen"],
+        ["texto", "Muestro el versículo → dicen la cita"] ] },
+      { campo: "rondas", leyenda: "¿Cuántos versículos?", ops: [[6, "6 versículos"], [8, "8"], [10, "10"], [12, "12"]] },
+      ORIGENES
+    ],
+    reglas: [
+      "El primero que la encuentra y la lee bien se lleva <b>3 puntos</b>.",
+      "Si lee mal o no era, <b>queda afuera de esa vuelta</b> y el otro equipo puede llevarse 2 puntos.",
+      "Después de cada vuelta la pantalla muestra el versículo entero para que todos lo lean juntos.",
+      "Para el modo al revés conviene que sepan usar el índice de la Biblia."
+    ]
+  }
+};
+
+/* ---------- pantalla de arranque ---------- */
+function setupPuntos(id) {
+  const s = SETUP[id], c = cfg2[id];
+  $("#tarjeta2").innerHTML = `
+    <h1>${s.ico} ${s.tit}</h1>
+    <p class="sub">${s.sub}</p>
+    <div id="setEquipos2"></div>
+    ${s.campos.map((f, k) => `
+      <fieldset>
+        <legend>${f.leyenda}</legend>
+        <div class="chips" data-campo="${f.campo}">
+          ${f.ops.map(([v, t]) => `<button data-v="${v}" aria-pressed="${String(c[f.campo]) === String(v)}">${t}</button>`).join("")}
+        </div>
+      </fieldset>`).join("")}
+    <div class="reglas">
+      <b>Cómo se juega</b>
+      <ul>${s.reglas.map(r => `<li>${r}</li>`).join("")}</ul>
+    </div>
+    <div class="arranque">
+      <button class="grande" id="btnEmpezar2">Empezar</button>
+      <button class="ghost" id="btnPantalla4">⛶ Pantalla completa</button>
+      <button class="ghost" id="btnMenu2">← Elegir otro juego</button>
+    </div>
+    <p class="pie" id="pieCuenta"></p>`;
+
+  pintarEquipos("#setEquipos2", () => setupPuntos(id));
+
+  $("#tarjeta2").querySelectorAll(".chips").forEach(caja => {
+    caja.onclick = ev => {
+      const b = ev.target.closest("button"); if (!b) return;
+      const v = b.dataset.v;
+      c[caja.dataset.campo] = /^\d+$/.test(v) ? +v : v;
+      setupPuntos(id);
+    };
+  });
+
+  const hay = banco(id).length;
+  $("#pieCuenta").textContent = hay + (id === "quien" ? " personajes" : id === "tabu" ? " palabras" : " versículos") +
+    " para elegir con esa opción · " + MAS.version;
+  /* Sin contenido no hay juego: mejor que el botón no arranque a que
+     arranque y no muestre nada. */
+  $("#btnEmpezar2").disabled = !hay;
+  $("#btnEmpezar2").onclick = () => arrancarPuntos(id);
+  $("#btnPantalla4").onclick = pantallaCompleta;
+  $("#btnMenu2").onclick = () => mostrar("#menu");
+  mostrar("#setup2");
+}
+
+function banco(id) {
+  const lista = id === "quien" ? MAS.personajes : id === "tabu" ? MAS.tabu : MAS.versiculos;
+  const o = cfg2[id].origen;
+  return o === "todo" ? lista : lista.filter(x => x.origen === o);
+}
+
+/* ---------- estado ---------- */
+let P = null;
+
+function arrancarPuntos(id) {
+  pararCrono();
+  P = {
+    id,
+    equipos: cfg.equipos.map(e => ({ ...e, puntos: 0 })),
+    ronda: 0,
+    total: cfg2[id].rondas,
+    usadas: new Set(),
+    atajos: {}
+  };
+  mostrar("#jugar");
+  if (id === "quien") return rondaQuien();
+  if (id === "tabu") return arrancarTabu();
+  return rondaCarrera();
+}
+
+$("#btnSalir2").onclick = () => {
+  if (!confirm("¿Terminar y volver al menú?")) return;
+  pararCrono(); P = null; mostrar("#menu");
+};
+
+/* Saca uno del banco sin repetir. Si se acabaron, se vuelve a empezar:
+   más vale repetir que quedarse sin juego a mitad de la clase. */
+function sacarDe(id) {
+  const lista = banco(id);
+  let libres = lista.map((_, i) => i).filter(i => !P.usadas.has(i));
+  if (!libres.length) { P.usadas.clear(); libres = lista.map((_, i) => i); }
+  const i = libres[Math.floor(Math.random() * libres.length)];
+  P.usadas.add(i);
+  return lista[i];
+}
+
+function pintarMarcador2() {
+  $("#marcador2").innerHTML = P.equipos.map((e, i) => `
+    <div class="eq ${P.turno === i ? "turno" : ""}" style="--c:${e.color}">
+      <span class="peon">${e.peon}</span>
+      <span class="nom">${esc(e.nombre)}</span>
+      <span class="dato"><b>${e.puntos}</b>${e.puntos === 1 ? "punto" : "puntos"}</span>
+      <span class="ajuste">
+        <button data-eq="${i}" data-d="1" title="Corregir: sumar un punto">▲</button>
+        <button data-eq="${i}" data-d="-1" title="Corregir: restar un punto">▼</button>
+      </span>
+    </div>`).join("");
+  /* Los ▲▼ son para el maestro, igual que en el tablero: si en el lío del
+     aula se contó mal, se arregla sin reiniciar. */
+  $("#marcador2").onclick = ev => {
+    const b = ev.target.closest("button[data-eq]"); if (!b) return;
+    const e = P.equipos[+b.dataset.eq];
+    e.puntos = Math.max(0, e.puntos + (+b.dataset.d));
+    pintarMarcador2();
+  };
+}
+
+const atajosHTML = filas => `<div class="atajos"><b>Atajos del teclado</b><br>${filas.join("<br>")}</div>`;
+
+/* Los botones de timbre de los dos equipos, que aparecen en dos juegos. */
+function timbresHTML(fuera, texto) {
+  return `<div class="timbres" id="timbres">
+    ${P.equipos.map((e, i) => `
+      <button data-eq="${i}" style="--c:${e.color}" class="${fuera && fuera[i] ? "fuera" : ""}"
+        ${fuera && fuera[i] ? "disabled" : ""}>${e.peon} ${esc(e.nombre)} ${texto}
+        <span class="k">${i + 1}</span></button>`).join("")}
+  </div>`;
+}
+
+/* ============================================================
+   1) ¿QUIÉN SOY?
+   ============================================================ */
+function rondaQuien() {
+  if (P.ronda >= P.total) return finalPuntos();
+  P.pj = sacarDe("quien");
+  P.nPistas = 1;
+  P.fuera = [false, false];
+  P.arriesga = null;
+  P.resuelto = null;
+  P.turno = null;
+  pintarQuien();
+}
+
+const valorQuien = () => Math.max(1, P.pj.pistas.length + 1 - P.nPistas);
+
+function pintarQuien() {
+  const p = P.pj;
+  pintarMarcador2();
+
+  if (P.resuelto) {
+    const g = P.resuelto.eq >= 0 ? P.equipos[P.resuelto.eq] : null;
+    $("#lienzo").innerHTML = `
+      <div class="revelado">
+        <span class="cinta">${g ? "Lo sacó " + esc(g.nombre) : "No lo sacó nadie"}</span>
+        <p class="nom">${esc(p.nombre)}</p>
+        ${g ? `<p class="veredicto ok">+${P.resuelto.valor} ${P.resuelto.valor === 1 ? "punto" : "puntos"}</p>` : ""}
+        <div class="porque" style="text-align:left">${esc(p.remate)}</div>
+        <span class="cita">📖 ${esc(p.cita)}</span>
+      </div>`;
+    $("#lado").innerHTML = `
+      <button id="btnSeguir2" style="font-size:1.2rem;padding:.9em 1em">
+        ${P.ronda + 1 >= P.total ? "🏆 Ver quién ganó" : "▶ Siguiente personaje"}</button>
+      ${atajosHTML(["<kbd>espacio</kbd> seguir"])}`;
+    const seguir = () => { P.ronda++; rondaQuien(); };
+    $("#btnSeguir2").onclick = seguir;
+    P.atajos = { espacio: seguir };
+    return;
+  }
+
+  $("#lienzo").innerHTML = `
+    <span class="cinta">🕵️ Personaje ${P.ronda + 1} de ${P.total}</span>
+    <h2 style="margin:.4em 0 .6em;font-size:clamp(1.2rem,3.2vmin,2.2rem)">¿Quién soy?</h2>
+    <ul class="pistas">
+      ${p.pistas.slice(0, P.nPistas).map(t => `<li>${esc(t)}</li>`).join("")}
+    </ul>`;
+
+  if (P.arriesga !== null) {
+    const e = P.equipos[P.arriesga];
+    $("#lado").innerHTML = `
+      <div class="valor" style="border-color:${e.color}">
+        <div class="q">ARRIESGA</div>
+        <div class="n" style="font-size:clamp(1rem,3vmin,1.8rem);color:${e.color}">${e.peon} ${esc(e.nombre)}</div>
+        <div class="q">POR ${valorQuien()} ${valorQuien() === 1 ? "PUNTO" : "PUNTOS"}</div>
+      </div>
+      <div class="timbres">
+        <button id="btnBien" style="--c:#3aaf6b">✅ Acertó <span class="k">V</span></button>
+        <button id="btnMal" style="--c:#e25c51">❌ No era <span class="k">F</span></button>
+      </div>
+      ${atajosHTML(["<kbd>V</kbd> acertó · <kbd>F</kbd> no era"])}`;
+    const bien = () => {
+      P.equipos[P.arriesga].puntos += valorQuien();
+      P.resuelto = { eq: P.arriesga, valor: valorQuien() };
+      P.arriesga = null;
+      pintarQuien();
+    };
+    const mal = () => {
+      P.fuera[P.arriesga] = true;
+      P.arriesga = null;
+      /* Si los dos ya erraron, no tiene sentido seguir mostrando pistas:
+         nadie puede ganar puntos con este personaje. */
+      if (P.fuera.every(Boolean)) P.resuelto = { eq: -1, valor: 0 };
+      pintarQuien();
+    };
+    $("#btnBien").onclick = bien;
+    $("#btnMal").onclick = mal;
+    P.atajos = { v: bien, f: mal };
+    return;
+  }
+
+  const quedan = P.nPistas < p.pistas.length;
+  $("#lado").innerHTML = `
+    <div class="valor">
+      <div class="q">SI ACIERTAN AHORA</div>
+      <div class="n">${valorQuien()}</div>
+      <div class="q">${valorQuien() === 1 ? "PUNTO" : "PUNTOS"}</div>
+    </div>
+    ${timbresHTML(P.fuera, "arriesga")}
+    <button id="btnPista" class="ghost">${quedan ? "▶ Otra pista (vale " + (valorQuien() - 1) + ")" : "🔎 Nadie sabe: revelar"}</button>
+    ${atajosHTML(["<kbd>espacio</kbd> otra pista", "<kbd>1</kbd> / <kbd>2</kbd> arriesga un equipo"])}`;
+
+  const otraPista = () => {
+    if (quedan) { P.nPistas++; pintarQuien(); }
+    else { P.resuelto = { eq: -1, valor: 0 }; pintarQuien(); }
+  };
+  const arriesgar = i => {
+    if (P.fuera[i]) return;
+    P.arriesga = i; P.turno = i; pintarQuien();
+  };
+  $("#btnPista").onclick = otraPista;
+  $("#timbres").onclick = ev => {
+    const b = ev.target.closest("button[data-eq]"); if (b) arriesgar(+b.dataset.eq);
+  };
+  P.atajos = { espacio: otraPista, uno: () => arriesgar(0), dos: () => arriesgar(1) };
+}
+
+/* ============================================================
+   2) TABÚ BÍBLICO
+   ============================================================ */
+function arrancarTabu() {
+  P.vuelta = 0;                       // turnos jugados en total (2 por vuelta)
+  P.total = cfg2.tabu.vueltas * 2;
+  avisoTabu();
+}
+
+function avisoTabu() {
+  if (P.vuelta >= P.total) return finalPuntos();
+  P.turno = P.vuelta % 2;
+  const e = P.equipos[P.turno];
+  pintarMarcador2();
+  $("#lienzo").innerHTML = `
+    <div class="centrado">
+      <span class="cinta eq" style="--c:${e.color}">${e.peon} ${esc(e.nombre)}</span>
+      <h2>Turno ${Math.floor(P.vuelta / 2) + 1} de ${cfg2.tabu.vueltas}</h2>
+      <p>Que <b>un chico del equipo</b> se siente mirando al fondo del salón, de espaldas a la pantalla.
+         El resto le describe cada palabra <b>sin decir ninguna de las prohibidas</b>.</p>
+      <p style="color:var(--soft)">Tienen ${cfg2.tabu.segundos} segundos. Cada palabra vale 1 punto.</p>
+    </div>`;
+  $("#lado").innerHTML = `
+    <button id="btnYa" style="font-size:1.3rem;padding:1em">▶ Empezar el reloj</button>
+    ${atajosHTML(["<kbd>espacio</kbd> empezar"])}`;
+  $("#btnYa").onclick = jugarTabu;
+  P.atajos = { espacio: jugarTabu };
+}
+
+function jugarTabu() {
+  P.aciertos = 0; P.pasadas = 0; P.marcas = [];
+  P.queda = cfg2.tabu.segundos;
+  siguientePalabra();
+  arrancarCrono(() => {
+    P.queda--;
+    pintarCronoTabu();
+    if (P.queda <= 0) { pararCrono(); resumenTabu(); }
+  });
+}
+
+function siguientePalabra() {
+  P.palabra = sacarDe("tabu");
+  pintarTabu();
+}
+
+function pintarTabu() {
+  const e = P.equipos[P.turno], p = P.palabra;
+  pintarMarcador2();
+  $("#lienzo").innerHTML = `
+    <div style="margin:auto 0;width:100%">
+      <p class="palabrota">${esc(p.palabra)}</p>
+      <ul class="prohibidas">${p.prohibidas.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+    </div>`;
+  $("#lado").innerHTML = `
+    <div class="valor" style="border-color:${e.color}">
+      <div class="q">${esc(e.nombre).toUpperCase()}</div>
+      <div class="crono" id="crono">${P.queda}</div>
+      <div class="q">ACERTADAS: <b id="cuenta">${P.aciertos}</b></div>
+    </div>
+    <div class="timbres">
+      <button id="btnBien" style="--c:#3aaf6b">✅ Adivinó <span class="k">V</span></button>
+      <button id="btnPaso" style="--c:#8a93ad">⏭ Paso <span class="k">F</span></button>
+    </div>
+    ${atajosHTML(["<kbd>V</kbd> adivinó · <kbd>F</kbd> paso"])}`;
+  const bien = () => { P.aciertos++; P.marcas.push("✅"); e.puntos++; siguientePalabra(); };
+  const paso = () => { P.pasadas++; P.marcas.push("⏭"); siguientePalabra(); };
+  $("#btnBien").onclick = bien;
+  $("#btnPaso").onclick = paso;
+  P.atajos = { v: bien, f: paso };
+  pintarCronoTabu();
+}
+
+function pintarCronoTabu() {
+  const c = $("#crono"); if (!c) return;
+  c.textContent = P.queda;
+  c.classList.toggle("poco", P.queda <= 10);
+}
+
+function resumenTabu() {
+  const e = P.equipos[P.turno];
+  pintarMarcador2();
+  $("#lienzo").innerHTML = `
+    <div class="centrado">
+      <span class="cinta eq" style="--c:${e.color}">${e.peon} ${esc(e.nombre)}</span>
+      <h2>⏱ Se acabó el tiempo</h2>
+      <p style="font-size:clamp(1.4rem,4vmin,2.6rem);font-weight:900;color:var(--violet)">
+        ${P.aciertos} ${P.aciertos === 1 ? "palabra" : "palabras"} · +${P.aciertos} ${P.aciertos === 1 ? "punto" : "puntos"}</p>
+      <div class="marcas">${P.marcas.join("")}</div>
+      ${P.pasadas ? `<p style="color:var(--soft)">Pasaron ${P.pasadas}.</p>` : ""}
+    </div>`;
+  $("#lado").innerHTML = `
+    <button id="btnSeguir2" style="font-size:1.2rem;padding:.9em 1em">
+      ${P.vuelta + 1 >= P.total ? "🏆 Ver quién ganó" : "▶ Le toca al otro equipo"}</button>
+    ${atajosHTML(["<kbd>espacio</kbd> seguir"])}`;
+  const seguir = () => { P.vuelta++; avisoTabu(); };
+  $("#btnSeguir2").onclick = seguir;
+  P.atajos = { espacio: seguir };
+}
+
+/* ============================================================
+   3) CARRERA AL VERSÍCULO
+   ============================================================ */
+function rondaCarrera() {
+  if (P.ronda >= P.total) return finalPuntos();
+  P.v = sacarDe("carrera");
+  P.fuera = [false, false];
+  P.arriesga = null;
+  P.resuelto = null;
+  P.turno = null;
+  P.valor = 3;
+  P.seg = 0;
+  pintarCarrera();
+  arrancarCrono(() => { P.seg++; const c = $("#crono"); if (c) c.textContent = reloj(P.seg); });
+}
+
+const reloj = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+const porCita = () => cfg2.carrera.modo === "cita";
+
+function pintarCarrera() {
+  const v = P.v;
+  pintarMarcador2();
+
+  if (P.resuelto) {
+    pararCrono();
+    const g = P.resuelto.eq >= 0 ? P.equipos[P.resuelto.eq] : null;
+    $("#lienzo").innerHTML = `
+      <span class="cinta">${g ? "🔔 " + esc(g.nombre) + " +" + P.resuelto.valor : "Nadie la encontró"}</span>
+      <p class="textogrande">“${esc(v.texto)}”</p>
+      <p style="text-align:center"><span class="cita">📖 ${esc(v.ref)}</span></p>
+      <p style="text-align:center;color:var(--soft);font-weight:700">Leámoslo todos juntos en voz alta.</p>`;
+    $("#lado").innerHTML = `
+      <button id="btnSeguir2" style="font-size:1.2rem;padding:.9em 1em">
+        ${P.ronda + 1 >= P.total ? "🏆 Ver quién ganó" : "▶ Siguiente versículo"}</button>
+      ${atajosHTML(["<kbd>espacio</kbd> seguir"])}`;
+    const seguir = () => { P.ronda++; rondaCarrera(); };
+    $("#btnSeguir2").onclick = seguir;
+    P.atajos = { espacio: seguir };
+    return;
+  }
+
+  /* Mientras buscan, la pantalla muestra SÓLO la mitad que no tienen que
+     adivinar: si se ve el texto y la cita juntos, no hay carrera. */
+  $("#lienzo").innerHTML = porCita()
+    ? `<span class="cinta">📖 Búsquenlo en la Biblia</span>
+       <p class="refgrande">${esc(v.ref)}</p>
+       <p style="text-align:center;color:var(--soft);font-weight:700">El primero que lo encuentre lo lee en voz alta.</p>`
+    : `<span class="cinta">📖 ¿Dónde dice esto?</span>
+       <p class="textogrande">“${esc(v.texto)}”</p>
+       <p style="text-align:center;color:var(--soft);font-weight:700">El primero que sepa el libro, capítulo y versículo.</p>`;
+
+  if (P.arriesga !== null) {
+    const e = P.equipos[P.arriesga];
+    $("#lado").innerHTML = `
+      <div class="valor" style="border-color:${e.color}">
+        <div class="q">DICE QUE LA TIENE</div>
+        <div class="n" style="font-size:clamp(1rem,3vmin,1.8rem);color:${e.color}">${e.peon} ${esc(e.nombre)}</div>
+        <div class="q">VALE ${P.valor} PUNTOS</div>
+      </div>
+      <div class="timbres">
+        <button id="btnBien" style="--c:#3aaf6b">✅ ${porCita() ? "Leyó bien" : "Es esa"} <span class="k">V</span></button>
+        <button id="btnMal" style="--c:#e25c51">❌ No era <span class="k">F</span></button>
+      </div>
+      ${atajosHTML(["<kbd>V</kbd> bien · <kbd>F</kbd> no era"])}`;
+    const bien = () => {
+      P.equipos[P.arriesga].puntos += P.valor;
+      P.resuelto = { eq: P.arriesga, valor: P.valor };
+      P.arriesga = null;
+      pintarCarrera();
+    };
+    const mal = () => {
+      P.fuera[P.arriesga] = true;
+      P.arriesga = null;
+      P.valor = 2;                       // al que queda le vale menos, pero puede
+      if (P.fuera.every(Boolean)) P.resuelto = { eq: -1, valor: 0 };
+      else arrancarCrono(() => { P.seg++; const c = $("#crono"); if (c) c.textContent = reloj(P.seg); });
+      pintarCarrera();
+    };
+    $("#btnBien").onclick = bien;
+    $("#btnMal").onclick = mal;
+    P.atajos = { v: bien, f: mal };
+    pararCrono();
+    return;
+  }
+
+  $("#lado").innerHTML = `
+    <div class="valor">
+      <div class="q">VERSÍCULO ${P.ronda + 1} DE ${P.total}</div>
+      <div class="crono" id="crono">${reloj(P.seg)}</div>
+      <div class="q">VALE ${P.valor} PUNTOS</div>
+    </div>
+    ${timbresHTML(P.fuera, "¡la tiene!")}
+    <button id="btnRendirse" class="ghost">🔎 Nadie la encuentra: mostrarla</button>
+    ${atajosHTML(["<kbd>1</kbd> / <kbd>2</kbd> tocó un equipo", "<kbd>espacio</kbd> mostrarla"])}`;
+
+  const tocar = i => { if (P.fuera[i]) return; P.arriesga = i; P.turno = i; pintarCarrera(); };
+  const rendirse = () => { P.resuelto = { eq: -1, valor: 0 }; pintarCarrera(); };
+  $("#timbres").onclick = ev => {
+    const b = ev.target.closest("button[data-eq]"); if (b) tocar(+b.dataset.eq);
+  };
+  $("#btnRendirse").onclick = rendirse;
+  P.atajos = { uno: () => tocar(0), dos: () => tocar(1), espacio: rendirse };
+}
+
+/* ---------- cronómetro compartido ---------- */
+let cronoId = null;
+function arrancarCrono(tic) { pararCrono(); cronoId = setInterval(tic, 1000); }
+function pararCrono() { if (cronoId) { clearInterval(cronoId); cronoId = null; } }
+
+/* ---------- final común ---------- */
+function finalPuntos() {
+  pararCrono();
+  const [a, b] = P.equipos;
+  const empate = a.puntos === b.puntos;
+  const g = a.puntos > b.puntos ? a : b;
+  const juego = SETUP[P.id];
+  if (!empate) confeti();
+
+  abrirCartel(`
+    <h2 style="font-size:clamp(1.6rem,5vmin,3.4rem)">
+      ${empate ? "🤝 ¡Empataron!" : "🏆 ¡Ganó " + esc(g.nombre) + "!"}</h2>
+    <p class="grande">${juego.ico} ${juego.tit}</p>
+    <div class="porque">
+      <b>${a.peon} ${esc(a.nombre)}</b>: ${a.puntos} ${a.puntos === 1 ? "punto" : "puntos"}<br>
+      <b>${b.peon} ${esc(b.nombre)}</b>: ${b.puntos} ${b.puntos === 1 ? "punto" : "puntos"}
+    </div>
+    <p class="porque" style="border-color:var(--gold);background:#fff7d7">
+      “Lámpara es a mis pies tu palabra, y lumbrera a mi camino.” <b>Salmos 119:105</b>
+    </p>
+    <div class="cierre">
+      <button class="ghost" id="btnRevancha2">Revancha</button>
+      <button class="ghost" id="btnOtro2">Otro juego</button>
+      <button id="btnFin2">Volver al arranque</button>
+    </div>`);
+  const bajar2 = () => { $("#velo").classList.remove("on"); $("#cartel").innerHTML = ""; };
+  const id = P.id;
+  $("#btnRevancha2").onclick = () => { bajar2(); arrancarPuntos(id); };
+  $("#btnOtro2").onclick = () => { bajar2(); P = null; mostrar("#menu"); };
+  $("#btnFin2").onclick = () => { bajar2(); P = null; setupPuntos(id); };
+}
+
+/* ============================================================
    TECLADO — el maestro puede manejar todo con un control remoto
    de presentaciones, sin volver a la computadora.
    ============================================================ */
@@ -772,6 +1479,19 @@ document.addEventListener("keydown", ev => {
   const k = ev.key.toLowerCase();
 
   if (k === "p") { ev.preventDefault(); return pantallaCompleta(); }
+
+  /* Los juegos de puntos dejan escrito en P.atajos qué hace cada tecla en
+     el momento: así no hay que preguntar acá en qué pantalla estamos. */
+  if (P) {
+    if ($("#velo").classList.contains("on")) return;      // el cartel final manda
+    const a = P.atajos || {};
+    const f = (k === " " || k === "enter" || k === "pagedown") ? a.espacio
+            : k === "1" ? a.uno : k === "2" ? a.dos
+            : k === "v" ? a.v : k === "f" ? a.f : null;
+    if (f) { ev.preventDefault(); f(); }
+    return;
+  }
+
   if (!J || J.terminada && !$("#velo").classList.contains("on")) return;
 
   const abierto = $("#velo").classList.contains("on");

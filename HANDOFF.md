@@ -25,9 +25,9 @@ No hay build ni framework: es HTML + JS a mano, sin dependencias.
 ```
 index.html          la app de los chicos (motor + los 8 tipos de actividad)
 panel.html          el panel del maestro
-proyectar.html      el juego de tablero para proyectar en clase (ver §3.4)
+proyectar.html      los cuatro juegos para proyectar en clase (ver §3.7 y §3.8)
 lecciones/*.json    el contenido: 5 lecciones, una por archivo
-juegos/*.json       el tablero y el banco de preguntas de proyectar.html
+juegos/*.json       el tablero, las preguntas y el contenido de los otros tres juegos
 sw.js               service worker (instalable + offline + los avisos al maestro)
 manifest.webmanifest
 supabase/migrations/*.sql   el esquema, en orden
@@ -36,6 +36,7 @@ iconos/, apple-touch-icon.png
 validar-lecciones.js  chequeo de contenido (ver abajo)
 .claude/servidor-local.js  servidor estático para probar, no se publica
 .claude/launch.json        config del preview (puerto 8899)
+.claude/armar-mas-juegos.js  arma juegos/mas-juegos.json (ver §3.8)
 ```
 
 ### Cómo levantarlo
@@ -453,6 +454,69 @@ táctil un toque perdido salteaba la pregunta.
 Probado con un robot que juega partidas enteras dentro de la página y con los
 caminos de borde a mano (meta fallada, casilla doble, pierde turno, y acertar
 en la 29 encadenando a la llegada). Cero errores de JS.
+
+### 3.8 Tres juegos más en la misma pantalla
+
+`proyectar.html` dejó de ser un juego para ser **cuatro**: ahora abre en un
+menú y el tablero es el primero de la lista. Los tres nuevos son de puntos, no
+de peones, y comparten pantalla (`#jugar`), marcador y final.
+
+| | Qué es | Dura |
+|---|---|---|
+| 🕵️ **¿Quién soy?** | Se revelan hasta 5 pistas de un personaje y **cada pista que se revela vale un punto menos** (5 → 1). Cualquiera de los dos equipos arriesga cuando quiere; el que erra queda afuera de ese personaje y el otro sigue solo. | 15-25 min |
+| 🤐 **Tabú bíblico** | Un chico se sienta **de espaldas al proyector** y su equipo le describe la palabra sin usar las cinco prohibidas. Contra reloj, 1 punto por palabra. | 15-20 min |
+| 📖 **Carrera al versículo** | Con la Biblia de papel: aparece la cita y gana el que la encuentra y la lee primero (3 puntos; 2 para el segundo si el primero falló). También al revés: aparece el versículo y dicen la cita. | 15-20 min |
+
+Por qué estos y no un Jeopardy, que era lo más fácil de armar: el Jeopardy es
+el mismo banco de preguntas del tablero con otra piel. **¿Quién soy?** obliga a
+escuchar aunque no sea tu turno y premia al que leyó el expediente en serio,
+porque arriesgar temprano vale más. **Tabú** es el único que saca a los chicos
+de la silla. Y **la carrera** es la única actividad de todo el proyecto donde
+tocan la Biblia de papel: la app entrena "mostrá dónde dice" con el versículo
+puesto en pantalla, y encontrarlo solo es otra cosa.
+
+Decisiones que conviene no deshacer sin pensarlo:
+
+- **Errar no resta en ninguno de los tres.** Lo que se pierde es la vuelta.
+  Con chicos de 10 y 11 años, el marcador en negativo saca del juego al que ya
+  venía perdiendo, que es justo el que hay que mantener adentro.
+- **La primera pista de cada personaje no nombra a nadie del entorno.** Si la
+  pista 1 se contesta sola, los 5 puntos no valen nada y el juego pierde el
+  riesgo, que es lo único que lo hace distinto del tablero.
+- **En la carrera la pantalla muestra sólo la mitad que hay que buscar**
+  —la cita o el texto, nunca los dos—, y recién al cerrar la vuelta aparece el
+  versículo entero para leerlo todos juntos.
+- El maestro puede elegir el origen del contenido: **solo el semestre**, solo
+  Biblia general, o mezclado. Mezclado por defecto.
+
+Cada pantalla deja escritos sus atajos en `P.atajos` (`espacio`, `1`, `2`,
+`V`, `F`) y el manejador de teclado sólo los ejecuta: por eso el control
+remoto de presentaciones sirve en los cuatro juegos sin casos especiales. El
+marcador tiene los mismos ▲▼ que el tablero para corregir a mano.
+
+**El contenido está en `juegos/mas-juegos.json` y lo genera un script.**
+
+```bash
+node .claude/armar-mas-juegos.js .
+```
+
+Los 29 personajes y las 38 palabras de tabú están escritos adentro del script.
+Los **45 versículos del semestre se copian de `lecciones/*.json`** para que el
+texto sea exactamente el que leyeron los chicos, más 18 conocidos de toda la
+Biblia que están en el script a mano. Si se corrige una lección, **hay que
+volver a correrlo** (misma trampa que el tablero, §3.7). Los versículos que en
+el expediente están recortados con "…" se descartan solos: en la carrera el
+chico lee de su Biblia y tiene que coincidir con la pantalla.
+
+Ojo con una diferencia: el tablero **no** repite preguntas dentro de una
+partida y se planta; estos tres, si se acaba el banco, vuelven a empezar. Con
+6-12 vueltas por partida y 29 personajes no debería pasar nunca, pero es mejor
+repetir que quedarse sin juego a mitad de la clase.
+
+Probado con un robot dentro de la página: 40 partidas seguidas de ¿Quién soy?,
+Tabú completo con los dos modos de reloj, y la carrera en sus dos modos, más
+una partida entera del tablero para comprobar que no se rompió con el menú
+nuevo. Cero errores de JS y el cronómetro no queda vivo al salir.
 
 ---
 
