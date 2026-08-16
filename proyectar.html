@@ -239,7 +239,7 @@ legend{font-weight:800;padding:0 8px;color:var(--soft);font-size:.9rem}
 <div id="menu">
   <div class="tarjeta">
     <h1>📽️ Para proyectar en clase</h1>
-    <p class="sub">Cuatro juegos para el aula. Todos son de dos equipos, se juegan en una sola pantalla —la del proyector— y los maneja el maestro. Ninguno guarda nada ni necesita internet.</p>
+    <p class="sub">Ocho juegos para el aula: cuatro conocidos y cuatro nuevos. Todos son de dos equipos, se juegan en una sola pantalla —la del proyector— y los maneja el maestro. Ninguno guarda nada ni necesita internet.</p>
     <div class="juegos" id="juegos"></div>
     <div class="arranque">
       <button class="ghost" id="btnPantalla">⛶ Pantalla completa</button>
@@ -380,6 +380,7 @@ const PEONES = ["🦁","🦉","🐢","🦅","🐑","🐝","⭐","🔥"];
 const COLORES = ["#2479c9","#e2603f"];
 
 let TAB = null;                                   // el JSON del tablero
+let VIEJOS = null;                                // los tres juegos ya conocidos
 let MAS = null;                                   // el JSON de los juegos renovados
 const cfg = {
   equipos: [
@@ -398,17 +399,27 @@ mostrar("#menu");
 const bajar = url => fetch(url)
   .then(r => { if (!r.ok) throw new Error(url + " (" + r.status + ")"); return r.json(); });
 
-Promise.allSettled([bajar("juegos/juegos-renovados.json")])
-  .then(([a]) => {
+Promise.allSettled([
+  bajar("juegos/camino-con-jesus.json"),
+  bajar("juegos/mas-juegos.json"),
+  bajar("juegos/juegos-renovados.json")
+])
+  .then(([a, b, c]) => {
     const fallas = [];
     if (a.status === "fulfilled") {
-      MAS = a.value;
+      TAB = a.value;
+      $("#pieEstado").textContent =
+        TAB.preguntas.length + " preguntas y " + TAB.vf.length +
+        " afirmaciones para verdadero o falso, sacadas de las misiones del semestre · " + TAB.version;
+      pintarSetup();
     } else fallas.push(a.reason.message);
+    if (b.status === "fulfilled") VIEJOS = b.value; else fallas.push(b.reason.message);
+    if (c.status === "fulfilled") MAS = c.value; else fallas.push(c.reason.message);
 
     pintarMenu();
     $("#pieMenu").textContent = fallas.length
       ? "No pude cargar " + fallas.join(" ni ") + ". Esos juegos quedan apagados."
-      : "Contenido: " + MAS.pistas.length + " historias, " + MAS.intrusos.length + " intrusos, " +
+      : "8 juegos: los 4 anteriores y 4 nuevos · " + MAS.pistas.length + " historias, " + MAS.intrusos.length + " intrusos, " +
         MAS.ordenes.length + " escenas para ordenar y " + MAS.frases.length + " frases · " + MAS.version;
   });
 
@@ -416,6 +427,18 @@ Promise.allSettled([bajar("juegos/juegos-renovados.json")])
    MENÚ
    ============================================================ */
 const JUEGOS = [
+  { id: "tablero", ico: "🎲", tit: "Caminando con Jesús", dur: "30-45 MIN",
+    des: "El tablero de 30 casillas. Tiran el dado, caen en una casilla y contestan. El clásico.",
+    hay: () => !!TAB, ir: () => mostrar("#setup") },
+  { id: "quien", ico: "🕵️", tit: "¿Quién soy?", dur: "15-25 MIN",
+    des: "Se revelan pistas de un personaje y cada pista vale menos. El que arriesga primero se lleva más.",
+    hay: () => !!VIEJOS, ir: () => setupPuntos("quien") },
+  { id: "tabu", ico: "🤐", tit: "Tabú bíblico", dur: "15-20 MIN",
+    des: "Uno se sienta de espaldas a la pantalla y su equipo le describe la palabra sin usar las prohibidas.",
+    hay: () => !!VIEJOS, ir: () => setupPuntos("tabu") },
+  { id: "carrera", ico: "📖", tit: "Carrera al versículo", dur: "15-20 MIN",
+    des: "Con la Biblia de papel en la mano: gana el equipo que lo encuentra y lo lee primero.",
+    hay: () => !!VIEJOS, ir: () => setupPuntos("carrera") },
   { id: "pistas", ico: "🧩", tit: "Tres pistas, una historia", dur: "15-25 MIN",
     des: "Se revelan pistas de una historia bíblica. El equipo que se anima antes gana más puntos.",
     hay: () => !!MAS, ir: () => setupPuntos("pistas") },
@@ -937,6 +960,9 @@ function confeti() {
    ============================================================ */
 
 const cfg2 = {
+  quien:   { rondas: 8, origen: "todo" },
+  tabu:    { segundos: 60, vueltas: 3, origen: "todo" },
+  carrera: { rondas: 8, modo: "cita", origen: "todo" },
   pistas:  { rondas: 8 },
   intruso: { rondas: 8 },
   orden:   { rondas: 8 },
@@ -944,6 +970,50 @@ const cfg2 = {
 };
 
 const SETUP = {
+  quien: {
+    ico: "🕵️", tit: "¿Quién soy?",
+    sub: "Aparecen pistas de un personaje, de la más difícil a la más obvia, y cada pista que se revela vale un punto menos. Cualquiera de los dos equipos puede arriesgar en cualquier momento: el que se anima antes se lleva más.",
+    campos: [
+      { campo: "rondas", leyenda: "¿Cuántos personajes?", ops: [[6, "6 personajes"], [8, "8"], [10, "10"], [12, "12"]] },
+      { campo: "origen", leyenda: "¿De dónde sale el contenido?", ops: [["todo", "Todo mezclado"], ["semestre", "Solo el semestre"], ["biblia", "Solo Biblia general"]] }
+    ],
+    reglas: [
+      "La primera pista vale <b>5 puntos</b>, la segunda 4, y así hasta 1.",
+      "Cuando un equipo grita, tocás su botón y decidís si acertó. <b>Si erra, queda afuera de ese personaje</b> y el otro sigue jugando solo.",
+      "Errar no resta: lo que se pierde es el turno de ese personaje.",
+      "Al final se muestra dónde está en la Biblia."
+    ]
+  },
+  tabu: {
+    ico: "🤐", tit: "Tabú bíblico",
+    sub: "Un chico del equipo se sienta <b>de espaldas al proyector</b>. Sus compañeros ven la palabra y se la describen sin decir ninguna de las palabras prohibidas. Contra reloj.",
+    campos: [
+      { campo: "segundos", leyenda: "¿Cuánto dura cada turno?", ops: [[45, "45 segundos"], [60, "1 minuto"], [90, "1 minuto y medio"]] },
+      { campo: "vueltas", leyenda: "¿Cuántos turnos por equipo?", ops: [[2, "2 turnos"], [3, "3"], [4, "4"]] },
+      { campo: "origen", leyenda: "¿De dónde sale el contenido?", ops: [["todo", "Todo mezclado"], ["semestre", "Solo el semestre"], ["biblia", "Solo Biblia general"]] }
+    ],
+    reglas: [
+      "Cada palabra adivinada vale <b>1 punto</b>. Se juega hasta que suene el tiempo.",
+      "Si dicen una prohibida —o parte de la palabra— esa palabra no cuenta: tocás <b>Paso</b> y sigue la próxima.",
+      "Pasar no resta. Lo que cuesta es el tiempo.",
+      "El que adivina no puede darse vuelta. Sentalo mirando al fondo del salón."
+    ]
+  },
+  carrera: {
+    ico: "📖", tit: "Carrera al versículo",
+    sub: "Con la Biblia de papel en la mano. Aparece la cita en la pantalla y los equipos corren a encontrarla; gana el que la encuentra y la lee en voz alta primero.",
+    campos: [
+      { campo: "modo", leyenda: "¿Cómo se juega?", ops: [["cita", "Muestro la cita → la buscan y la leen"], ["texto", "Muestro el versículo → dicen la cita"]] },
+      { campo: "rondas", leyenda: "¿Cuántos versículos?", ops: [[6, "6 versículos"], [8, "8"], [10, "10"], [12, "12"]] },
+      { campo: "origen", leyenda: "¿De dónde sale el contenido?", ops: [["todo", "Todo mezclado"], ["semestre", "Solo el semestre"], ["biblia", "Solo Biblia general"]] }
+    ],
+    reglas: [
+      "El primero que la encuentra y la lee bien se lleva <b>3 puntos</b>.",
+      "Si lee mal o no era, <b>queda afuera de esa vuelta</b> y el otro equipo puede llevarse 2 puntos.",
+      "Después de cada vuelta la pantalla muestra el versículo entero para que todos lo lean juntos.",
+      "Para el modo al revés conviene que sepan usar el índice de la Biblia."
+    ]
+  },
   pistas: {
     ico: "🧩", tit: "Tres pistas, una historia",
     sub: "Aparecen tres pistas sobre una historia bíblica. Cada pista que se revela baja el puntaje: conviene pensar rápido, pero no adivinar por adivinar.",
@@ -1032,8 +1102,8 @@ function setupPuntos(id) {
   });
 
   const hay = banco(id).length;
-  const unidad = { pistas: " historias", intruso: " intrusos", orden: " escenas", frase: " frases" }[id];
-  $("#pieCuenta").textContent = hay + unidad + " para elegir · " + MAS.version;
+  const unidad = { quien: " personajes", tabu: " palabras", carrera: " versículos", pistas: " historias", intruso: " intrusos", orden: " escenas", frase: " frases" }[id];
+  $("#pieCuenta").textContent = hay + unidad + " para elegir · " + (VIEJOS || MAS).version;
   /* Sin contenido no hay juego: mejor que el botón no arranque a que
      arranque y no muestre nada. */
   $("#btnEmpezar2").disabled = !hay;
@@ -1044,7 +1114,13 @@ function setupPuntos(id) {
 }
 
 function banco(id) {
-  return MAS[{ pistas: "pistas", intruso: "intrusos", orden: "ordenes", frase: "frases" }[id]] || [];
+  const antiguos = { quien: "personajes", tabu: "tabu", carrera: "versiculos" }[id];
+  if (antiguos) {
+    const lista = VIEJOS ? VIEJOS[antiguos] : [];
+    const origen = cfg2[id].origen;
+    return origen === "todo" ? lista : lista.filter(x => x.origen === origen);
+  }
+  return MAS ? (MAS[{ pistas: "pistas", intruso: "intrusos", orden: "ordenes", frase: "frases" }[id]] || []) : [];
 }
 
 /* ---------- estado ---------- */
@@ -1061,7 +1137,9 @@ function arrancarPuntos(id) {
     atajos: {}
   };
   mostrar("#jugar");
-  if (id === "pistas") return rondaQuien();
+  if (id === "quien" || id === "pistas") return rondaQuien();
+  if (id === "tabu") return arrancarTabu();
+  if (id === "carrera") return rondaCarrera();
   return rondaRespuesta();
 }
 
@@ -1119,7 +1197,7 @@ function timbresHTML(fuera, texto) {
    ============================================================ */
 function rondaQuien() {
   if (P.ronda >= P.total) return finalPuntos();
-  P.pj = sacarDe("pistas");
+  P.pj = sacarDe(P.id);
   P.nPistas = 1;
   P.fuera = [false, false];
   P.arriesga = null;
@@ -1128,7 +1206,9 @@ function rondaQuien() {
   pintarQuien();
 }
 
-const valorQuien = () => Math.max(1, 4 - P.nPistas);
+const valorQuien = () => P.id === "quien"
+  ? Math.max(1, P.pj.pistas.length + 1 - P.nPistas)
+  : Math.max(1, 4 - P.nPistas);
 
 function pintarQuien() {
   const p = P.pj;
@@ -1155,8 +1235,8 @@ function pintarQuien() {
   }
 
   $("#lienzo").innerHTML = `
-    <span class="cinta">🧩 Historia ${P.ronda + 1} de ${P.total}</span>
-    <h2 style="margin:.4em 0 .6em;font-size:clamp(1.2rem,3.2vmin,2.2rem)">Tres pistas, una historia</h2>
+    <span class="cinta">${SETUP[P.id].ico} ${P.id === "quien" ? "Personaje" : "Historia"} ${P.ronda + 1} de ${P.total}</span>
+    <h2 style="margin:.4em 0 .6em;font-size:clamp(1.2rem,3.2vmin,2.2rem)">${SETUP[P.id].tit}</h2>
     <ul class="pistas">
       ${p.pistas.slice(0, P.nPistas).map(t => `<li>${esc(t)}</li>`).join("")}
     </ul>`;
