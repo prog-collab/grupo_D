@@ -10,15 +10,14 @@
  * Al publicar una versión nueva conviene subir el número de CACHE: eso
  * borra la anterior y evita que queden mezclados archivos viejos y nuevos.
  */
-const CACHE = "explorador-v8";
+const CACHE = "explorador-v9";
 
 const BASICOS = [
   "./",
   "index.html",
   "panel.html",
   "proyectar.html",
-  "juegos/camino-con-jesus.json",
-  "juegos/mas-juegos.json",
+  "juegos/juegos-renovados.json",
   "manifest.webmanifest",
   "iconos/icono-192.png",
   "iconos/icono-512.png",

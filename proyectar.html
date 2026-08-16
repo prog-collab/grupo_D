@@ -380,7 +380,7 @@ const PEONES = ["🦁","🦉","🐢","🦅","🐑","🐝","⭐","🔥"];
 const COLORES = ["#2479c9","#e2603f"];
 
 let TAB = null;                                   // el JSON del tablero
-let MAS = null;                                   // el JSON de los otros tres juegos
+let MAS = null;                                   // el JSON de los juegos renovados
 const cfg = {
   equipos: [
     { nombre: "Equipo 1", peon: "🦁", color: COLORES[0] },
@@ -395,47 +395,39 @@ let J = null;                                     // estado de la partida
 mostrar("#menu");
 
 /* ---------- carga ---------- */
-/* Los dos archivos se piden juntos, pero cada juego se habilita por su
-   cuenta: si falta uno, los otros tres tienen que andar igual. */
 const bajar = url => fetch(url)
   .then(r => { if (!r.ok) throw new Error(url + " (" + r.status + ")"); return r.json(); });
 
-Promise.allSettled([bajar("juegos/camino-con-jesus.json"), bajar("juegos/mas-juegos.json")])
-  .then(([a, b]) => {
+Promise.allSettled([bajar("juegos/juegos-renovados.json")])
+  .then(([a]) => {
     const fallas = [];
     if (a.status === "fulfilled") {
-      TAB = a.value;
-      $("#pieEstado").textContent =
-        TAB.preguntas.length + " preguntas y " + TAB.vf.length +
-        " afirmaciones para verdadero o falso, sacadas de las misiones del semestre · " + TAB.version;
-      pintarSetup();
+      MAS = a.value;
     } else fallas.push(a.reason.message);
-    if (b.status === "fulfilled") MAS = b.value; else fallas.push(b.reason.message);
 
     pintarMenu();
     $("#pieMenu").textContent = fallas.length
       ? "No pude cargar " + fallas.join(" ni ") + ". Esos juegos quedan apagados."
-      : "Contenido: " + (TAB.preguntas.length + TAB.vf.length) + " preguntas del semestre, " +
-        MAS.personajes.length + " personajes, " + MAS.tabu.length + " palabras y " +
-        MAS.versiculos.length + " versículos · " + TAB.version;
+      : "Contenido: " + MAS.pistas.length + " historias, " + MAS.intrusos.length + " intrusos, " +
+        MAS.ordenes.length + " escenas para ordenar y " + MAS.frases.length + " frases · " + MAS.version;
   });
 
 /* ============================================================
    MENÚ
    ============================================================ */
 const JUEGOS = [
-  { id: "tablero", ico: "🎲", tit: "Caminando con Jesús", dur: "30-45 MIN",
-    des: "El tablero de 30 casillas. Tiran el dado, caen en una casilla y contestan. El clásico.",
-    hay: () => !!TAB, ir: () => mostrar("#setup") },
-  { id: "quien", ico: "🕵️", tit: "¿Quién soy?", dur: "15-25 MIN",
-    des: "Se revelan pistas de un personaje y cada pista vale menos. El que arriesga primero se lleva más.",
-    hay: () => !!MAS, ir: () => setupPuntos("quien") },
-  { id: "tabu", ico: "🤐", tit: "Tabú bíblico", dur: "15-20 MIN",
-    des: "Uno se sienta de espaldas a la pantalla y su equipo le describe la palabra sin usar las prohibidas.",
-    hay: () => !!MAS, ir: () => setupPuntos("tabu") },
-  { id: "carrera", ico: "📖", tit: "Carrera al versículo", dur: "15-20 MIN",
-    des: "Con la Biblia de papel en la mano: gana el equipo que lo encuentra y lo lee primero.",
-    hay: () => !!MAS, ir: () => setupPuntos("carrera") }
+  { id: "pistas", ico: "🧩", tit: "Tres pistas, una historia", dur: "15-25 MIN",
+    des: "Se revelan pistas de una historia bíblica. El equipo que se anima antes gana más puntos.",
+    hay: () => !!MAS, ir: () => setupPuntos("pistas") },
+  { id: "intruso", ico: "🕵️", tit: "El intruso", dur: "12-20 MIN",
+    des: "Tres palabras pertenecen a una historia; una se coló. Encuéntrenla y expliquen por qué.",
+    hay: () => !!MAS, ir: () => setupPuntos("intruso") },
+  { id: "orden", ico: "⚡", tit: "Orden relámpago", dur: "15-20 MIN",
+    des: "Las escenas están mezcladas. Elijan cuál es el orden que cuenta la Biblia.",
+    hay: () => !!MAS, ir: () => setupPuntos("orden") },
+  { id: "frase", ico: "💬", tit: "La palabra que falta", dur: "12-18 MIN",
+    des: "Completen una frase bíblica antes que el otro equipo. Las palabras parecidas son la trampa.",
+    hay: () => !!MAS, ir: () => setupPuntos("frase") }
 ];
 
 function pintarMenu() {
@@ -945,59 +937,60 @@ function confeti() {
    ============================================================ */
 
 const cfg2 = {
-  quien:   { rondas: 8, origen: "todo" },
-  tabu:    { segundos: 60, vueltas: 3, origen: "todo" },
-  carrera: { rondas: 8, modo: "cita", origen: "todo" }
+  pistas:  { rondas: 8 },
+  intruso: { rondas: 8 },
+  orden:   { rondas: 8 },
+  frase:   { rondas: 8 }
 };
 
-const ORIGENES = { campo: "origen", leyenda: "¿De dónde sale el contenido?", ops: [
-  ["todo", "Todo mezclado"], ["semestre", "Solo el semestre"], ["biblia", "Solo Biblia general"] ] };
-
 const SETUP = {
-  quien: {
-    ico: "🕵️", tit: "¿Quién soy?",
-    sub: "Aparecen pistas de un personaje, de la más difícil a la más obvia, y cada pista que se revela vale un punto menos. Cualquiera de los dos equipos puede arriesgar en cualquier momento: el que se anima antes se lleva más.",
+  pistas: {
+    ico: "🧩", tit: "Tres pistas, una historia",
+    sub: "Aparecen tres pistas sobre una historia bíblica. Cada pista que se revela baja el puntaje: conviene pensar rápido, pero no adivinar por adivinar.",
     campos: [
-      { campo: "rondas", leyenda: "¿Cuántos personajes?", ops: [[6, "6 personajes"], [8, "8"], [10, "10"], [12, "12"]] },
-      ORIGENES
+      { campo: "rondas", leyenda: "¿Cuántas historias?", ops: [[6, "6 historias"], [8, "8"], [10, "10"]] }
     ],
     reglas: [
-      "La primera pista vale <b>5 puntos</b>, la segunda 4, y así hasta 1.",
-      "Cuando un equipo grita, tocás su botón y decidís si acertó. <b>Si erra, queda afuera de ese personaje</b> y el otro sigue jugando solo.",
-      "Errar no resta: lo que se pierde es el turno de ese personaje.",
-      "Al final se muestra dónde está en la Biblia."
+      "La primera pista vale <b>3 puntos</b>, la segunda 2 y la última 1.",
+      "Cuando un equipo grita, tocás su botón y decidís si acertó. <b>Si erra, queda afuera de esa historia</b>.",
+      "Errar no resta; el otro equipo puede seguir pensando.",
+      "Al final se revela la historia y dónde leerla en la Biblia."
     ]
   },
-  tabu: {
-    ico: "🤐", tit: "Tabú bíblico",
-    sub: "Un chico del equipo se sienta <b>de espaldas al proyector</b>. Sus compañeros ven la palabra y se la describen sin decir ninguna de las palabras prohibidas. Contra reloj.",
+  intruso: {
+    ico: "🕵️", tit: "El intruso",
+    sub: "En cada ronda hay cuatro palabras. Tres son de la misma historia y una es la intrusa. El primer equipo que la detecta responde.",
     campos: [
-      { campo: "segundos", leyenda: "¿Cuánto dura cada turno?", ops: [[45, "45 segundos"], [60, "1 minuto"], [90, "1 minuto y medio"]] },
-      { campo: "vueltas", leyenda: "¿Cuántos turnos por equipo?", ops: [[2, "2 turnos"], [3, "3"], [4, "4"]] },
-      ORIGENES
+      { campo: "rondas", leyenda: "¿Cuántos intrusos?", ops: [[6, "6 rondas"], [8, "8"], [10, "10"]] }
     ],
     reglas: [
-      "Cada palabra adivinada vale <b>1 punto</b>. Se juega hasta que suene el tiempo.",
-      "Si dicen una prohibida —o parte de la palabra— esa palabra no cuenta: tocás <b>Paso</b> y sigue la próxima.",
-      "Pasar no resta. Lo que cuesta es el tiempo.",
-      "El que adivina no puede darse vuelta. Sentalo mirando al fondo del salón."
+      "El primer intento correcto vale <b>2 puntos</b>.",
+      "Si el equipo se equivoca, el otro todavía puede responder por 1 punto.",
+      "Antes de marcar la respuesta, pediles que expliquen por qué esa palabra no pertenece."
     ]
   },
-  carrera: {
-    ico: "📖", tit: "Carrera al versículo",
-    sub: "Con la Biblia de papel en la mano. Aparece la cita en la pantalla y los equipos corren a encontrarla; gana el que la encuentra y la lee en voz alta primero.",
+  orden: {
+    ico: "⚡", tit: "Orden relámpago",
+    sub: "Cuatro escenas de una misma historia aparecen mezcladas. Los equipos tienen que elegir el orden que marca el relato bíblico.",
     campos: [
-      { campo: "modo", leyenda: "¿Cómo se juega?", ops: [
-        ["cita", "Muestro la cita → la buscan y la leen"],
-        ["texto", "Muestro el versículo → dicen la cita"] ] },
-      { campo: "rondas", leyenda: "¿Cuántos versículos?", ops: [[6, "6 versículos"], [8, "8"], [10, "10"], [12, "12"]] },
-      ORIGENES
+      { campo: "rondas", leyenda: "¿Cuántas escenas?", ops: [[6, "6 rondas"], [8, "8"], [10, "10"]] }
     ],
     reglas: [
-      "El primero que la encuentra y la lee bien se lleva <b>3 puntos</b>.",
-      "Si lee mal o no era, <b>queda afuera de esa vuelta</b> y el otro equipo puede llevarse 2 puntos.",
-      "Después de cada vuelta la pantalla muestra el versículo entero para que todos lo lean juntos.",
-      "Para el modo al revés conviene que sepan usar el índice de la Biblia."
+      "El primer equipo que acierta se lleva <b>3 puntos</b>.",
+      "Si se equivoca, el otro puede intentar y ganar 2 puntos.",
+      "Al revelar, repasá las cuatro escenas en voz alta antes de seguir."
+    ]
+  },
+  frase: {
+    ico: "💬", tit: "La palabra que falta",
+    sub: "Una frase de la Biblia tiene un hueco. Escuchen las opciones y completen la palabra exacta que usa el texto.",
+    campos: [
+      { campo: "rondas", leyenda: "¿Cuántas frases?", ops: [[6, "6 frases"], [8, "8"], [10, "10"]] }
+    ],
+    reglas: [
+      "El primer equipo que completa bien la frase gana <b>2 puntos</b>.",
+      "Si falla, el otro equipo tiene una oportunidad por 1 punto.",
+      "Después de cada respuesta, lean la cita completa juntos."
     ]
   }
 };
@@ -1039,8 +1032,8 @@ function setupPuntos(id) {
   });
 
   const hay = banco(id).length;
-  $("#pieCuenta").textContent = hay + (id === "quien" ? " personajes" : id === "tabu" ? " palabras" : " versículos") +
-    " para elegir con esa opción · " + MAS.version;
+  const unidad = { pistas: " historias", intruso: " intrusos", orden: " escenas", frase: " frases" }[id];
+  $("#pieCuenta").textContent = hay + unidad + " para elegir · " + MAS.version;
   /* Sin contenido no hay juego: mejor que el botón no arranque a que
      arranque y no muestre nada. */
   $("#btnEmpezar2").disabled = !hay;
@@ -1051,9 +1044,7 @@ function setupPuntos(id) {
 }
 
 function banco(id) {
-  const lista = id === "quien" ? MAS.personajes : id === "tabu" ? MAS.tabu : MAS.versiculos;
-  const o = cfg2[id].origen;
-  return o === "todo" ? lista : lista.filter(x => x.origen === o);
+  return MAS[{ pistas: "pistas", intruso: "intrusos", orden: "ordenes", frase: "frases" }[id]] || [];
 }
 
 /* ---------- estado ---------- */
@@ -1070,9 +1061,8 @@ function arrancarPuntos(id) {
     atajos: {}
   };
   mostrar("#jugar");
-  if (id === "quien") return rondaQuien();
-  if (id === "tabu") return arrancarTabu();
-  return rondaCarrera();
+  if (id === "pistas") return rondaQuien();
+  return rondaRespuesta();
 }
 
 $("#btnSalir2").onclick = () => {
@@ -1129,7 +1119,7 @@ function timbresHTML(fuera, texto) {
    ============================================================ */
 function rondaQuien() {
   if (P.ronda >= P.total) return finalPuntos();
-  P.pj = sacarDe("quien");
+  P.pj = sacarDe("pistas");
   P.nPistas = 1;
   P.fuera = [false, false];
   P.arriesga = null;
@@ -1138,7 +1128,7 @@ function rondaQuien() {
   pintarQuien();
 }
 
-const valorQuien = () => Math.max(1, P.pj.pistas.length + 1 - P.nPistas);
+const valorQuien = () => Math.max(1, 4 - P.nPistas);
 
 function pintarQuien() {
   const p = P.pj;
@@ -1165,8 +1155,8 @@ function pintarQuien() {
   }
 
   $("#lienzo").innerHTML = `
-    <span class="cinta">🕵️ Personaje ${P.ronda + 1} de ${P.total}</span>
-    <h2 style="margin:.4em 0 .6em;font-size:clamp(1.2rem,3.2vmin,2.2rem)">¿Quién soy?</h2>
+    <span class="cinta">🧩 Historia ${P.ronda + 1} de ${P.total}</span>
+    <h2 style="margin:.4em 0 .6em;font-size:clamp(1.2rem,3.2vmin,2.2rem)">Tres pistas, una historia</h2>
     <ul class="pistas">
       ${p.pistas.slice(0, P.nPistas).map(t => `<li>${esc(t)}</li>`).join("")}
     </ul>`;
@@ -1228,6 +1218,106 @@ function pintarQuien() {
     const b = ev.target.closest("button[data-eq]"); if (b) arriesgar(+b.dataset.eq);
   };
   P.atajos = { espacio: otraPista, uno: () => arriesgar(0), dos: () => arriesgar(1) };
+}
+
+/* ============================================================
+   PREGUNTAS RÁPIDAS
+   Intruso, orden relámpago y palabra que falta usan el mismo duelo:
+   un equipo toca primero, el maestro marca la opción que respondió y,
+   si falla, el otro recibe una oportunidad por menos puntos.
+   ============================================================ */
+function rondaRespuesta() {
+  if (P.ronda >= P.total) return finalPuntos();
+  P.item = sacarDe(P.id);
+  P.fuera = [false, false];
+  P.arriesga = null;
+  P.resuelto = null;
+  P.turno = null;
+  P.valor = P.id === "orden" ? 3 : 2;
+  pintarRespuesta();
+}
+
+function pintarRespuesta() {
+  const x = P.item;
+  pintarMarcador2();
+
+  if (P.resuelto) {
+    const g = P.resuelto.eq >= 0 ? P.equipos[P.resuelto.eq] : null;
+    $("#lienzo").innerHTML = `
+      <div class="centrado">
+        <span class="cinta">${g ? "✅ " + esc(g.nombre) + " +" + P.resuelto.valor : "🔎 La respuesta"}</span>
+        <h2>${esc(x.titulo)}</h2>
+        <p class="grande" style="color:var(--violet)">${esc(x.opciones[x.correcta])}</p>
+        <div class="porque" style="text-align:left">${esc(x.porque)}</div>
+        <span class="cita">📖 ${esc(x.cita)}</span>
+      </div>`;
+    $("#lado").innerHTML = `
+      <button id="btnSeguir2" style="font-size:1.2rem;padding:.9em 1em">
+        ${P.ronda + 1 >= P.total ? "🏆 Ver quién ganó" : "▶ Siguiente ronda"}</button>
+      ${atajosHTML(["<kbd>espacio</kbd> seguir"])}`;
+    const seguir = () => { P.ronda++; rondaRespuesta(); };
+    $("#btnSeguir2").onclick = seguir;
+    P.atajos = { espacio: seguir };
+    return;
+  }
+
+  const puedeElegir = P.arriesga !== null;
+  $("#lienzo").innerHTML = `
+    <span class="cinta">${SETUP[P.id].ico} Ronda ${P.ronda + 1} de ${P.total}</span>
+    <h2>${esc(x.titulo)}</h2>
+    <p class="textogrande">${esc(x.enunciado)}</p>
+    <div class="opciones">
+      ${x.opciones.map((o, i) => `<button class="op" data-op="${i}" ${puedeElegir ? "" : "disabled"}>
+        <span class="letra">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`).join("")}
+    </div>`;
+
+  if (puedeElegir) {
+    const e = P.equipos[P.arriesga];
+    $("#lado").innerHTML = `
+      <div class="valor" style="border-color:${e.color}">
+        <div class="q">RESPONDE</div>
+        <div class="n" style="font-size:clamp(1rem,3vmin,1.8rem);color:${e.color}">${e.peon} ${esc(e.nombre)}</div>
+        <div class="q">VALE ${P.valor} ${P.valor === 1 ? "PUNTO" : "PUNTOS"}</div>
+      </div>
+      <button id="btnCancelar" class="ghost">← Volver a los timbres</button>
+      ${atajosHTML(["Tocá la opción que contestaron", "<kbd>espacio</kbd> cancelar"])}`;
+    const elegir = i => {
+      if (i === x.correcta) {
+        P.equipos[P.arriesga].puntos += P.valor;
+        P.resuelto = { eq: P.arriesga, valor: P.valor };
+      } else {
+        P.fuera[P.arriesga] = true;
+        P.arriesga = null;
+        P.valor = Math.max(1, P.valor - 1);
+        if (P.fuera.every(Boolean)) P.resuelto = { eq: -1, valor: 0 };
+      }
+      pintarRespuesta();
+    };
+    $("#lienzo").onclick = ev => {
+      const b = ev.target.closest("button[data-op]"); if (b) elegir(+b.dataset.op);
+    };
+    const cancelar = () => { P.arriesga = null; pintarRespuesta(); };
+    $("#btnCancelar").onclick = cancelar;
+    P.atajos = { espacio: cancelar };
+    return;
+  }
+
+  $("#lado").innerHTML = `
+    <div class="valor">
+      <div class="q">SI ACIERTAN AHORA</div>
+      <div class="n">${P.valor}</div>
+      <div class="q">${P.valor === 1 ? "PUNTO" : "PUNTOS"}</div>
+    </div>
+    ${timbresHTML(P.fuera, "responde")}
+    <button id="btnRendirse2" class="ghost">🔎 Nadie sabe: revelar</button>
+    ${atajosHTML(["<kbd>1</kbd> / <kbd>2</kbd> responde un equipo", "<kbd>espacio</kbd> revelar"])}`;
+  const tocar = i => { if (!P.fuera[i]) { P.arriesga = i; P.turno = i; pintarRespuesta(); } };
+  const rendirse = () => { P.resuelto = { eq: -1, valor: 0 }; pintarRespuesta(); };
+  $("#timbres").onclick = ev => {
+    const b = ev.target.closest("button[data-eq]"); if (b) tocar(+b.dataset.eq);
+  };
+  $("#btnRendirse2").onclick = rendirse;
+  P.atajos = { uno: () => tocar(0), dos: () => tocar(1), espacio: rendirse };
 }
 
 /* ============================================================
