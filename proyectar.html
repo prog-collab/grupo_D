@@ -252,13 +252,13 @@ legend{font-weight:800;padding:0 8px;color:var(--soft);font-size:.9rem}
 <!-- ==================== ARRANQUE DEL TABLERO ==================== -->
 <div id="setup">
   <div class="tarjeta">
-    <h1>🎲 Caminando con Jesús</h1>
-    <p class="sub">Tablero de repaso del semestre, para proyectar en clase. Los chicos juegan en equipos y contestan en voz alta; vos manejás la pantalla.</p>
+    <h1>🎲 Caminando por la Biblia</h1>
+    <p class="sub">Tablero de repaso de toda la Biblia, para proyectar en clase. Los chicos juegan en equipos y contestan en voz alta; vos manejás la pantalla.</p>
 
     <div class="equipos" id="setEquipos"></div>
 
     <fieldset>
-      <legend>¿De qué misiones salen las preguntas?</legend>
+      <legend>Contenido del tablero</legend>
       <div class="chips" id="setMisiones"></div>
     </fieldset>
 
@@ -387,7 +387,7 @@ const cfg = {
     { nombre: "Equipo 1", peon: "🦁", color: COLORES[0] },
     { nombre: "Equipo 2", peon: "🦉", color: COLORES[1] }
   ],
-  misiones: new Set([1,2,3,4,5]),
+  misiones: new Set([1]),
   segundos: 0
 };
 
@@ -427,8 +427,8 @@ Promise.allSettled([
    MENÚ
    ============================================================ */
 const JUEGOS = [
-  { id: "tablero", ico: "🎲", tit: "Caminando con Jesús", dur: "30-45 MIN",
-    des: "El tablero de 30 casillas. Tiran el dado, caen en una casilla y contestan. El clásico.",
+  { id: "tablero", ico: "🎲", tit: "Caminando por la Biblia", dur: "30-45 MIN",
+    des: "El tablero de 30 casillas con preguntas de toda la Biblia. El clásico.",
     hay: () => !!TAB, ir: () => mostrar("#setup") },
   { id: "quien", ico: "🕵️", tit: "¿Quién soy?", dur: "15-25 MIN",
     des: "Se revelan pistas de un personaje y cada pista vale menos. El que arriesga primero se lleva más.",
@@ -960,9 +960,9 @@ function confeti() {
    ============================================================ */
 
 const cfg2 = {
-  quien:   { rondas: 8, origen: "todo" },
-  tabu:    { segundos: 60, vueltas: 3, origen: "todo" },
-  carrera: { rondas: 8, modo: "cita", origen: "todo" },
+  quien:   { rondas: 8 },
+  tabu:    { segundos: 60, vueltas: 3 },
+  carrera: { rondas: 8, modo: "cita" },
   pistas:  { rondas: 8 },
   intruso: { rondas: 8 },
   orden:   { rondas: 8 },
@@ -974,8 +974,7 @@ const SETUP = {
     ico: "🕵️", tit: "¿Quién soy?",
     sub: "Aparecen pistas de un personaje, de la más difícil a la más obvia, y cada pista que se revela vale un punto menos. Cualquiera de los dos equipos puede arriesgar en cualquier momento: el que se anima antes se lleva más.",
     campos: [
-      { campo: "rondas", leyenda: "¿Cuántos personajes?", ops: [[6, "6 personajes"], [8, "8"], [10, "10"], [12, "12"]] },
-      { campo: "origen", leyenda: "¿De dónde sale el contenido?", ops: [["todo", "Todo mezclado"], ["semestre", "Solo el semestre"], ["biblia", "Solo Biblia general"]] }
+      { campo: "rondas", leyenda: "¿Cuántos personajes?", ops: [[6, "6 personajes"], [8, "8"], [10, "10"], [12, "12"]] }
     ],
     reglas: [
       "La primera pista vale <b>5 puntos</b>, la segunda 4, y así hasta 1.",
@@ -989,8 +988,7 @@ const SETUP = {
     sub: "Un chico del equipo se sienta <b>de espaldas al proyector</b>. Sus compañeros ven la palabra y se la describen sin decir ninguna de las palabras prohibidas. Contra reloj.",
     campos: [
       { campo: "segundos", leyenda: "¿Cuánto dura cada turno?", ops: [[45, "45 segundos"], [60, "1 minuto"], [90, "1 minuto y medio"]] },
-      { campo: "vueltas", leyenda: "¿Cuántos turnos por equipo?", ops: [[2, "2 turnos"], [3, "3"], [4, "4"]] },
-      { campo: "origen", leyenda: "¿De dónde sale el contenido?", ops: [["todo", "Todo mezclado"], ["semestre", "Solo el semestre"], ["biblia", "Solo Biblia general"]] }
+      { campo: "vueltas", leyenda: "¿Cuántos turnos por equipo?", ops: [[2, "2 turnos"], [3, "3"], [4, "4"]] }
     ],
     reglas: [
       "Cada palabra adivinada vale <b>1 punto</b>. Se juega hasta que suene el tiempo.",
@@ -1004,8 +1002,7 @@ const SETUP = {
     sub: "Con la Biblia de papel en la mano. Aparece la cita en la pantalla y los equipos corren a encontrarla; gana el que la encuentra y la lee en voz alta primero.",
     campos: [
       { campo: "modo", leyenda: "¿Cómo se juega?", ops: [["cita", "Muestro la cita → la buscan y la leen"], ["texto", "Muestro el versículo → dicen la cita"]] },
-      { campo: "rondas", leyenda: "¿Cuántos versículos?", ops: [[6, "6 versículos"], [8, "8"], [10, "10"], [12, "12"]] },
-      { campo: "origen", leyenda: "¿De dónde sale el contenido?", ops: [["todo", "Todo mezclado"], ["semestre", "Solo el semestre"], ["biblia", "Solo Biblia general"]] }
+      { campo: "rondas", leyenda: "¿Cuántos versículos?", ops: [[6, "6 versículos"], [8, "8"], [10, "10"], [12, "12"]] }
     ],
     reglas: [
       "El primero que la encuentra y la lee bien se lleva <b>3 puntos</b>.",
@@ -1117,8 +1114,7 @@ function banco(id) {
   const antiguos = { quien: "personajes", tabu: "tabu", carrera: "versiculos" }[id];
   if (antiguos) {
     const lista = VIEJOS ? VIEJOS[antiguos] : [];
-    const origen = cfg2[id].origen;
-    return origen === "todo" ? lista : lista.filter(x => x.origen === origen);
+    return lista.filter(x => x.origen === "biblia");
   }
   return MAS ? (MAS[{ pistas: "pistas", intruso: "intrusos", orden: "ordenes", frase: "frases" }[id]] || []) : [];
 }
