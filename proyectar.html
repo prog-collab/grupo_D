@@ -1304,7 +1304,15 @@ function pintarQuien() {
    ============================================================ */
 function rondaRespuesta() {
   if (P.ronda >= P.total) return finalPuntos();
-  P.item = sacarDe(P.id);
+  const item = sacarDe(P.id);
+  /* En los tres juegos de opciones no alcanza con cambiar el texto del
+     banco: si la correcta queda siempre en el mismo lugar, se aprende la
+     posición en vez de pensar. Cada vuelta mezcla las opciones y conserva
+     cuál era la respuesta correcta para corregirla después. */
+  P.item = {
+    ...item,
+    opciones: mezclar(item.opciones.map((texto, i) => ({ texto, correcta: i === item.correcta })))
+  };
   P.fuera = [false, false];
   P.arriesga = null;
   P.resuelto = null;
@@ -1323,7 +1331,7 @@ function pintarRespuesta() {
       <div class="centrado">
         <span class="cinta">${g ? "✅ " + esc(g.nombre) + " +" + P.resuelto.valor : "🔎 La respuesta"}</span>
         <h2>${esc(x.titulo)}</h2>
-        <p class="grande" style="color:var(--violet)">${esc(x.opciones[x.correcta])}</p>
+        <p class="grande" style="color:var(--violet)">${esc(x.opciones.find(o => o.correcta).texto)}</p>
         <div class="porque" style="text-align:left">${esc(x.porque)}</div>
         <span class="cita">📖 ${esc(x.cita)}</span>
       </div>`;
@@ -1344,7 +1352,7 @@ function pintarRespuesta() {
     <p class="textogrande">${esc(x.enunciado)}</p>
     <div class="opciones">
       ${x.opciones.map((o, i) => `<button class="op" data-op="${i}" ${puedeElegir ? "" : "disabled"}>
-        <span class="letra">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`).join("")}
+        <span class="letra">${"ABCD"[i]}</span><span>${esc(o.texto)}</span></button>`).join("")}
     </div>`;
 
   if (puedeElegir) {
@@ -1358,7 +1366,7 @@ function pintarRespuesta() {
       <button id="btnCancelar" class="ghost">← Volver a los timbres</button>
       ${atajosHTML(["Tocá la opción que contestaron", "<kbd>espacio</kbd> cancelar"])}`;
     const elegir = i => {
-      if (i === x.correcta) {
+      if (x.opciones[i].correcta) {
         P.equipos[P.arriesga].puntos += P.valor;
         P.resuelto = { eq: P.arriesga, valor: P.valor };
       } else {
